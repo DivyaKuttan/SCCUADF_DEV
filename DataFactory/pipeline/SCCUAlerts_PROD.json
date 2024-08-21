@@ -209,6 +209,7 @@
 				]
 			}
 		],
+		"concurrency": 1,
 		"variables": {
 			"DateFormat": {
 				"type": "String"
