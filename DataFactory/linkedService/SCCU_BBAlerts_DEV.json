@@ -1,0 +1,23 @@
+{
+	"name": "SCCU_BBAlerts_DEV",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"server": "sccudevsql01.database.windows.net",
+			"database": "SCCUDEV_BBAlerts",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "UserAssignedManagedIdentity",
+			"credential": {
+				"referenceName": "SCCU_DEV_Credential",
+				"type": "CredentialReference"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
