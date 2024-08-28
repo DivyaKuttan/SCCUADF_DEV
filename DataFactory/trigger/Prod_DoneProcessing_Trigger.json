@@ -3,18 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "SCCUDoneProcessing_PROD",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"FromDateTime": "@addminutes(utcnow(), -5)",
-					"ToDateTime": "@utcnow()"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
