@@ -1,10 +1,6 @@
 {
 	"name": "PROD_SQLDataSet",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "SCCU_BusinessDataPROD",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "AzureSqlMITable",
 		"schema": [

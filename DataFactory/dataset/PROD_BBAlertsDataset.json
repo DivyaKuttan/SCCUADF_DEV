@@ -1,10 +1,6 @@
 {
 	"name": "PROD_BBAlertsDataset",
 	"properties": {
-		"linkedServiceName": {
-			"referenceName": "SCCU_BBAlertsPROD",
-			"type": "LinkedServiceReference"
-		},
 		"annotations": [],
 		"type": "AzureSqlMITable",
 		"schema": [
