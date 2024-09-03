@@ -11,7 +11,7 @@
 			"trustServerCertificate": false,
 			"authenticationType": "UserAssignedManagedIdentity",
 			"credential": {
-				"referenceName": "Credential_BusinessDataDev",
+				"referenceName": "Credentials_Dev",
 				"type": "CredentialReference"
 			}
 		},
