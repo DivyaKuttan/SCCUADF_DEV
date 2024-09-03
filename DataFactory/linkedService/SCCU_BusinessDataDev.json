@@ -1,6 +1,5 @@
 {
 	"name": "SCCU_BusinessDataDev",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"description": "For DEV SQL Server",
 		"annotations": [],
@@ -8,11 +7,11 @@
 		"typeProperties": {
 			"server": "sccudevsql01.database.windows.net",
 			"database": "SCCU_BusinessData_Dev",
-			"encrypt": "optional",
+			"encrypt": "mandatory",
 			"trustServerCertificate": false,
 			"authenticationType": "UserAssignedManagedIdentity",
 			"credential": {
-				"referenceName": "Credentials_BusinessDataDev",
+				"referenceName": "Credential_BusinessDataDev",
 				"type": "CredentialReference"
 			}
 		},
@@ -20,5 +19,6 @@
 			"referenceName": "AutoResolveIntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
