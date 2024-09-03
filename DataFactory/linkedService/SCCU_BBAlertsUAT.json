@@ -10,7 +10,7 @@
 			"trustServerCertificate": false,
 			"authenticationType": "UserAssignedManagedIdentity",
 			"credential": {
-				"referenceName": "Credential_SCCUUAT_BBAlerts",
+				"referenceName": "Credentials_UAT",
 				"type": "CredentialReference"
 			}
 		},
