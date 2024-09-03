@@ -6,12 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "SCCUAlerts_UAT",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "SCCUAlerts_UAT_copy1",
 					"type": "PipelineReference"
 				}
