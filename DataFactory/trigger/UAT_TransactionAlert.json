@@ -6,16 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Nextly_TransactionAlert_UAT",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"FileName": "@triggerBody().fileName",
-					"FilePath": "@triggerBody().folderPath"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "Nextly_TransactionAlert_UAT_copy1",
 					"type": "PipelineReference"
 				},
