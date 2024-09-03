@@ -161,10 +161,7 @@
 						"referenceName": "UAT_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							}
+							"TransactionFileName": "@pipeline().parameters.FileName"
 						}
 					},
 					"fieldList": [
