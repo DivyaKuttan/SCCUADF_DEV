@@ -1,5 +1,5 @@
 {
-	"name": "Dev_ThresholdSourceDataSet",
+	"name": "Dev_ThresholdSourceDataSet1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
@@ -15,12 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-
 				"fileName": {
 					"value": "@dataset().ThresholdFilename",
 					"type": "Expression"
 				},
-
 				"folderPath": "DEV/ThresholdAlerts",
 				"container": "to-nextly"
 			},
