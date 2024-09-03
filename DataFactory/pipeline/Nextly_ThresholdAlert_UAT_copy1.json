@@ -87,7 +87,10 @@
 						"referenceName": "UAT_ThresholdSourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"ThresholdFilename": "@pipeline().parameters.FileName"
+							"ThresholdFilename": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -149,7 +152,10 @@
 						"referenceName": "UAT_ThresholdSourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"ThresholdFilename": "@pipeline().parameters.FileName"
+							"ThresholdFilename": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					},
 					"fieldList": [
