@@ -1,5 +1,5 @@
 {
-	"name": "Dev_ThresholdSourceDataSet1",
+	"name": "Dev_ThresholdSourceDataSet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
