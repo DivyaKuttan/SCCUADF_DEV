@@ -6,11 +6,11 @@
 		"typeProperties": {
 			"server": "sccudevsql01.database.windows.net",
 			"database": "SCCUDEV_BBAlerts",
-			"encrypt": "optional",
+			"encrypt": "mandatory",
 			"trustServerCertificate": false,
 			"authenticationType": "UserAssignedManagedIdentity",
 			"credential": {
-				"referenceName": "credential_SCCU_BBAlertsDev",
+				"referenceName": "Credentials_Dev",
 				"type": "CredentialReference"
 			}
 		},
