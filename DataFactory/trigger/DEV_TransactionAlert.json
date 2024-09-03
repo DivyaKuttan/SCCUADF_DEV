@@ -2,7 +2,7 @@
 	"name": "DEV_TransactionAlert",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
