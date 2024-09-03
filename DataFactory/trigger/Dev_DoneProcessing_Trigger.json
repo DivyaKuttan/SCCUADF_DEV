@@ -9,6 +9,12 @@
 					"referenceName": "SCCUDoneProcessing_DEV",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "SCCUDoneProcessing_DEV_copy1",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
