@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "SCCUDoneProcessing_DEV",
+					"referenceName": "SCCUDoneProcessing_DEV_copy1",
 					"type": "PipelineReference"
 				}
 			}

@@ -1,5 +1,5 @@
 {
-	"name": "Nextly_TransactionAlert_UAT",
+	"name": "Nextly_ThresholdAlert_UAT_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -27,9 +27,12 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/TransactionAlerts",
+							"wildcardFolderPath": {
+								"value": "UAT/ThresholdAlerts",
+								"type": "Expression"
+							},
 							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
+								"value": "@pipeline().parameters.FileName\n",
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
@@ -61,24 +64,12 @@
 							},
 							{
 								"source": {
-									"name": "EmailContent",
+									"name": "BalanceAmount",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "EmailContent",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "SMSContent",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "SMSContent",
+									"name": "BalanceAmount",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -93,16 +84,19 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "UAT_TransactionSourceDataset",
+						"referenceName": "UAT_ThresholdSourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": "@pipeline().parameters.FileName"
+							"ThresholdFilename": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "UAT_TransactionSinkDataSet",
+						"referenceName": "UAT_ThresholdSinkDastaSet",
 						"type": "DatasetReference"
 					}
 				]
@@ -127,7 +121,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "spi_ExtTransactionAlertToQueue"
+					"storedProcedureName": "[dbo].[spi_ExtThresholdAlertToQueue]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_BusinessDataUAT",
@@ -139,7 +133,7 @@
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "Truncate Transaction staging",
+						"activity": "Truncate Threshold staging",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -155,10 +149,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "UAT_TransactionSourceDataset",
+						"referenceName": "UAT_ThresholdSourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": "@pipeline().parameters.FileName"
+							"ThresholdFilename": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					},
 					"fieldList": [
@@ -199,7 +196,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/TransactionAlerts",
+							"wildcardFolderPath": "UAT/ThresholdAlerts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -220,19 +217,19 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "UAT_CompletedTransactionSource",
+						"referenceName": "UAT_CompletedThresholdSource",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "UAT_CompletedTransactionSink",
+						"referenceName": "UAT_CompletedThresholdSink",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "Truncate Transaction staging",
+				"name": "Truncate Threshold staging",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -244,7 +241,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "sp_Truncate_ExternalAlert_TransactionStaging"
+					"storedProcedureName": "[dbo].[sp_Truncate_ExternalAlert_ThresholdStaging]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_BusinessDataUAT",

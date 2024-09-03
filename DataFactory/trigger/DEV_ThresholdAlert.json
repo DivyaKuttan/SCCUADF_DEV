@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Nextly_ThresholdAlert_DEV",
+					"referenceName": "Nextly_ThresholdAlert_DEV_copy1",
 					"type": "PipelineReference"
 				},
 				"parameters": {

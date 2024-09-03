@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Nextly_ThresholdAlert_UAT",
+					"referenceName": "Nextly_ThresholdAlert_UAT_copy1",
 					"type": "PipelineReference"
 				},
 				"parameters": {

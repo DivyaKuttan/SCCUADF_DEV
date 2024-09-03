@@ -1,5 +1,5 @@
 {
-	"name": "Nextly_ThresholdAlert_UAT",
+	"name": "Nextly_TransactionAlert_UAT_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -27,12 +27,9 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": {
-								"value": "UAT/ThresholdAlerts",
-								"type": "Expression"
-							},
+							"wildcardFolderPath": "UAT/TransactionAlerts",
 							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName\n",
+								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
@@ -64,12 +61,24 @@
 							},
 							{
 								"source": {
-									"name": "BalanceAmount",
+									"name": "EmailContent",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "BalanceAmount",
+									"name": "EmailContent",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SMSContent",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SMSContent",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -84,16 +93,19 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "UAT_ThresholdSourceDataSet",
+						"referenceName": "UAT_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"ThresholdFilename": "@pipeline().parameters.FileName"
+							"TransactionFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "UAT_ThresholdSinkDastaSet",
+						"referenceName": "UAT_TransactionSinkDataSet",
 						"type": "DatasetReference"
 					}
 				]
@@ -118,7 +130,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[spi_ExtThresholdAlertToQueue]"
+					"storedProcedureName": "spi_ExtTransactionAlertToQueue"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_BusinessDataUAT",
@@ -130,7 +142,7 @@
 				"type": "GetMetadata",
 				"dependsOn": [
 					{
-						"activity": "Truncate Threshold staging",
+						"activity": "Truncate Transaction staging",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -146,15 +158,16 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "UAT_ThresholdSourceDataSet",
+						"referenceName": "UAT_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"ThresholdFilename": "@pipeline().parameters.FileName"
+							"TransactionFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					},
-					"fieldList": [
-						"exists"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
@@ -190,7 +203,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/ThresholdAlerts",
+							"wildcardFolderPath": "UAT/TransactionAlerts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -211,19 +224,19 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "UAT_CompletedThresholdSource",
+						"referenceName": "UAT_CompletedTransactionSource",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "UAT_CompletedThresholdSink",
+						"referenceName": "UAT_CompletedTransactionSink",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "Truncate Threshold staging",
+				"name": "Truncate Transaction staging",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
@@ -235,7 +248,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[sp_Truncate_ExternalAlert_ThresholdStaging]"
+					"storedProcedureName": "sp_Truncate_ExternalAlert_TransactionStaging"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_BusinessDataUAT",

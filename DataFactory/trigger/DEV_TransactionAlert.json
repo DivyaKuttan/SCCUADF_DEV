@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Nextly_TransactionAlert_DEV",
+					"referenceName": "Nextly_TransactionAlert_DEV_copy1",
 					"type": "PipelineReference"
 				},
 				"parameters": {

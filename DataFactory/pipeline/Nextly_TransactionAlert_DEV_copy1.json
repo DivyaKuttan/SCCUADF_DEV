@@ -1,5 +1,5 @@
 {
-	"name": "Nextly_TransactionAlert_DEV",
+	"name": "Nextly_TransactionAlert_DEV_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -161,10 +161,7 @@
 						"referenceName": "Dev_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							}
+							"TransactionFileName": "@pipeline().parameters.FileName"
 						}
 					},
 					"fieldList": [

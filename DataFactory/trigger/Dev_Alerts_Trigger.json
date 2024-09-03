@@ -6,7 +6,7 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "SCCUAlerts_DEV",
+					"referenceName": "SCCUAlerts_DEV_copy1",
 					"type": "PipelineReference"
 				}
 			}

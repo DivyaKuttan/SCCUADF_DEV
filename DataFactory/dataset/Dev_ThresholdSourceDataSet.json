@@ -15,12 +15,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-
 				"fileName": {
 					"value": "@dataset().ThresholdFilename",
 					"type": "Expression"
 				},
-
 				"folderPath": "DEV/ThresholdAlerts",
 				"container": "to-nextly"
 			},
