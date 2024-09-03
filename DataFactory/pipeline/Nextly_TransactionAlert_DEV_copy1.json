@@ -93,10 +93,10 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_ThresholdSourceDataSet",
+						"referenceName": "Dev_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"ThresholdFilename": {
+							"TransactionFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							}
