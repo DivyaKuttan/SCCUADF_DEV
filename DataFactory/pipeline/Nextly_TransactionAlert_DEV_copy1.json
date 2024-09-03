@@ -93,10 +93,10 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "UAT_TransactionSourceDataset",
+						"referenceName": "Dev_ThresholdSourceDataSet",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": {
+							"ThresholdFilename": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							}
