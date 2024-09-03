@@ -6,12 +6,6 @@
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "SCCUAlerts_DEV",
-					"type": "PipelineReference"
-				}
-			},
-			{
-				"pipelineReference": {
 					"referenceName": "SCCUAlerts_DEV_copy1",
 					"type": "PipelineReference"
 				}
