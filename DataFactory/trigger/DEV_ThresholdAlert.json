@@ -13,6 +13,16 @@
 					"FileName": "@triggerBody().fileName",
 					"FilePath": "@triggerBody().folderPath"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "Nextly_ThresholdAlert_DEV_copy1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"FileName": "@triggerBody().fileName",
+					"FilePath": "@triggerBody().folderPath"
+				}
 			}
 		],
 		"type": "BlobEventsTrigger",
