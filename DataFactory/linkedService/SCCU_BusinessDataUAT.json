@@ -6,11 +6,11 @@
 		"typeProperties": {
 			"server": "sccuuatsql01.database.windows.net",
 			"database": "SCCU_BusinessData_UAT",
-			"encrypt": "optional",
+			"encrypt": "mandatory",
 			"trustServerCertificate": false,
 			"authenticationType": "UserAssignedManagedIdentity",
 			"credential": {
-				"referenceName": "Credential_SCCU_BusinessDataUAT",
+				"referenceName": "Credentials_UAT",
 				"type": "CredentialReference"
 			}
 		},
