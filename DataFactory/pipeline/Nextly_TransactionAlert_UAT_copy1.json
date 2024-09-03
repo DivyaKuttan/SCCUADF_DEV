@@ -96,7 +96,10 @@
 						"referenceName": "UAT_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": "@pipeline().parameters.FileName"
+							"TransactionFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -158,12 +161,13 @@
 						"referenceName": "UAT_TransactionSourceDataset",
 						"type": "DatasetReference",
 						"parameters": {
-							"TransactionFileName": "@pipeline().parameters.FileName"
+							"TransactionFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					},
-					"fieldList": [
-						"exists"
-					],
+					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
