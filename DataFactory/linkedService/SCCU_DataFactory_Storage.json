@@ -1,6 +1,5 @@
 {
 	"name": "SCCU_DataFactory_Storage",
-	"type": "Microsoft.DataFactory/factories/linkedservices",
 	"properties": {
 		"annotations": [],
 		"type": "AzureBlobStorage",
@@ -8,7 +7,7 @@
 			"serviceEndpoint": "https://sccudatafactorystorage.blob.core.windows.net/",
 			"accountKind": "StorageV2",
 			"credential": {
-				"referenceName": "SCCU_Storage_Credential",
+				"referenceName": "Credentials_sccudatafactorystorage",
 				"type": "CredentialReference"
 			}
 		},
@@ -16,5 +15,6 @@
 			"referenceName": "AutoResolveIntegrationRuntime",
 			"type": "IntegrationRuntimeReference"
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/linkedservices"
 }
