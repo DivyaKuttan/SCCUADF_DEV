@@ -150,7 +150,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "DEV_SQLDataSet",
+						"referenceName": "UAT_SQLDataSet",
 						"type": "DatasetReference"
 					}
 				}
