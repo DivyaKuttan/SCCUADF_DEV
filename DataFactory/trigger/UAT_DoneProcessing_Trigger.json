@@ -9,6 +9,12 @@
 					"referenceName": "SCCUDoneProcessing_UAT",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "SCCUDoneProcessing_UAT_copy1",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
