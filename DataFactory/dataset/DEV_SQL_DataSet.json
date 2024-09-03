@@ -1,5 +1,5 @@
 {
-	"name": "Dev_ThresholdSinkDastaSet",
+	"name": "DEV_SQL_DataSet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_BusinessDataDev",
@@ -14,18 +14,29 @@
 				"precision": 10
 			},
 			{
-				"name": "SubscriptionID",
-				"type": "int",
-				"precision": 10
+				"name": "Username",
+				"type": "varchar"
 			},
 			{
-				"name": "BalanceAmount",
+				"name": "MemberNumber",
 				"type": "varchar"
+			},
+			{
+				"name": "PersonNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "EAgreementNumber",
+				"type": "varchar"
+			},
+			{
+				"name": "Status",
+				"type": "bit"
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "ExternalAlert_ThresholdStaging"
+			"schema": "Adaptive",
+			"table": "AllowedUserOnly"
 		}
 	}
 }

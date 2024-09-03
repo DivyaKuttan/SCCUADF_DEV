@@ -22,19 +22,6 @@
 			"firstRowAsHeader": true,
 			"quoteChar": ""
 		},
-		"schema": [
-			{
-				"name": "SubscriptionID",
-				"type": "String"
-			},
-			{
-				"name": "EMAIL",
-				"type": "String"
-			},
-			{
-				"name": "PHONE",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }

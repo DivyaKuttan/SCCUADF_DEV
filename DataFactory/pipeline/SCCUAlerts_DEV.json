@@ -1,5 +1,5 @@
 {
-	"name": "SCCUAlerts_DEV_copy1",
+	"name": "SCCUAlerts_DEV",
 	"properties": {
 		"activities": [
 			{
@@ -94,7 +94,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_SQLDataSet",
+						"referenceName": "DEV_SQL_DataSet",
 						"type": "DatasetReference"
 					}
 				],
@@ -221,7 +221,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_SQLDataSet",
+						"referenceName": "DEV_SQL_DataSet",
 						"type": "DatasetReference"
 					}
 				],
@@ -265,6 +265,128 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "SubscriptionID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "SubscriptionID",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountID",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "AccountID",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "TransactionTypeString",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "TransactionTypeString",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "NoAmountFlag",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "NoAmountFlag",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "MoreThanFlag",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MoreThanFlag",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "MoreThanAmount",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "MoreThanAmount",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LessThanFlag",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LessThanFlag",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "LessThanAmount",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "LessThanAmount",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Language",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Language",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "Type",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -274,7 +396,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_SQLDataSet",
+						"referenceName": "DEV_SQL_DataSet",
 						"type": "DatasetReference"
 					}
 				],
@@ -286,6 +408,7 @@
 				]
 			}
 		],
+		"concurrency": 1,
 		"variables": {
 			"DateFormat": {
 				"type": "String"

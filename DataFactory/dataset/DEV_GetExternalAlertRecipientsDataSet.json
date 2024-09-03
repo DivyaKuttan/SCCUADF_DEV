@@ -15,29 +15,13 @@
 					"type": "Expression"
 				},
 				"folderPath": "DEV/Alertsubscriber",
-				"container": {
-					"value": "from-nextly",
-					"type": "Expression"
-				}
+				"container": "from-nextly"
 			},
 			"columnDelimiter": "|",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": ""
 		},
-		"schema": [
-			{
-				"name": "SubscriptionID",
-				"type": "String"
-			},
-			{
-				"name": "EMAIL",
-				"type": "String"
-			},
-			{
-				"name": "PHONE",
-				"type": "String"
-			}
-		]
+		"schema": []
 	}
 }
