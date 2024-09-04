@@ -1,0 +1,83 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "SCCU-EU-Data-Factory-NonProd"
+		},
+		"SCCU_BBAlertsDev_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_BBAlertsDev_properties_typeProperties_database": {
+			"value": "SCCUDEV_BBAlerts"
+		},
+		"SCCU_BBAlertsUAT_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCU_BBAlertsUAT_properties_typeProperties_database": {
+			"value": "SCCUUAT_BBAlerts"
+		},
+		"SCCU_BusinessDataDev_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_BusinessDataDev_properties_typeProperties_database": {
+			"value": "SCCU_BusinessData_Dev"
+		},
+		"SCCU_BusinessDataUAT_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCU_BusinessDataUAT_properties_typeProperties_database": {
+			"value": "SCCU_BusinessData_UAT"
+		},
+		"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sccudatafactorystorage.blob.core.windows.net/"
+		},
+		"SCCU_LogDBDev_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_LogDBDev_properties_typeProperties_database": {
+			"value": "SCCUDEV_LogDB"
+		},
+		"DEV_ThresholdAlert_properties_typeProperties_scope": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"DEV_TransactionAlert_properties_typeProperties_scope": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_TransactionAlert_properties_typeProperties_scope": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_thresholdAlert_properties_typeProperties_scope": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"SCCU_DataFactory_FileShare_properties_privateLinkResourceId": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"SCCU_DataFactory_FileShare_properties_groupId": {
+			"value": "file"
+		},
+		"sccudatafactorystorage_properties_privateLinkResourceId": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"sccudatafactorystorage_properties_groupId": {
+			"value": "blob"
+		},
+		"sccudatafactorystorage_properties_fqdns": {
+			"value": [
+				"sccudatafactorystorage.blob.core.windows.net"
+			]
+		},
+		"sccudrsql01_properties_privateLinkResourceId": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-CU-DR-SRV-RG/providers/Microsoft.Sql/managedInstances/sccudrsql01"
+		},
+		"sccudrsql01_properties_groupId": {
+			"value": "managedInstance"
+		},
+		"sccuprodsql01_properties_privateLinkResourceId": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Sql/managedInstances/sccuprodsql01"
+		},
+		"sccuprodsql01_properties_groupId": {
+			"value": "managedInstance"
+		}
+	}
+}
