@@ -1,0 +1,9 @@
+{
+	"name": "ArchiveTables",
+	"properties": {
+		"folder": {
+			"name": "DataRetention"
+		},
+		"annotations": []
+	}
+}
