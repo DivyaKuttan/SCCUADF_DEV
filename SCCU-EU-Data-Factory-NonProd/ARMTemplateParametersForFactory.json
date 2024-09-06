@@ -38,8 +38,20 @@
 		"SCCU_LogDBDev_properties_typeProperties_database": {
 			"value": "SCCUDEV_LogDB"
 		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
+		},
 		"DEV_ThresholdAlert_properties_typeProperties_scope": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
 		},
 		"DEV_TransactionAlert_properties_typeProperties_scope": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
