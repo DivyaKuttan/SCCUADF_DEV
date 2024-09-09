@@ -800,7 +800,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[Sps_GetThresholdAlertSubscriptionsToFile]",
+						"sqlReaderStoredProcedureName": "[dbo].[sps_GetTransactionAlertSubscriptionToFile]",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -828,7 +828,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "RowCount_ExternalAlerts",
+					"variableName": "RowCount_TransactionAlerts",
 					"value": {
 						"value": "@length(activity('Count_TransactionAlerts').output.value)",
 						"type": "Expression"
