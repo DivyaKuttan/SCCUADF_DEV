@@ -1,5 +1,5 @@
 {
-	"name": "Dev_NF_UserConnectionsSourceDataSet_copy1",
+	"name": "Dev_RulesLogSourceDataSet",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_MetaDBDev",
