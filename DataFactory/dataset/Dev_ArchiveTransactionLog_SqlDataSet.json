@@ -61,7 +61,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "ArchiveTransactionLog_Sql"
+			"table": "TransactionLog_Sql_Archive"
 		}
 	}
 }
