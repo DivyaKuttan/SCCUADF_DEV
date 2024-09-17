@@ -248,6 +248,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "ErrorLog_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "ErrorLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ErrorLog WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -413,6 +449,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "TransactionLog_Json_copy1",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Json_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Json\n WHERE modifiedDate\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -694,6 +766,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "ExternalRequestTxs_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "ExternalRequestTxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ExternalRequestTxs\n WHERE RequestDateTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -979,6 +1087,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "TraceData_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "TraceData_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TraceData\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -1248,6 +1392,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "TransactionLog_Sql_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Sql_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Sql\n WHERE ModifiedTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -1501,6 +1681,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "FormAPITxs_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "FormAPITxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM FormAPITxs\n WHERE RequestDateTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -1714,6 +1930,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "BrowserTabLogs_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabLogs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabLogs\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -1855,6 +2107,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "BrowserTabInfo_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabInfo_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabInfo\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -1996,6 +2284,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "AF_Log4NetDB_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "AF_Log4NetDB_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM AF_Log4NetDB\n WHERE Date\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2125,6 +2449,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "NF_UserConnections_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "NF_UserConnections_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM NF_UserConnections\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2266,6 +2626,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "SecurityLog_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "SecurityLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM SecurityLog\n WHERE UpdateTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2395,6 +2791,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "RefreshTokens__Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "RefreshTokens_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RefreshTokens\n WHERE ExpiresUtc\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2524,6 +2956,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "UserInvalidAttempts_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "UserInvalidAttempts_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserInvalidAttempts\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2633,6 +3101,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "PasswordHistory_Script_",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "PasswordHistory_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM PasswordHistory\n WHERE date\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2762,6 +3266,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "TempUserLoginValidations_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "TempUserLoginValidations_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TempUserLoginValidations\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -2891,6 +3431,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "RulesLog_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "RulesLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RulesLog\n WHERE LogTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									},
@@ -3128,6 +3704,42 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "UserLoginAttempts_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "UserLoginAttempts_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserLoginAttempts\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
 											}
 										]
 									}
@@ -3191,6 +3803,9 @@
 			"PurgeDays": {
 				"type": "Integer"
 			}
+		},
+		"folder": {
+			"name": "DataRetention"
 		},
 		"annotations": []
 	}
