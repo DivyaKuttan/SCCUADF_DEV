@@ -83,7 +83,10 @@
 												"typeProperties": {
 													"source": {
 														"type": "AzureSqlSource",
-														"sqlReaderQuery": "SELECT * FROM ErrorLog WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+														"sqlReaderQuery": {
+															"value": "SELECT * FROM ErrorLog WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+															"type": "Expression"
+														},
 														"queryTimeout": "02:00:00",
 														"partitionOption": "None"
 													},
@@ -3787,6 +3790,662 @@
 						"value": "@equals(item().IsArchiveEnabled,true)",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "PurgeEnabled_Filter",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "MasterTable_lookup",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('MasterTable_lookup').output",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().IsPurgeEnabled,true)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEachForPurge",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "PurgeEnabled_Filter",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"activities": [
+						{
+							"name": "PurgeDays_SetVariable",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "PurgeDays",
+								"value": {
+									"value": "@item().PurgeDays",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "SwitchForPurge",
+							"type": "Switch",
+							"dependsOn": [
+								{
+									"activity": "PurgeDays_SetVariable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"on": {
+									"value": "@item().TableName",
+									"type": "Expression"
+								},
+								"cases": [
+									{
+										"value": "ErrorLog",
+										"activities": [
+											{
+												"name": "Purge_ErrorLog",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ErrorLog_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "TransactionLog_Json",
+										"activities": [
+											{
+												"name": "Purge_TransactionLog_Json",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Json_Archive WHERE modifiedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "ExternalRequestTxs",
+										"activities": [
+											{
+												"name": "Purge_ExternalRequestTxs",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ExternalRequestTxs_Archive WHERE RequestDateTime < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "TraceData",
+										"activities": [
+											{
+												"name": "Purge_TraceData",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TraceData_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "TransactionLog_Sql",
+										"activities": [
+											{
+												"name": "Purge_TransactionLog_Sql",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Sql_Archive WHERE ModifiedTime < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "FormAPITxs",
+										"activities": [
+											{
+												"name": "Purge_FormAPITxs",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM FormAPITxs_Archive WHERE RequestDateTime < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "BrowserTabLogs",
+										"activities": [
+											{
+												"name": "Purge_BrowserTabLogs",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabLogs_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "BrowserTabInfo",
+										"activities": [
+											{
+												"name": "Purge_BrowserTabInfo",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabInfo_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "AF_Log4NetDB",
+										"activities": [
+											{
+												"name": "Purge_AF_Log4NetDB",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM AF_Log4NetDB_Archive WHERE Date < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "NF_UserConnections",
+										"activities": [
+											{
+												"name": "Purge_NF_UserConnections",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM NF_UserConnections_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "SecurityLog",
+										"activities": [
+											{
+												"name": "Purge_SecurityLog",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM SecurityLog_Archive WHERE UpdateTime< DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "RefreshTokens",
+										"activities": [
+											{
+												"name": "Purge_RefreshTokens",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RefreshTokens_Archive WHERE ExpiresUtc< DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "UserInvalidAttempts",
+										"activities": [
+											{
+												"name": "Purge_UserInvalidAttempts",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserInvalidAttempts_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "PasswordHistory",
+										"activities": [
+											{
+												"name": "Purge_PasswordHistory",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM PasswordHistory_Archive WHERE Date < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "TempUserLoginValidations",
+										"activities": [
+											{
+												"name": "Purge_TempUserLoginValidations",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TempUserLoginValidations_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "RulesLog",
+										"activities": [
+											{
+												"name": "Purge_RulesLog",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RulesLog_Archive WHERE LogTime< DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									},
+									{
+										"value": "UserLoginAttempts",
+										"activities": [
+											{
+												"name": "Purge_UserLoginAttempts",
+												"type": "Script",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserLoginAttempts_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											}
+										]
+									}
+								]
+							}
+						}
+					]
 				}
 			}
 		],
