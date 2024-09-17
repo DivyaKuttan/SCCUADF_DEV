@@ -1,0 +1,75 @@
+{
+	"name": "Dev_MasterLogSQLDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_LogDBDev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TableName",
+				"type": "varchar"
+			},
+			{
+				"name": "IsArchiveEnabled",
+				"type": "bit"
+			},
+			{
+				"name": "ArchiveDays",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "IsPurgeEnabled",
+				"type": "bit"
+			},
+			{
+				"name": "PurgeDays",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TargetColumnName",
+				"type": "varchar"
+			},
+			{
+				"name": "SourceDBName",
+				"type": "varchar"
+			},
+			{
+				"name": "ModifiedBy",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ModifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "TenantId",
+				"type": "varchar"
+			},
+			{
+				"name": "IsGroup",
+				"type": "bit"
+			},
+			{
+				"name": "GroupType",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "App_DataRetention"
+		}
+	}
+}
