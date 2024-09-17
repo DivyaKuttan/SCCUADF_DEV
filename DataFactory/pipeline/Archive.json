@@ -42,7 +42,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('MasterTable_lookup').output.value",
+						"value": "@activity('ArchiveEnabled_Filter').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
@@ -2121,7 +2121,7 @@
 												],
 												"outputs": [
 													{
-														"referenceName": "Dev_NF_UserConnectionsSourceDataSet",
+														"referenceName": "Dev_ArchiveNF_UserConnectionsDataSet",
 														"type": "DatasetReference"
 													}
 												]
