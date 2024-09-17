@@ -3828,6 +3828,11 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"items": {
+						"value": "@activity('PurgeEnabled_Filter').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 1,
 					"activities": [
 						{
 							"name": "PurgeDays_SetVariable",
