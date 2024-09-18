@@ -56,6 +56,12 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
+								},
+								{
+									"activity": "TableName_Set variable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
 							"userProperties": [],
@@ -79,7 +85,6 @@
 													"secureOutput": false,
 													"secureInput": false
 												},
-												"userProperties": [],
 												"typeProperties": {
 													"source": {
 														"type": "AzureSqlSource",
@@ -92,8 +97,10 @@
 													},
 													"sink": {
 														"type": "AzureSqlSink",
+														"writeBatchSize": 1000,
 														"writeBehavior": "insert",
-														"sqlWriterUseTableLock": false
+														"sqlWriterUseTableLock": false,
+														"disableMetricsCollection": false
 													},
 													"enableStaging": false,
 													"translator": {
@@ -255,6 +262,8 @@
 											{
 												"name": "ErrorLog_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "ErrorLog_Copy data",
@@ -287,6 +296,71 @@
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
 												}
+											},
+											{
+												"name": "Stored procedure1",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "ErrorLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
+												"name": "Lookup1",
+												"type": "Lookup",
+												"dependsOn": [
+													{
+														"activity": "ErrorLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": []
 											}
 										]
 									},
@@ -3765,6 +3839,23 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "TableName_Set variable",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TableName",
+								"value": {
+									"value": "@item().TableName",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
@@ -3795,6 +3886,8 @@
 			{
 				"name": "PurgeEnabled_Filter",
 				"type": "Filter",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "MasterTable_lookup",
@@ -3818,6 +3911,8 @@
 			{
 				"name": "ForEachForPurge",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "PurgeEnabled_Filter",
@@ -4466,6 +4561,9 @@
 			},
 			"PurgeDays": {
 				"type": "Integer"
+			},
+			"TableName": {
+				"type": "String"
 			}
 		},
 		"folder": {
