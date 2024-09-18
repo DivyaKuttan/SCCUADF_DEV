@@ -61,7 +61,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "ErrorLog_Archive_duplicate"
+			"table": "BrowserTabLogs_Archive_Duplicate"
 		}
 	}
 }
