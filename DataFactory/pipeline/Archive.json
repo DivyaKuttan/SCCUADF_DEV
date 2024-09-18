@@ -85,11 +85,12 @@
 													"secureOutput": false,
 													"secureInput": false
 												},
+												"userProperties": [],
 												"typeProperties": {
 													"source": {
 														"type": "AzureSqlSource",
 														"sqlReaderQuery": {
-															"value": "SELECT * FROM ErrorLog WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+															"value": "SELECT * FROM ErrorLog WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{variables('ArchiveDays')}, CAST(GETDATE() AS DATE))\n",
 															"type": "Expression"
 														},
 														"queryTimeout": "02:00:00",
@@ -300,8 +301,6 @@
 											{
 												"name": "Stored procedure1",
 												"type": "SqlServerStoredProcedure",
-												"state": "Inactive",
-												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "ErrorLog_Copy data",
@@ -345,6 +344,8 @@
 											{
 												"name": "Lookup1",
 												"type": "Lookup",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "ErrorLog_Copy data",
@@ -360,7 +361,36 @@
 													"secureOutput": false,
 													"secureInput": false
 												},
-												"userProperties": []
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"sqlReaderStoredProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+														"storedProcedureParameters": {
+															"ArchiveDays": {
+																"type": "Int32",
+																"value": {
+																	"value": "@variables('ArchiveDays')",
+																	"type": "Expression"
+																}
+															},
+															"TableName": {
+																"type": "String",
+																"value": {
+																	"value": "@variables('TableName')",
+																	"type": "Expression"
+																}
+															}
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"dataset": {
+														"referenceName": "Dev_ErrorLogSourceDataSet",
+														"type": "DatasetReference"
+													},
+													"firstRowOnly": false
+												}
 											}
 										]
 									},
@@ -530,6 +560,8 @@
 											{
 												"name": "TransactionLog_Json_copy1",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "TransactionLog_Json_Copy data",
@@ -561,6 +593,100 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "Lookup2",
+												"type": "Lookup",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Json_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"sqlReaderStoredProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+														"storedProcedureParameters": {
+															"ArchiveDays": {
+																"type": "Int32",
+																"value": {
+																	"value": "@variables('ArchiveDays')",
+																	"type": "Expression"
+																}
+															},
+															"TableName": {
+																"type": "String",
+																"value": {
+																	"value": "@variables('TableName')",
+																	"type": "Expression"
+																}
+															}
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"dataset": {
+														"referenceName": "Dev_TransactionLog_JsonDataSet",
+														"type": "DatasetReference"
+													},
+													"firstRowOnly": false
+												}
+											},
+											{
+												"name": "TransactionLog_Json_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Json_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -847,6 +973,8 @@
 											{
 												"name": "ExternalRequestTxs_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "ExternalRequestTxs_Copy data",
@@ -878,6 +1006,49 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "ExternalRequestTxs_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "ExternalRequestTxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -1168,6 +1339,8 @@
 											{
 												"name": "TraceData_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "TraceData_Copy data",
@@ -1199,6 +1372,49 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "TraceData_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "TraceData_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -1473,6 +1689,8 @@
 											{
 												"name": "TransactionLog_Sql_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "TransactionLog_Sql_Copy data",
@@ -1504,6 +1722,49 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "TransactionLog_Sql_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Sql_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -1762,6 +2023,8 @@
 											{
 												"name": "FormAPITxs_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "FormAPITxs_Copy data",
@@ -1793,6 +2056,49 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "FormAPITxs_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "FormAPITxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -2011,6 +2317,8 @@
 											{
 												"name": "BrowserTabLogs_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "BrowserTabLogs_Copy data",
@@ -2042,6 +2350,49 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "BrowserTabLogs_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabLogs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -2188,6 +2539,8 @@
 											{
 												"name": "BrowserTabInfo_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "BrowserTabInfo_Copy data",
@@ -2365,6 +2718,8 @@
 											{
 												"name": "AF_Log4NetDB_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "AF_Log4NetDB_Copy data",
@@ -2396,6 +2751,49 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "AF_Log4NetDB_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "AF_Log4NetDB_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -2530,6 +2928,8 @@
 											{
 												"name": "NF_UserConnections_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "NF_UserConnections_Copy data",
@@ -2707,6 +3107,8 @@
 											{
 												"name": "SecurityLog_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "SecurityLog_Copy data",
@@ -2738,6 +3140,55 @@
 														}
 													],
 													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "Lookup3",
+												"type": "Lookup",
+												"dependsOn": [
+													{
+														"activity": "SecurityLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"sqlReaderStoredProcedureName": "[dbo].[DeleteArchivedRecords_MetaDB]",
+														"storedProcedureParameters": {
+															"ArchiveDays": {
+																"type": "Int32",
+																"value": {
+																	"value": "@variables('ArchiveDays')",
+																	"type": "Expression"
+																}
+															},
+															"TableName": {
+																"type": "String",
+																"value": {
+																	"value": "@variables('TableName')",
+																	"type": "Expression"
+																}
+															}
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"dataset": {
+														"referenceName": "Dev_SecurityLogSourceDateSet",
+														"type": "DatasetReference"
+													},
+													"firstRowOnly": false
 												}
 											}
 										]
@@ -2872,6 +3323,8 @@
 											{
 												"name": "RefreshTokens__Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "RefreshTokens_Copy data",
@@ -3037,6 +3490,8 @@
 											{
 												"name": "UserInvalidAttempts_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "UserInvalidAttempts_Copy data",
@@ -3182,6 +3637,8 @@
 											{
 												"name": "PasswordHistory_Script_",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "PasswordHistory_Copy data",
@@ -3347,6 +3804,8 @@
 											{
 												"name": "TempUserLoginValidations_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "TempUserLoginValidations_Copy data",
@@ -3388,6 +3847,8 @@
 											{
 												"name": "RulesLog_Copy data",
 												"type": "Copy",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [],
 												"policy": {
 													"timeout": "0.12:00:00",
@@ -3512,6 +3973,8 @@
 											{
 												"name": "RulesLog_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "RulesLog_Copy data",
@@ -3785,6 +4248,8 @@
 											{
 												"name": "UserLoginAttempts_Script",
 												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
 												"dependsOn": [
 													{
 														"activity": "UserLoginAttempts_Copy data",
