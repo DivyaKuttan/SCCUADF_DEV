@@ -1,0 +1,18 @@
+{
+	"name": "DEV_CompletedLoanDueAlertsSink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "DEV/CompletedLoanDueAlerts",
+				"container": "to-nextly"
+			}
+		}
+	}
+}
