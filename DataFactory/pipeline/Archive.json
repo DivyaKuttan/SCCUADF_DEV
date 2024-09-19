@@ -4056,7 +4056,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('MasterTable_lookup').output",
+						"value": "@activity('MasterTable_lookup').output.value",
 						"type": "Expression"
 					},
 					"condition": {
