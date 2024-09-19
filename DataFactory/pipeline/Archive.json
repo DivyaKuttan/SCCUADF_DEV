@@ -4110,6 +4110,12 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
+								},
+								{
+									"activity": "TableNamePurge_Set variable",
+									"dependencyConditions": [
+										"Succeeded"
+									]
 								}
 							],
 							"userProperties": [],
@@ -4413,11 +4419,28 @@
 												"typeProperties": {
 													"source": {
 														"type": "AzureSqlSource",
+														"sqlReaderStoredProcedureName": "[dbo].[PurgeRecords_ArchiveDB]",
+														"storedProcedureParameters": {
+															"PurgeDays": {
+																"type": "Int32",
+																"value": {
+																	"value": "@variables('PurgeDays')",
+																	"type": "Expression"
+																}
+															},
+															"TableName": {
+																"type": "String",
+																"value": {
+																	"value": "@variables('TableName')",
+																	"type": "Expression"
+																}
+															}
+														},
 														"queryTimeout": "02:00:00",
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_BrowserTabLogsSourceDataSet",
+														"referenceName": "Dev_ArchiveBrowserTabLogsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4885,6 +4908,23 @@
 										]
 									}
 								]
+							}
+						},
+						{
+							"name": "TableNamePurge_Set variable",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TableName",
+								"value": {
+									"value": "@item().TableName",
+									"type": "Expression"
+								}
 							}
 						}
 					]
