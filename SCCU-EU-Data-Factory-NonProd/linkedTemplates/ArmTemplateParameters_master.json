@@ -5,6 +5,24 @@
 		"factoryName": {
 			"value": "SCCU-EU-Data-Factory-NonProd"
 		},
+		"SCCUQA_ArchiveDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_ArchiveDB_properties_typeProperties_database": {
+			"value": "SCCUQA_ArchiveDB"
+		},
+		"SCCUQA_LogDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_LogDB_properties_typeProperties_database": {
+			"value": "SCCUQA_LogDB"
+		},
+		"SCCUQA_MetaDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUQA_MetaDB"
+		},
 		"SCCU_ArchiveDev_properties_typeProperties_server": {
 			"value": "sccudevsql01.database.windows.net"
 		},
@@ -68,8 +86,29 @@
 		"DEV_TransactionAlert_properties_typeProperties_scope": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
 		},
+		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
+		},
+		"Dev_LoanDueTrigger_properties_typeProperties_scope": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_TransactionAlert_properties_Nextly_TransactionAlert_UAT_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"UAT_TransactionAlert_properties_Nextly_TransactionAlert_UAT_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
+		},
 		"UAT_TransactionAlert_properties_typeProperties_scope": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName": {
+			"value": "@triggerBody().fileName"
+		},
+		"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath": {
+			"value": "@triggerBody().folderPath"
 		},
 		"UAT_thresholdAlert_properties_typeProperties_scope": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
