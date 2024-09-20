@@ -1,5 +1,5 @@
 {
-	"name": "Archive",
+	"name": "Archive_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -261,6 +261,85 @@
 												]
 											},
 											{
+												"name": "ErrorLog_Script",
+												"type": "Script",
+												"dependsOn": [
+													{
+														"activity": "ErrorLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DECLARE @BatchSize INT = 10000; -- Define the batch size\nDECLARE @RowsAffected INT = 1;   -- Initialize with a non-zero value\nDECLARE @TotalRowsDeleted INT = 0; -- Track total deleted rows\nDECLARE @ArchiveDays INT = 30;    -- Number of days for archiving\n\nWHILE @RowsAffected > 0\nBEGIN\n    BEGIN TRANSACTION;\n\n    DELETE TOP (@BatchSize) \n    FROM ErrorLog\n    WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@ArchiveDays, CAST(GETDATE() AS DATE));\n\n    SET @RowsAffected = @@ROWCOUNT; -- Get the number of rows deleted in the last batch\n    SET @TotalRowsDeleted = @TotalRowsDeleted + @RowsAffected; -- Update total deleted count\n\n    COMMIT TRANSACTION;\nEND\n\n-- Return the total number of deleted rows\nSELECT @TotalRowsDeleted AS TotalRowsDeleted;\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "ErrorLog_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"dependsOn": [
+													{
+														"activity": "ErrorLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "ErrorLog_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -475,6 +554,44 @@
 												]
 											},
 											{
+												"name": "TransactionLog_Json_copy1",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Json_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Json\n WHERE modifiedDate\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "TransactionLog_Json_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -521,6 +638,51 @@
 														"type": "DatasetReference"
 													},
 													"firstRowOnly": false
+												}
+											},
+											{
+												"name": "TransactionLog_Json_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Json_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
 												}
 											}
 										]
@@ -803,6 +965,89 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "ExternalRequestTxs_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "ExternalRequestTxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ExternalRequestTxs\n WHERE RequestDateTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "ExternalRequestTxs_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "ExternalRequestTxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
 											},
 											{
 												"name": "ExternalRequestTxs_Lookup",
@@ -1139,6 +1384,89 @@
 												]
 											},
 											{
+												"name": "TraceData_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TraceData_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TraceData\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "TraceData_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TraceData_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "TraceData_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -1457,6 +1785,89 @@
 												]
 											},
 											{
+												"name": "TransactionLog_Sql_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Sql_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Sql\n WHERE ModifiedTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "TransactionLog_Sql_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TransactionLog_Sql_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "TransactionLog_Sql_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -1759,6 +2170,89 @@
 												]
 											},
 											{
+												"name": "FormAPITxs_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "FormAPITxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM FormAPITxs\n WHERE RequestDateTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "FormAPITxs_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "FormAPITxs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "FormAPITxs_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -2021,6 +2515,89 @@
 												]
 											},
 											{
+												"name": "BrowserTabLogs_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabLogs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabLogs\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "BrowserTabLogs_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabLogs_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "BrowserTabLogs_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -2209,6 +2786,89 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "BrowserTabInfo_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabInfo_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabInfo\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "BrowserTabInfo_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "BrowserTabInfo_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
 											},
 											{
 												"name": "BrowserTabInfo_Lookup",
@@ -2401,6 +3061,89 @@
 												]
 											},
 											{
+												"name": "AF_Log4NetDB_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "AF_Log4NetDB_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM AF_Log4NetDB\n WHERE Date\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "AF_Log4NetDB_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "AF_Log4NetDB_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "AF_Log4NetDB_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -2577,6 +3320,89 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "NF_UserConnections_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "NF_UserConnections_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM NF_UserConnections\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "NF_UserConnections_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "NF_UserConnections_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
 											},
 											{
 												"name": "NF_UserConnections_Lookup",
@@ -2769,6 +3595,89 @@
 												]
 											},
 											{
+												"name": "SecurityLog_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "SecurityLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM SecurityLog\n WHERE UpdateTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "SecurityLog_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "SecurityLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "SecurityLog_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -2945,6 +3854,89 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "RefreshTokens__Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "RefreshTokens_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RefreshTokens\n WHERE ExpiresUtc\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "RefreshTokens_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "RefreshTokens_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
 											},
 											{
 												"name": "RefreshTokens_Lookup",
@@ -3125,6 +4117,89 @@
 												]
 											},
 											{
+												"name": "UserInvalidAttempts_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "UserInvalidAttempts_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserInvalidAttempts\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "UserInvalidAttempts_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "UserInvalidAttempts_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "UserInvalidAttempts_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -3281,6 +4356,89 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "PasswordHistory_Script_",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "PasswordHistory_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_LogDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM PasswordHistory\n WHERE date\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "PasswordHistory_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "PasswordHistory_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
 											},
 											{
 												"name": "PasswordHistory_Lookup",
@@ -3461,6 +4619,89 @@
 												]
 											},
 											{
+												"name": "TempUserLoginValidations_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TempUserLoginValidations_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TempUserLoginValidations\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "TempUserLoginValidations_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "TempUserLoginValidations_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "TempUserLoginValidations_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -3637,6 +4878,89 @@
 														"type": "DatasetReference"
 													}
 												]
+											},
+											{
+												"name": "RulesLog_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "RulesLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RulesLog\n WHERE LogTime\n < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "RulesLog_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "RulesLog_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
 											},
 											{
 												"name": "RulesLog_Lookup",
@@ -3925,6 +5249,89 @@
 												]
 											},
 											{
+												"name": "UserLoginAttempts_Script",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "UserLoginAttempts_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserLoginAttempts\n WHERE CreatedDate < DATEADD(DAY, -@{variables('ArchiveDays')}, GETDATE())\n",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
+												"name": "UserLoginAttempts_Stored procedure",
+												"type": "SqlServerStoredProcedure",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [
+													{
+														"activity": "UserLoginAttempts_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"storedProcedureName": "DeleteArchivedRecords_MetaDB",
+													"storedProcedureParameters": {
+														"ArchiveDays": {
+															"value": {
+																"value": "@variables('ArchiveDays')",
+																"type": "Expression"
+															},
+															"type": "Int32"
+														},
+														"TableName": {
+															"value": {
+																"value": "@variables('TableName')",
+																"type": "Expression"
+															},
+															"type": "String"
+														}
+													}
+												},
+												"linkedServiceName": {
+													"referenceName": "SCCU_MetaDBDev",
+													"type": "LinkedServiceReference"
+												}
+											},
+											{
 												"name": "UserLoginAttempts_Lookup",
 												"type": "Lookup",
 												"dependsOn": [
@@ -4041,9 +5448,11 @@
 			{
 				"name": "PurgeEnabled_Filter",
 				"type": "Filter",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "ForEach1",
+						"activity": "MasterTable_lookup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -4052,7 +5461,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('MasterTable_lookup').output.value",
+						"value": "@activity('MasterTable_lookup').output",
 						"type": "Expression"
 					},
 					"condition": {
@@ -4064,6 +5473,8 @@
 			{
 				"name": "ForEachForPurge",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "PurgeEnabled_Filter",
@@ -4106,12 +5517,6 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
-								},
-								{
-									"activity": "TableNamePurge_Set variable",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"userProperties": [],
@@ -4124,6 +5529,37 @@
 									{
 										"value": "ErrorLog",
 										"activities": [
+											{
+												"name": "Purge_ErrorLog",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ErrorLog_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_ErrorLog_Lookup",
 												"type": "Lookup",
@@ -4171,6 +5607,37 @@
 										"value": "TransactionLog_Json",
 										"activities": [
 											{
+												"name": "Purge_TransactionLog_Json",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Json_Archive WHERE modifiedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_TransactionLog_Json_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4216,6 +5683,37 @@
 									{
 										"value": "ExternalRequestTxs",
 										"activities": [
+											{
+												"name": "Purge_ExternalRequestTxs",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM ExternalRequestTxs_Archive WHERE RequestDateTime < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_ExternalRequestTxs_Lookup",
 												"type": "Lookup",
@@ -4263,6 +5761,37 @@
 										"value": "TraceData",
 										"activities": [
 											{
+												"name": "Purge_TraceData",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TraceData_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_TraceData_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4308,6 +5837,37 @@
 									{
 										"value": "TransactionLog_Sql",
 										"activities": [
+											{
+												"name": "Purge_TransactionLog_Sql",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TransactionLog_Sql_Archive WHERE ModifiedTime < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_TransactionLog_Sql_Lookup",
 												"type": "Lookup",
@@ -4355,6 +5915,37 @@
 										"value": "FormAPITxs",
 										"activities": [
 											{
+												"name": "Purge_FormAPITxs",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM FormAPITxs_Archive WHERE RequestDateTime < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_FormAPITxs_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4401,6 +5992,37 @@
 										"value": "BrowserTabLogs",
 										"activities": [
 											{
+												"name": "Purge_BrowserTabLogs",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabLogs_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_BrowserTabLogs_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4415,28 +6037,11 @@
 												"typeProperties": {
 													"source": {
 														"type": "AzureSqlSource",
-														"sqlReaderStoredProcedureName": "[dbo].[PurgeRecords_ArchiveDB]",
-														"storedProcedureParameters": {
-															"PurgeDays": {
-																"type": "Int32",
-																"value": {
-																	"value": "@variables('PurgeDays')",
-																	"type": "Expression"
-																}
-															},
-															"TableName": {
-																"type": "String",
-																"value": {
-																	"value": "@variables('TableName')",
-																	"type": "Expression"
-																}
-															}
-														},
 														"queryTimeout": "02:00:00",
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveBrowserTabLogsDataSet",
+														"referenceName": "Dev_BrowserTabLogsSourceDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4446,6 +6051,37 @@
 									{
 										"value": "BrowserTabInfo",
 										"activities": [
+											{
+												"name": "Purge_BrowserTabInfo",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM BrowserTabInfo_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_BrowserTabInfo_Lookup",
 												"type": "Lookup",
@@ -4493,6 +6129,37 @@
 										"value": "AF_Log4NetDB",
 										"activities": [
 											{
+												"name": "Purge_AF_Log4NetDB",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM AF_Log4NetDB_Archive WHERE Date < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_AF_Log4NetDB_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4538,6 +6205,37 @@
 									{
 										"value": "NF_UserConnections",
 										"activities": [
+											{
+												"name": "Purge_NF_UserConnections",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM NF_UserConnections_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_NF_UserConnections_Lookup",
 												"type": "Lookup",
@@ -4585,6 +6283,37 @@
 										"value": "SecurityLog",
 										"activities": [
 											{
+												"name": "Purge_SecurityLog",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM SecurityLog_Archive WHERE UpdateTime< DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_SecurityLog_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4630,6 +6359,37 @@
 									{
 										"value": "RefreshTokens",
 										"activities": [
+											{
+												"name": "Purge_RefreshTokens",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RefreshTokens_Archive WHERE ExpiresUtc< DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_RefreshTokens_Lookup",
 												"type": "Lookup",
@@ -4677,6 +6437,37 @@
 										"value": "UserInvalidAttempts",
 										"activities": [
 											{
+												"name": "Purge_UserInvalidAttempts",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserInvalidAttempts_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_UserInvalidAttempts_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4722,6 +6513,37 @@
 									{
 										"value": "PasswordHistory",
 										"activities": [
+											{
+												"name": "Purge_PasswordHistory",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM PasswordHistory_Archive WHERE Date < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_PasswordHistory_Lookup",
 												"type": "Lookup",
@@ -4769,6 +6591,37 @@
 										"value": "TempUserLoginValidations",
 										"activities": [
 											{
+												"name": "Purge_TempUserLoginValidations",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM TempUserLoginValidations_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_TempUserLoginValidations_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4814,6 +6667,37 @@
 									{
 										"value": "RulesLog",
 										"activities": [
+											{
+												"name": "Purge_RulesLog",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM RulesLog_Archive WHERE LogTime< DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
 											{
 												"name": "Purge_RulesLog_Lookup",
 												"type": "Lookup",
@@ -4861,6 +6745,37 @@
 										"value": "UserLoginAttempts",
 										"activities": [
 											{
+												"name": "Purge_UserLoginAttempts",
+												"type": "Script",
+												"state": "Inactive",
+												"onInactiveMarkAs": "Succeeded",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"linkedServiceName": {
+													"referenceName": "SCCU_ArchiveDev",
+													"type": "LinkedServiceReference"
+												},
+												"typeProperties": {
+													"scripts": [
+														{
+															"type": "Query",
+															"text": {
+																"value": "DELETE FROM UserLoginAttempts_Archive WHERE CreatedDate < DATEADD(DAY, -@{variables('PurgeDays')}, GETDATE())",
+																"type": "Expression"
+															}
+														}
+													],
+													"scriptBlockExecutionTimeout": "02:00:00"
+												}
+											},
+											{
 												"name": "Purge_UserLoginAttempts_Lookup",
 												"type": "Lookup",
 												"dependsOn": [],
@@ -4904,23 +6819,6 @@
 										]
 									}
 								]
-							}
-						},
-						{
-							"name": "TableNamePurge_Set variable",
-							"type": "SetVariable",
-							"dependsOn": [],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "TableName",
-								"value": {
-									"value": "@item().TableName",
-									"type": "Expression"
-								}
 							}
 						}
 					]

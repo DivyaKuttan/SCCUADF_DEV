@@ -1,0 +1,37 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "ErrorLog_Script",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SCCU_ArchiveDev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "DECLARE @BatchSize INT = 10000; -- Define the batch size\nDECLARE @RowsAffected INT = 1;   -- Initialize with a non-zero value\nDECLARE @TotalRowsDeleted INT = 0; -- Track total deleted rows\nDECLARE @ArchiveDays INT = 30;    -- Number of days for archiving\n\nWHILE @RowsAffected > 0\nBEGIN\n    BEGIN TRANSACTION;\n\n   DELETE TOP (@BatchSize) \n    FROM [dbo].[BrowserTabLogs_Archive_Duplicate]\nwhere cast(createddate as date)='2024-08-12'\n\n    SET @RowsAffected = @@ROWCOUNT; -- Get the number of rows deleted in the last batch\n    SET @TotalRowsDeleted = @TotalRowsDeleted + @RowsAffected; -- Update total deleted count\n\n    COMMIT TRANSACTION;\nEND\n\n-- Return the total number of deleted rows\nSELECT @TotalRowsDeleted AS TotalRowsDeleted;\n",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
