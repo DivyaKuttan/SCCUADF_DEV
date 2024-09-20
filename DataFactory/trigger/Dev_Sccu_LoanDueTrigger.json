@@ -1,0 +1,24 @@
+{
+	"name": "Dev_Sccu_LoanDueTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "SCCU_LoanDueAlerts_DEV",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2024-09-21T06:30:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
