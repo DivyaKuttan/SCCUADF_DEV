@@ -31,8 +31,6 @@
 			{
 				"name": "ForEach1",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ArchiveEnabled_Filter",
@@ -4020,8 +4018,6 @@
 			{
 				"name": "ArchiveEnabled_Filter",
 				"type": "Filter",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "MasterTable_lookup",
