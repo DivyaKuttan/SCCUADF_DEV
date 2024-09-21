@@ -4195,7 +4195,7 @@
 														"typeProperties": {
 															"source": {
 																"type": "AzureSqlSource",
-																"sqlReaderStoredProcedureName": "[[dbo].[DeleteArchivedRecords_MetaDB]",
+																"sqlReaderStoredProcedureName": "[[dbo].[DeleteArchivedRecords_LogDB]",
 																"storedProcedureParameters": {
 																	"ArchiveDays": {
 																		"type": "Int32",
@@ -11682,7 +11682,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "SCCU_LogDBDev",
+					"referenceName": "SCCU_MetaDBDev",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
@@ -11719,10 +11719,13 @@
 						"type": "nvarchar"
 					}
 				],
-				"typeProperties": {}
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserInvalidAttempts"
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_LogDBDev')]"
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_MetaDBDev')]"
 			]
 		},
 		{
@@ -11731,7 +11734,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "SCCU_MetaDBDev",
+					"referenceName": "SCCU_LogDBDev",
 					"type": "LinkedServiceReference"
 				},
 				"folder": {
@@ -11774,7 +11777,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_MetaDBDev')]"
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_LogDBDev')]"
 			]
 		},
 		{
