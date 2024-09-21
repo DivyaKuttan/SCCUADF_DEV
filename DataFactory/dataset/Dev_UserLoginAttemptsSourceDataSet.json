@@ -2,7 +2,7 @@
 	"name": "Dev_UserLoginAttemptsSourceDataSet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_MetaDBDev",
+			"referenceName": "SCCU_LogDBDev",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
