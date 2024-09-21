@@ -2,7 +2,7 @@
 	"name": "Dev_UserInvalidAttemptsSourceDataSet",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_LogDBDev",
+			"referenceName": "SCCU_MetaDBDev",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
@@ -38,6 +38,10 @@
 				"name": "IP_Address",
 				"type": "nvarchar"
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "UserInvalidAttempts"
+		}
 	}
 }
