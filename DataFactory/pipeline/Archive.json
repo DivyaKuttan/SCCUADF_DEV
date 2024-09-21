@@ -3946,7 +3946,7 @@
 												"typeProperties": {
 													"source": {
 														"type": "AzureSqlSource",
-														"sqlReaderStoredProcedureName": "[dbo].[DeleteArchivedRecords_MetaDB]",
+														"sqlReaderStoredProcedureName": "[dbo].[DeleteArchivedRecords_LogDB]",
 														"storedProcedureParameters": {
 															"ArchiveDays": {
 																"type": "Int32",
