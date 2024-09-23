@@ -3974,6 +3974,160 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "UserMappingConfiguration",
+										"activities": [
+											{
+												"name": "UserMappingConfiguration_Copy data",
+												"type": "Copy",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"sqlReaderQuery": {
+															"value": "SELECT * FROM UserMappingConfiguration\n WHERE CAST(LastAccessed AS DATE) < DATEADD(DAY, -@{variables('ArchiveDays')}, CAST(GETDATE() AS DATE))",
+															"type": "Expression"
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"sink": {
+														"type": "AzureSqlSink",
+														"writeBehavior": "insert",
+														"sqlWriterUseTableLock": false
+													},
+													"enableStaging": false,
+													"translator": {
+														"type": "TabularTranslator",
+														"mappings": [
+															{
+																"source": {
+																	"name": "ID",
+																	"type": "Int32",
+																	"physicalType": "int"
+																},
+																"sink": {
+																	"name": "ID",
+																	"type": "Int32",
+																	"physicalType": "int"
+																}
+															},
+															{
+																"source": {
+																	"name": "UserID",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																},
+																"sink": {
+																	"name": "UserID",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "UserName",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																},
+																"sink": {
+																	"name": "UserName",
+																	"type": "String",
+																	"physicalType": "nvarchar"
+																}
+															},
+															{
+																"source": {
+																	"name": "LastAccessed",
+																	"type": "DateTime",
+																	"physicalType": "datetime"
+																},
+																"sink": {
+																	"name": "LastAccessed",
+																	"type": "DateTime",
+																	"physicalType": "datetime"
+																}
+															}
+														],
+														"typeConversion": true,
+														"typeConversionSettings": {
+															"allowDataTruncation": true,
+															"treatBooleanAsNumber": false
+														}
+													}
+												},
+												"inputs": [
+													{
+														"referenceName": "Dev_UserMappingConfigurationSourceDataSet",
+														"type": "DatasetReference"
+													}
+												],
+												"outputs": [
+													{
+														"referenceName": "Dev_ArchiveUserMappingConfigurationDataSet",
+														"type": "DatasetReference"
+													}
+												]
+											},
+											{
+												"name": "UserMappingConfiguration_Lookup",
+												"type": "Lookup",
+												"dependsOn": [
+													{
+														"activity": "UserMappingConfiguration_Copy data",
+														"dependencyConditions": [
+															"Succeeded"
+														]
+													}
+												],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"sqlReaderStoredProcedureName": "[dbo].[DeleteArchivedRecords_MetaDB]",
+														"storedProcedureParameters": {
+															"ArchiveDays": {
+																"type": "Int32",
+																"value": {
+																	"value": "@variables('ArchiveDays')",
+																	"type": "Expression"
+																}
+															},
+															"TableName": {
+																"type": "String",
+																"value": {
+																	"value": "@variables('TableName')",
+																	"type": "Expression"
+																}
+															}
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"dataset": {
+														"referenceName": "Dev_UserMappingConfigurationSourceDataSet",
+														"type": "DatasetReference"
+													},
+													"firstRowOnly": false
+												}
+											}
+										]
 									}
 								]
 							}
@@ -4897,6 +5051,52 @@
 													},
 													"dataset": {
 														"referenceName": "Dev_ArchiveUserLoginAttemptsDataSet",
+														"type": "DatasetReference"
+													}
+												}
+											}
+										]
+									},
+									{
+										"value": "UserMappingConfiguration",
+										"activities": [
+											{
+												"name": "Purge_UserMappingConfiguration_Lookup",
+												"type": "Lookup",
+												"dependsOn": [],
+												"policy": {
+													"timeout": "0.12:00:00",
+													"retry": 0,
+													"retryIntervalInSeconds": 30,
+													"secureOutput": false,
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"source": {
+														"type": "AzureSqlSource",
+														"sqlReaderStoredProcedureName": "[dbo].[PurgeRecords_ArchiveDB]",
+														"storedProcedureParameters": {
+															"PurgeDays": {
+																"type": "Int32",
+																"value": {
+																	"value": "@variables('PurgeDays')",
+																	"type": "Expression"
+																}
+															},
+															"TableName": {
+																"type": "String",
+																"value": {
+																	"value": "@variables('TableName')",
+																	"type": "Expression"
+																}
+															}
+														},
+														"queryTimeout": "02:00:00",
+														"partitionOption": "None"
+													},
+													"dataset": {
+														"referenceName": "Dev_ArchiveUserMappingConfigurationDataSet",
 														"type": "DatasetReference"
 													}
 												}
