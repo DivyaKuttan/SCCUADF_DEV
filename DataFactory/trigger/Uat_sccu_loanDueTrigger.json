@@ -1,12 +1,12 @@
 {
-	"name": "RetentionLogTrigger",
+	"name": "Uat_sccu_loanDueTrigger",
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
 		"pipelines": [
 			{
 				"pipelineReference": {
-					"referenceName": "Archive",
+					"referenceName": "SCCU_LoanDueAlerts_UAT",
 					"type": "PipelineReference"
 				}
 			}
@@ -16,7 +16,7 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2024-09-20T06:00:00",
+				"startTime": "2024-09-23T18:00:00",
 				"timeZone": "India Standard Time"
 			}
 		}
