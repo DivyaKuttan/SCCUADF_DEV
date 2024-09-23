@@ -150,6 +150,12 @@
 		},
 		"sccuprodsql01_properties_groupId": {
 			"value": "managedInstance"
+		},
+		"SCCU_ADFPOC_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_ADFPOC_properties_typeProperties_database": {
+			"value": "SCCU_ADF_POC"
 		}
 	}
 }
