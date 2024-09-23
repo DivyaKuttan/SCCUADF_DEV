@@ -13239,7 +13239,7 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/to-nextly/blobs/DEV/LoanDueAlerts",
+					"blobPathBeginsWith": "/to-nextly/blobs/UAT/LoanDueAlerts",
 					"blobPathEndsWith": ".txt",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('UAT_LoanDueTrigger_properties_typeProperties_scope')]",
