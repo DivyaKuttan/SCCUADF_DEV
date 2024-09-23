@@ -28,8 +28,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "Adaptive",
-			"table": "ActivityLog"
+			"schema": "dbo",
+			"table": "External_LoanDueAlertStaging"
 		}
 	}
 }
