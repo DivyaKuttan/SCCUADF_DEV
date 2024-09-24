@@ -58,6 +58,10 @@
 				"name": "Comments",
 				"type": "nvarchar"
 			}
-		]
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "AF_Log4NetDB_Archive"
+		}
 	}
 }
