@@ -1,0 +1,67 @@
+{
+	"name": "QA_ArchiveSecurityLogDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_ArchiveDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/QA"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ErrorID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "TenantID",
+				"type": "varchar"
+			},
+			{
+				"name": "FormID",
+				"type": "varchar"
+			},
+			{
+				"name": "SystemIP",
+				"type": "varchar"
+			},
+			{
+				"name": "SiteURL",
+				"type": "nvarchar"
+			},
+			{
+				"name": "Type",
+				"type": "varchar"
+			},
+			{
+				"name": "Message",
+				"type": "nvarchar"
+			},
+			{
+				"name": "InnerException",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CreatedBy",
+				"type": "varchar"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "Comments",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "SecurityLog_Archive"
+		}
+	}
+}
