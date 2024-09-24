@@ -1,0 +1,60 @@
+{
+	"name": "QA_TransactionLog_JsonDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_LogDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/QA"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "TransId",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "SessionId",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "ProcessId",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 0
+			},
+			{
+				"name": "TenantId",
+				"type": "varchar"
+			},
+			{
+				"name": "UserName",
+				"type": "varchar"
+			},
+			{
+				"name": "reference",
+				"type": "varchar"
+			},
+			{
+				"name": "Json",
+				"type": "nvarchar"
+			},
+			{
+				"name": "modifiedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "TransactionLog_Json"
+		}
+	}
+}
