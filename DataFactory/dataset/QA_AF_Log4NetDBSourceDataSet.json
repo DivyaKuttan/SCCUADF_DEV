@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "DataRetentionDatasets"
+			"name": "DataRetentionDatasets/QA"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
