@@ -31,6 +31,14 @@
 			"type": "string",
 			"defaultValue": "SCCUQA_MetaDB"
 		},
+		"SCCU_ADFPOC_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_ADFPOC_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_ADF_POC"
+		},
 		"SCCU_ArchiveDev_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccudevsql01.database.windows.net"
@@ -201,14 +209,6 @@
 			"type": "string",
 			"defaultValue": "managedInstance"
 		},
-		"SCCU_ADFPOC_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccudevsql01.database.windows.net"
-		},
-		"SCCU_ADFPOC_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCU_ADF_POC"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -281,6 +281,12 @@
 					"SCCUQA_MetaDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUQA_MetaDB_properties_typeProperties_database')]"
 					},
+					"SCCU_ADFPOC_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_ADFPOC_properties_typeProperties_server')]"
+					},
+					"SCCU_ADFPOC_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_ADFPOC_properties_typeProperties_database')]"
+					},
 					"SCCU_ArchiveDev_properties_typeProperties_server": {
 						"value": "[parameters('SCCU_ArchiveDev_properties_typeProperties_server')]"
 					},
@@ -304,12 +310,6 @@
 					},
 					"SCCU_BusinessDataDev_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_BusinessDataDev_properties_typeProperties_database')]"
-					},
-					"SCCU_BusinessDataUAT_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_server')]"
-					},
-					"SCCU_BusinessDataUAT_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -329,6 +329,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SCCU_BusinessDataUAT_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_server')]"
+					},
+					"SCCU_BusinessDataUAT_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]"
+					},
 					"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint')]"
 					},
@@ -343,12 +349,6 @@
 					},
 					"SCCU_MetaDBDev_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_database')]"
-					},
-					"SCCU_ADFPOC_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_ADFPOC_properties_typeProperties_server')]"
-					},
-					"SCCU_ADFPOC_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_ADFPOC_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -429,6 +429,46 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_4')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_6",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_6.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_5')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_7",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_7.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
 						"value": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]"
@@ -487,7 +527,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_4')]"
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_6')]"
 			]
 		}
 	]

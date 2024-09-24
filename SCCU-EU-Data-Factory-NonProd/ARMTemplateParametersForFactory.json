@@ -23,6 +23,12 @@
 		"SCCUQA_MetaDB_properties_typeProperties_database": {
 			"value": "SCCUQA_MetaDB"
 		},
+		"SCCU_ADFPOC_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_ADFPOC_properties_typeProperties_database": {
+			"value": "SCCU_ADF_POC"
+		},
 		"SCCU_ArchiveDev_properties_typeProperties_server": {
 			"value": "sccudevsql01.database.windows.net"
 		},
@@ -150,12 +156,6 @@
 		},
 		"sccuprodsql01_properties_groupId": {
 			"value": "managedInstance"
-		},
-		"SCCU_ADFPOC_properties_typeProperties_server": {
-			"value": "sccudevsql01.database.windows.net"
-		},
-		"SCCU_ADFPOC_properties_typeProperties_database": {
-			"value": "SCCU_ADF_POC"
 		}
 	}
 }

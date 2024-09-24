@@ -1,0 +1,1337 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "SCCU-EU-Data-Factory-NonProd"
+		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"DEV_ThresholdAlert_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"DEV_TransactionAlert_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"Dev_LoanDueTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"UAT_LoanDueTrigger_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_TransactionAlert_properties_Nextly_TransactionAlert_UAT_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"UAT_TransactionAlert_properties_Nextly_TransactionAlert_UAT_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"UAT_TransactionAlert_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"UAT_thresholdAlert_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUDoneProcessing_DEV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BBAlerts_Copy data1",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "SetStartingTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "SetCurrentTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[alert].[sps_ReferenceFileReport]",
+								"storedProcedureParameters": {
+									"FromDateTime": {
+										"type": "String",
+										"value": {
+											"value": "@variables('StartingTime')",
+											"type": "Expression"
+										}
+									},
+									"IncidentIds": {
+										"type": "String",
+										"value": "[[102,104,105,106,107,108,109,110,60,15,9]"
+									},
+									"ToDateTime": {
+										"type": "String",
+										"value": {
+											"value": "@variables('EndingTime')",
+											"type": "Expression"
+										}
+									},
+									"Types": {
+										"type": "String",
+										"value": "[[\"text\",\"email\"]"
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MessageContent",
+											"type": "String",
+											"physicalType": "nvarchar"
+										},
+										"sink": {
+											"name": "MessageContent",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_BBAlertsDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_DoneProcessingDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "GetLastProcessedDateTime",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT LastProcessedDateTime\nFROM ExternalAlertImportLog\n",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "SetStartingTime",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "GetLastProcessedDateTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "StartingTime",
+							"value": {
+								"value": "@formatDateTime(activity('GetLastProcessedDateTime').output.firstRow.LastProcessedDateTime, 'yyyy-MM-dd HH:mm:ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "SetCurrentTime",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "EndingTime",
+							"value": {
+								"value": "@formatDateTime(utcnow(), 'yyyy-MM-dd HH:mm:ss')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "UpdateLastProcessedDateTime",
+						"type": "Script",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [
+							{
+								"activity": "BBAlerts_Copy data1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "UPDATE ExternalAlertImportLog\nSET LastProcessedDateTime = '@{variables('EndingTime')}'",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Count_Lookup",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "SetStartingTime",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[alert].[sps_ReferenceFileReport]",
+								"storedProcedureParameters": {
+									"FromDateTime": {
+										"type": "String",
+										"value": {
+											"value": "@variables('StartingTime')",
+											"type": "Expression"
+										}
+									},
+									"IncidentIds": {
+										"type": "String",
+										"value": "[[102,104,105,106,107,108,109,110,60,15,9]"
+									},
+									"ToDateTime": {
+										"type": "String",
+										"value": {
+											"value": "@variables('EndingTime')",
+											"type": "Expression"
+										}
+									},
+									"Types": {
+										"type": "String",
+										"value": "[[\"text\",\"email\"]"
+									}
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DEV_BBAlertsDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_Lookup",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount",
+							"value": {
+								"value": "@length(activity('Count_Lookup').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "BBAlerts_Copy data1_copy1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderStoredProcedureName": "[[alert].[sps_ReferenceFileReport]",
+											"storedProcedureParameters": {
+												"FromDateTime": {
+													"type": "String",
+													"value": {
+														"value": "@variables('StartingTime')",
+														"type": "Expression"
+													}
+												},
+												"IncidentIds": {
+													"type": "String",
+													"value": "[[102,104,105,106,107,108,109,110,60,15,9]"
+												},
+												"ToDateTime": {
+													"type": "String",
+													"value": {
+														"value": "@variables('EndingTime')",
+														"type": "Expression"
+													}
+												},
+												"Types": {
+													"type": "String",
+													"value": "[[\"text\",\"email\"]"
+												}
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Type",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "Type",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "MessageContent",
+														"type": "String",
+														"physicalType": "nvarchar"
+													},
+													"sink": {
+														"name": "MessageContent",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DEV_BBAlertsDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_DoneProcessingDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "UpdateLastProcessedDateTime_copy1",
+						"type": "Script",
+						"dependsOn": [
+							{
+								"activity": "Check_RowCount",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": {
+										"value": "UPDATE ExternalAlertImportLog\nSET LastProcessedDateTime = '@{variables('EndingTime')}'",
+										"type": "Expression"
+									}
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"StartingTime": {
+						"type": "String"
+					},
+					"EndingTime": {
+						"type": "String"
+					},
+					"RowCount": {
+						"type": "Integer"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCU_LoanDueAlerts_DEV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Count_LoanDueAlerts",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sps_LoanDueAlertSubscriptionToFile]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount_LoanDueAlerts",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_LoanDueAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount_LoanDueAlerts",
+							"value": {
+								"value": "@length(activity('Count_LoanDueAlerts').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount_LoanDueAlerts",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount_LoanDueAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount_LoanDueAlerts'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "LoanDueAlerts_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 3,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": "EXEC sps_LoanDueAlertSubscriptionToFile",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NumOfDaysBeforeDue",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "NumOfDaysBeforeDue",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NumOfDaysAfterPastDue",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "NumOfDaysAfterPastDue",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DEV_SQL_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_LoanDue_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"RowCount_LoanDueAlerts": {
+						"type": "Integer"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCU_LoanDueAlerts_UAT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Count_LoanDueAlerts",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sps_LoanDueAlertSubscriptionToFile]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "UAT_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount_LoanDueAlerts",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_LoanDueAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount_LoanDueAlerts",
+							"value": {
+								"value": "@length(activity('Count_LoanDueAlerts').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount_LoanDueAlerts",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount_LoanDueAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount_LoanDueAlerts'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "LoanDueAlerts_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 3,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": "EXEC sps_LoanDueAlertSubscriptionToFile",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NumOfDaysBeforeDue",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "NumOfDaysBeforeDue",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NumOfDaysAfterPastDue",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "NumOfDaysAfterPastDue",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "UAT_SQL_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "UAT_LoanDue_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"RowCount_LoanDueAlerts": {
+						"type": "Integer"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_ThresholdAlert')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_ThresholdAlert_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/DEV/ThresholdAlerts/",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('DEV_ThresholdAlert_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_TransactionAlert')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_TransactionAlert_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/DEV/TransactionAlerts/",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dev_Alerts_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SCCUAlerts_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 1,
+						"startTime": "2024-08-02T09:51:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dev_DoneProcessing_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SCCUDoneProcessing_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 5,
+						"startTime": "2024-08-03T01:00:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/SCCUDoneProcessing_DEV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dev_LoanDueTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_LoanDueAlerts_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/DEV/LoanDueAlerts",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('Dev_LoanDueTrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dev_Sccu_LoanDueTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SCCU_LoanDueAlerts_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2024-09-21T06:30:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/SCCU_LoanDueAlerts_DEV')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/RetentionLogTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Archive",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2024-09-25T07:30:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_LoanDueTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_LoanDueAlerts_UAT",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FileName')]",
+							"FilePath": "[parameters('UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/UAT/LoanDueAlerts",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('UAT_LoanDueTrigger_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_TransactionAlert')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_TransactionAlert_UAT",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('UAT_TransactionAlert_properties_Nextly_TransactionAlert_UAT_parameters_FileName')]",
+							"FilePath": "[parameters('UAT_TransactionAlert_properties_Nextly_TransactionAlert_UAT_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/UAT/TransactionAlerts",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('UAT_TransactionAlert_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_thresholdAlert')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_ThresholdAlert_UAT",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName')]",
+							"FilePath": "[parameters('UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/UAT/ThresholdAlerts/",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('UAT_thresholdAlert_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Uat_sccu_loanDueTrigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SCCU_LoanDueAlerts_UAT",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2024-09-23T18:00:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/SCCU_LoanDueAlerts_UAT')]"
+			]
+		}
+	]
+}
