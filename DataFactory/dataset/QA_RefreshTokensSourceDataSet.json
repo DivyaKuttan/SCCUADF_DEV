@@ -1,0 +1,47 @@
+{
+	"name": "QA_RefreshTokensSourceDataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_MetaDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/QA"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "Id",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "UserId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "ClientId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "CreatedDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "TenantId",
+				"type": "nvarchar"
+			},
+			{
+				"name": "IP_Address",
+				"type": "nvarchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "RefreshTokens"
+		}
+	}
+}
