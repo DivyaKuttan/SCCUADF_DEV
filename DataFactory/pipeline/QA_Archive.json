@@ -4196,6 +4196,8 @@
 			{
 				"name": "PurgeEnabled_Filter",
 				"type": "Filter",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
@@ -4219,6 +4221,8 @@
 			{
 				"name": "ForEachForPurge",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "PurgeEnabled_Filter",
