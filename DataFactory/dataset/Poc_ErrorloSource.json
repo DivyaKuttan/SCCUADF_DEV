@@ -6,10 +6,13 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"DB": {
+			"SourceDB": {
 				"type": "string"
 			},
-			"Table": {
+			"SourceTable": {
+				"type": "string"
+			},
+			"SourceSchema": {
 				"type": "string"
 			}
 		},
@@ -68,8 +71,14 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "ErrorLog"
+			"schema": {
+				"value": "@dataset().SourceSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().SourceTable",
+				"type": "Expression"
+			}
 		}
 	}
 }
