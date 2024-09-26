@@ -5483,6 +5483,237 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/DynamicRetention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "POC_SqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "ForEach1",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Lookup1').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "DB",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "DBName",
+										"value": {
+											"value": "@item().DBName",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Table",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SourceTableName",
+										"value": {
+											"value": "@item().TableName",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Schema",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "SchemaName",
+										"value": {
+											"value": "@item().SchemaName",
+											"type": "Expression"
+										}
+									}
+								},
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [
+										{
+											"activity": "DB",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Table",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Schema",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										},
+										{
+											"activity": "Destination Table",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"value": "@activity('Lookup1').output.value",
+											"type": "Expression"
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Poc_ErrorloSource",
+											"type": "DatasetReference",
+											"parameters": {
+												"DB": {
+													"value": "@variables('DBName')",
+													"type": "Expression"
+												},
+												"Table": {
+													"value": "@variables('SourceTableName')",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Poc_Archive_Errorlog",
+											"type": "DatasetReference",
+											"parameters": {
+												"Destination": {
+													"value": "@variables('DestinationTableName')",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Destination Table",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"policy": {
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "DestinationTableName",
+										"value": {
+											"value": "@item().DestinationTable",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"DBName": {
+						"type": "String"
+					},
+					"SourceTableName": {
+						"type": "String"
+					},
+					"SchemaName": {
+						"type": "String"
+					},
+					"DestinationTableName": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/POC_SqlDataset')]",
+				"[concat(variables('factoryId'), '/datasets/Poc_ErrorloSource')]",
+				"[concat(variables('factoryId'), '/datasets/Poc_Archive_Errorlog')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Nextly_LoanDueAlerts_DEV')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -11537,7 +11768,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveErrorLogDataset",
+																"referenceName": "QA_ArchiveErrorLogDataset",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11584,7 +11815,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTransactionLog_JsonDataSet",
+																"referenceName": "QA_ArchiveTransactionLog_JsonDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11631,7 +11862,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveExternalRequestTxsDataSet",
+																"referenceName": "QA_ArchiveExternalRequestTxsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11678,7 +11909,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTraceData",
+																"referenceName": "QA_ArchiveTraceData",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11725,7 +11956,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTransactionLog_SqlDataSet",
+																"referenceName": "QA_ArchiveTransactionLog_SqlDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11772,7 +12003,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveFormAPITxsDataSet",
+																"referenceName": "QA_ArchiveFormAPITxsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11819,7 +12050,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveBrowserTabLogsDataSet",
+																"referenceName": "QA_ArchiveBrowserTabLogsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11866,7 +12097,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveBrowserTabInfoDataSet",
+																"referenceName": "QA_ArchiveBrowserTabInfoDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11913,7 +12144,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveAF_Log4NetDBDataSet",
+																"referenceName": "QA_ArchiveAF_Log4NetDBDBDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -11960,7 +12191,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveNF_UserConnectionsDataSet",
+																"referenceName": "QA_ArchiveNF_UserConnectionsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12007,7 +12238,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveSecurityLogDataSet",
+																"referenceName": "QA_ArchiveSecurityLogDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12054,7 +12285,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveRefreshTokensDataSe",
+																"referenceName": "QA_ArchiveRefreshTokensDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12101,7 +12332,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveUserInvalidAttemptsDataSet",
+																"referenceName": "QA_ArchiveUserInvalidAttemptsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12148,7 +12379,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchivePasswordHistoryDataSet",
+																"referenceName": "QA_ArchivePasswordHistoryDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12195,7 +12426,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTempUserLoginValidationsDataSet",
+																"referenceName": "QA_ArchiveTempUserLoginValidationsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12242,7 +12473,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveRulesLogDataSet",
+																"referenceName": "QA_ArchiveRulesLogDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12289,7 +12520,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveUserLoginAttemptsDataSet",
+																"referenceName": "QA_ArchiveUserLoginAttemptsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12336,7 +12567,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveUserMappingConfigurationDataSet",
+																"referenceName": "QA_ArchiveUserMappingConfigurationDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -12429,25 +12660,7 @@
 				"[concat(variables('factoryId'), '/datasets/QA_UserLoginAttemptsSourceDataSet')]",
 				"[concat(variables('factoryId'), '/datasets/QA_ArchiveUserLoginAttemptsDataSet')]",
 				"[concat(variables('factoryId'), '/datasets/QA_UserMappingConfigurationSourceDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/QA_ArchiveUserMappingConfigurationDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveErrorLogDataset')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveTransactionLog_JsonDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveExternalRequestTxsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveTraceData')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveTransactionLog_SqlDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveFormAPITxsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveBrowserTabLogsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveBrowserTabInfoDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveAF_Log4NetDBDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveNF_UserConnectionsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveSecurityLogDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveRefreshTokensDataSe')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveUserInvalidAttemptsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchivePasswordHistoryDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveTempUserLoginValidationsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveRulesLogDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveUserLoginAttemptsDataSet')]",
-				"[concat(variables('factoryId'), '/datasets/Dev_ArchiveUserMappingConfigurationDataSet')]"
+				"[concat(variables('factoryId'), '/datasets/QA_ArchiveUserMappingConfigurationDataSet')]"
 			]
 		},
 		{
@@ -17855,6 +18068,214 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/POC_SqlDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_ADFPOC",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DBName",
+						"type": "varchar"
+					},
+					{
+						"name": "SchemaName",
+						"type": "varchar"
+					},
+					{
+						"name": "TableName",
+						"type": "varchar"
+					},
+					{
+						"name": "KeyColumn",
+						"type": "varchar"
+					},
+					{
+						"name": "PurgeDays",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ArchiveDays",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MasterConfig"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_ADFPOC')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Poc_Archive_Errorlog')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_ADFPOC",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"Destination": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "Archive_ErrorLog"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_ADFPOC')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Poc_ErrorloSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_LogDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"DB": {
+						"type": "string"
+					},
+					"Table": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "ErrorLog"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_LogDB')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_AF_Log4NetDBSourceDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -21469,6 +21890,13 @@
 							"type": "PipelineReference"
 						},
 						"parameters": {}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "QA_Archive",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "ScheduleTrigger",
@@ -21476,13 +21904,14 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2024-09-25T07:30:00",
+						"startTime": "2024-09-27T07:00:00",
 						"timeZone": "India Standard Time"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Archive')]"
+				"[concat(variables('factoryId'), '/pipelines/Archive')]",
+				"[concat(variables('factoryId'), '/pipelines/QA_Archive')]"
 			]
 		},
 		{

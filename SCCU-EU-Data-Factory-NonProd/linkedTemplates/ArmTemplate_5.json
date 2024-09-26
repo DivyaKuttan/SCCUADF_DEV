@@ -13,6 +13,251 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveUserInvalidAttemptsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "WebServiceTxsID",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DataSourceID",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DatasourceName",
+						"type": "varchar"
+					},
+					{
+						"name": "FormName",
+						"type": "varchar"
+					},
+					{
+						"name": "CommandName",
+						"type": "varchar"
+					},
+					{
+						"name": "ContactId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "UserID",
+						"type": "varchar"
+					},
+					{
+						"name": "RequestDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ResponseDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RequestParameters",
+						"type": "text"
+					},
+					{
+						"name": "ResponseData",
+						"type": "text"
+					},
+					{
+						"name": "ErrorCode",
+						"type": "varchar"
+					},
+					{
+						"name": "ErrorData",
+						"type": "text"
+					},
+					{
+						"name": "TenantId",
+						"type": "varchar"
+					},
+					{
+						"name": "EnvCode",
+						"type": "varchar"
+					},
+					{
+						"name": "RequestType",
+						"type": "varchar"
+					},
+					{
+						"name": "CustomerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "InnerException",
+						"type": "text"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserInvalidAttempts_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveUserLoginAttemptsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserLoginAttempts_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveUserMappingConfigurationDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserMappingConfiguration_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_BrowserTabInfoSourceDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1145,69 +1390,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "UserMappingConfiguration"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_CompletedLoanDueAlertsSink')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/CompletedLoanDueAlerts",
-						"container": "to-nextly"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_CompletedLoanDueAlertsSource')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/CompletedLoanDueAlerts",
-						"container": "to-nextly"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_CompletedThresholdSink')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/CompletedThreshold",
-						"container": "to-nextly"
-					}
 				}
 			},
 			"dependsOn": []
