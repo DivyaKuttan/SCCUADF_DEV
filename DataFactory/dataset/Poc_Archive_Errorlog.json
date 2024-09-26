@@ -6,7 +6,10 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"Destination": {
+			"DestinationTable": {
+				"type": "string"
+			},
+			"DestinationSchema": {
 				"type": "string"
 			}
 		},
@@ -65,8 +68,14 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
-			"table": "Archive_ErrorLog"
+			"schema": {
+				"value": "@dataset().DestinationSchema",
+				"type": "Expression"
+			},
+			"table": {
+				"value": "@dataset().DestinationTable",
+				"type": "Expression"
+			}
 		}
 	}
 }
