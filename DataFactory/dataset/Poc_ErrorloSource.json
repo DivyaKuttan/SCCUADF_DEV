@@ -68,8 +68,8 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "",
-			"table": "error"
+			"schema": "dbo",
+			"table": "ErrorLog"
 		}
 	}
 }
