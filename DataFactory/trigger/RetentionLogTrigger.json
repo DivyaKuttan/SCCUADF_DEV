@@ -9,6 +9,12 @@
 					"referenceName": "Archive",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "QA_Archive",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
@@ -16,7 +22,7 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2024-09-25T07:30:00",
+				"startTime": "2024-09-27T07:00:00",
 				"timeZone": "India Standard Time"
 			}
 		}

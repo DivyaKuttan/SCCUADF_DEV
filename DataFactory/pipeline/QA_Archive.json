@@ -4196,8 +4196,6 @@
 			{
 				"name": "PurgeEnabled_Filter",
 				"type": "Filter",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "ForEach1",
@@ -4221,8 +4219,6 @@
 			{
 				"name": "ForEachForPurge",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "PurgeEnabled_Filter",
@@ -4319,7 +4315,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveErrorLogDataset",
+														"referenceName": "QA_ArchiveErrorLogDataset",
 														"type": "DatasetReference"
 													}
 												}
@@ -4365,7 +4361,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveTransactionLog_JsonDataSet",
+														"referenceName": "QA_ArchiveTransactionLog_JsonDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4411,7 +4407,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveExternalRequestTxsDataSet",
+														"referenceName": "QA_ArchiveExternalRequestTxsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4457,7 +4453,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveTraceData",
+														"referenceName": "QA_ArchiveTraceData",
 														"type": "DatasetReference"
 													}
 												}
@@ -4503,7 +4499,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveTransactionLog_SqlDataSet",
+														"referenceName": "QA_ArchiveTransactionLog_SqlDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4549,7 +4545,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveFormAPITxsDataSet",
+														"referenceName": "QA_ArchiveFormAPITxsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4595,7 +4591,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveBrowserTabLogsDataSet",
+														"referenceName": "QA_ArchiveBrowserTabLogsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4641,7 +4637,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveBrowserTabInfoDataSet",
+														"referenceName": "QA_ArchiveBrowserTabInfoDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4687,7 +4683,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveAF_Log4NetDBDataSet",
+														"referenceName": "QA_ArchiveAF_Log4NetDBDBDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4733,7 +4729,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveNF_UserConnectionsDataSet",
+														"referenceName": "QA_ArchiveNF_UserConnectionsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4779,7 +4775,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveSecurityLogDataSet",
+														"referenceName": "QA_ArchiveSecurityLogDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4825,7 +4821,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveRefreshTokensDataSe",
+														"referenceName": "QA_ArchiveRefreshTokensDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4871,7 +4867,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveUserInvalidAttemptsDataSet",
+														"referenceName": "QA_ArchiveUserInvalidAttemptsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4917,7 +4913,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchivePasswordHistoryDataSet",
+														"referenceName": "QA_ArchivePasswordHistoryDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -4963,7 +4959,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveTempUserLoginValidationsDataSet",
+														"referenceName": "QA_ArchiveTempUserLoginValidationsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -5009,7 +5005,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveRulesLogDataSet",
+														"referenceName": "QA_ArchiveRulesLogDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -5055,7 +5051,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveUserLoginAttemptsDataSet",
+														"referenceName": "QA_ArchiveUserLoginAttemptsDataSet",
 														"type": "DatasetReference"
 													}
 												}
@@ -5101,7 +5097,7 @@
 														"partitionOption": "None"
 													},
 													"dataset": {
-														"referenceName": "Dev_ArchiveUserMappingConfigurationDataSet",
+														"referenceName": "QA_ArchiveUserMappingConfigurationDataSet",
 														"type": "DatasetReference"
 													}
 												}
