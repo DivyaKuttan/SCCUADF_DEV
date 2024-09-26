@@ -137,6 +137,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "@SELECT * FROM variables('SchemaName').variables('SourceTableName')",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -156,12 +160,16 @@
 									"referenceName": "Poc_ErrorloSource",
 									"type": "DatasetReference",
 									"parameters": {
-										"DB": {
+										"SourceDB": {
 											"value": "@variables('DBName')",
 											"type": "Expression"
 										},
-										"Table": {
+										"SourceTable": {
 											"value": "@variables('SourceTableName')",
+											"type": "Expression"
+										},
+										"SourceSchema": {
+											"value": "@variables('SchemaName')",
 											"type": "Expression"
 										}
 									}
@@ -172,8 +180,12 @@
 									"referenceName": "Poc_Archive_Errorlog",
 									"type": "DatasetReference",
 									"parameters": {
-										"Destination": {
+										"DestinationTable": {
 											"value": "@variables('DestinationTableName')",
+											"type": "Expression"
+										},
+										"DestinationSchema": {
+											"value": "@variables('SchemaName')",
 											"type": "Expression"
 										}
 									}
