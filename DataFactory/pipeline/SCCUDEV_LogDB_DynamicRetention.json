@@ -1,5 +1,5 @@
 {
-	"name": "DynamicRetention",
+	"name": "SCCUDEV_LogDB_DynamicRetention",
 	"properties": {
 		"activities": [
 			{
@@ -223,7 +223,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+									"sqlReaderQuery": {
+										"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
