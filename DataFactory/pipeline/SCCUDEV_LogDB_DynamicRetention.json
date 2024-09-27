@@ -51,133 +51,13 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "Copy data1",
-							"type": "Copy",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n",
-										"type": "Expression"
-									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"sink": {
-									"type": "AzureSqlSink",
-									"writeBehavior": "insert",
-									"sqlWriterUseTableLock": false
-								},
-								"enableStaging": false,
-								"translator": {
-									"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
-									"type": "Expression"
-								}
-							},
-							"inputs": [
-								{
-									"referenceName": "Poc_ErrorloSource",
-									"type": "DatasetReference",
-									"parameters": {
-										"SourceDB": {
-											"value": "@item().SourceDBName",
-											"type": "Expression"
-										},
-										"SourceTable": {
-											"value": "@item().SourceTableName",
-											"type": "Expression"
-										},
-										"SourceSchema": {
-											"value": "@item().SourceSchemaName",
-											"type": "Expression"
-										}
-									}
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "Poc_Archive_Errorlog",
-									"type": "DatasetReference",
-									"parameters": {
-										"DestinationTable": {
-											"value": "@item().DestinationTableName",
-											"type": "Expression"
-										},
-										"DestinationSchema": {
-											"value": "@item().DestinationSchemaName",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						},
-						{
-							"name": "Lookup2",
-							"type": "Lookup",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
-							"dependsOn": [
-								{
-									"activity": "Copy data1",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": {
-										"value": "DELETE  FROM @{item().SchemaName}.@{item().DestinationTable}",
-										"type": "Expression"
-									},
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "Poc_Archive_Errorlog",
-									"type": "DatasetReference",
-									"parameters": {
-										"DestinationTable": {
-											"value": "@item().DestinationTable",
-											"type": "Expression"
-										},
-										"DestinationSchema": {
-											"value": "@item().SchemaName",
-											"type": "Expression"
-										}
-									}
-								},
-								"firstRowOnly": false
-							}
-						},
-						{
 							"name": "Script1",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "Copy data1",
+									"activity": "Copy data2",
 									"dependencyConditions": [
 										"Succeeded"
 									]
