@@ -55,7 +55,7 @@
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "Copy data2",
+									"activity": "POC DB",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -87,7 +87,7 @@
 							}
 						},
 						{
-							"name": "Copy data2",
+							"name": "POC DB",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -125,12 +125,21 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "Poc_ErrorloSource",
+									"referenceName": "Poc_SecondaryUsersStaging",
 									"type": "DatasetReference",
 									"parameters": {
-										"SourceDB": "@item().SourceDBName",
-										"SourceTable": "@item().SourceTableName",
-										"SourceSchema": "@item().SourceSchemaName"
+										"SourceDB": {
+											"value": "@item().SourceDBName",
+											"type": "Expression"
+										},
+										"SourceTable": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										},
+										"SourceSchema": {
+											"value": "@item().SourceSchemaName",
+											"type": "Expression"
+										}
 									}
 								}
 							],
