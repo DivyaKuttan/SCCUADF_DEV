@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "SCCUDEV_LogDB_Archive",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -17,6 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -32,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "SCCUDEV_LogDB_Archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -41,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
@@ -49,6 +53,8 @@
 						{
 							"name": "Copy data1",
 							"type": "Copy",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
@@ -62,7 +68,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT * FROM @{item().SchemaName}.@{item().TableName}",
+										"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
@@ -75,7 +81,7 @@
 								},
 								"enableStaging": false,
 								"translator": {
-									"value": "@activity('Lookup1').output.value",
+									"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
 									"type": "Expression"
 								}
 							},
@@ -85,15 +91,15 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceDB": {
-											"value": "@item().DBName",
+											"value": "@item().SourceDBName",
 											"type": "Expression"
 										},
 										"SourceTable": {
-											"value": "@item().TableName",
+											"value": "@item().SourceTableName",
 											"type": "Expression"
 										},
 										"SourceSchema": {
-											"value": "@item().SchemaName",
+											"value": "@item().SourceSchemaName",
 											"type": "Expression"
 										}
 									}
@@ -105,11 +111,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": {
-											"value": "@item().DestinationTable",
+											"value": "@item().DestinationTableName",
 											"type": "Expression"
 										},
 										"DestinationSchema": {
-											"value": "@item().SchemaName",
+											"value": "@item().DestinationSchemaName",
 											"type": "Expression"
 										}
 									}
@@ -140,7 +146,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "DELETE  FROM @{item().SchemaName}.@{item().DestinationTable}",
+									"sqlReaderQuery": {
+										"value": "DELETE  FROM @{item().SchemaName}.@{item().DestinationTable}",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -164,6 +173,8 @@
 						{
 							"name": "Script1",
 							"type": "Script",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Copy data1",
@@ -188,16 +199,78 @@
 								"scripts": [
 									{
 										"type": "Query",
-										"text": "DELETE  FROM @{item().SchemaName}.@{item().DestinationTable}"
+										"text": {
+											"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName} ",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
+						},
+						{
+							"name": "Copy data2",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Poc_ErrorloSource",
+									"type": "DatasetReference",
+									"parameters": {
+										"SourceDB": "@item().SourceDBName",
+										"SourceTable": "@item().SourceTableName",
+										"SourceSchema": "@item().SourceSchemaName"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Poc_Archive_Errorlog",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestinationTable": "@item().DestinationTableName",
+										"DestinationSchema": "@item().DestinationSchemaName"
+									}
+								}
+							]
 						}
 					]
 				}
 			}
 		],
+		"folder": {
+			"name": "DataRetention"
+		},
 		"annotations": []
 	}
 }
