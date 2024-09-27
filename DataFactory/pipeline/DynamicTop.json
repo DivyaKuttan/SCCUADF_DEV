@@ -63,7 +63,7 @@
 										"value": "SCCU_ADF_POC",
 										"activities": [
 											{
-												"name": "Execute Pipeline1",
+												"name": "POC DB",
 												"type": "ExecutePipeline",
 												"dependsOn": [],
 												"policy": {
@@ -81,7 +81,25 @@
 										]
 									},
 									{
-										"value": "SCCUDEV_LogDB"
+										"value": "SCCUDEV_LogDB",
+										"activities": [
+											{
+												"name": "Log DB",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": false
+												}
+											}
+										]
 									}
 								]
 							}
