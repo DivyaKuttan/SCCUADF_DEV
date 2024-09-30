@@ -1,5 +1,5 @@
 {
-	"name": "SCCUDev_LogDB",
+	"name": "SCCUDev_LogDB_Source",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_LogDBDev",
