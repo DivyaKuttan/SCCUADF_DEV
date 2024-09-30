@@ -8060,13 +8060,6 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Archive",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
 							"referenceName": "QA_Archive",
 							"type": "PipelineReference"
 						},

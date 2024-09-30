@@ -5489,7 +5489,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "Lookup1",
+						"name": "SCCUDEV_LogDB_Archive",
 						"type": "Lookup",
 						"dependsOn": [],
 						"policy": {
@@ -5503,6 +5503,10 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+									"type": "Expression"
+								},
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -5519,7 +5523,7 @@
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "Lookup1",
+								"activity": "SCCUDEV_LogDB_Archive",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -5528,86 +5532,91 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('Lookup1').output.value",
+								"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
 								"type": "Expression"
 							},
 							"batchCount": 1,
 							"activities": [
 								{
-									"name": "DB",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "DBName",
-										"value": {
-											"value": "@item().DBName",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Table",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "SourceTableName",
-										"value": {
-											"value": "@item().TableName",
-											"type": "Expression"
-										}
-									}
-								},
-								{
-									"name": "Schema",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "SchemaName",
-										"value": {
-											"value": "@item().SchemaName",
-											"type": "Expression"
-										}
-									}
-								},
-								{
 									"name": "Copy data1",
 									"type": "Copy",
+									"state": "Inactive",
+									"onInactiveMarkAs": "Succeeded",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
+											"type": "Expression"
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "Poc_ErrorloSource",
+											"type": "DatasetReference",
+											"parameters": {
+												"SourceDB": {
+													"value": "@item().SourceDBName",
+													"type": "Expression"
+												},
+												"SourceTable": {
+													"value": "@item().SourceTableName",
+													"type": "Expression"
+												},
+												"SourceSchema": {
+													"value": "@item().SourceSchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Poc_Archive_Errorlog",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								},
+								{
+									"name": "Lookup2",
+									"type": "Lookup",
+									"state": "Inactive",
+									"onInactiveMarkAs": "Succeeded",
 									"dependsOn": [
 										{
-											"activity": "DB",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										},
-										{
-											"activity": "Table",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										},
-										{
-											"activity": "Schema",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										},
-										{
-											"activity": "Destination Table",
+											"activity": "Copy data1",
 											"dependencyConditions": [
 												"Succeeded"
 											]
@@ -5624,6 +5633,87 @@
 									"typeProperties": {
 										"source": {
 											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "DELETE  FROM @{item().SchemaName}.@{item().DestinationTable}",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"dataset": {
+											"referenceName": "Poc_Archive_Errorlog",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": {
+													"value": "@item().DestinationTable",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().SchemaName",
+													"type": "Expression"
+												}
+											}
+										},
+										"firstRowOnly": false
+									}
+								},
+								{
+									"name": "Script1",
+									"type": "Script",
+									"state": "Inactive",
+									"onInactiveMarkAs": "Succeeded",
+									"dependsOn": [
+										{
+											"activity": "Copy data1",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCU_ADFPOC",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName} ",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "Copy data2",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(CreatedDate AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+												"type": "Expression"
+											},
 											"queryTimeout": "02:00:00",
 											"partitionOption": "None"
 										},
@@ -5634,8 +5724,12 @@
 										},
 										"enableStaging": false,
 										"translator": {
-											"value": "@activity('Lookup1').output.value",
-											"type": "Expression"
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
 										}
 									},
 									"inputs": [
@@ -5643,14 +5737,9 @@
 											"referenceName": "Poc_ErrorloSource",
 											"type": "DatasetReference",
 											"parameters": {
-												"DB": {
-													"value": "@variables('DBName')",
-													"type": "Expression"
-												},
-												"Table": {
-													"value": "@variables('SourceTableName')",
-													"type": "Expression"
-												}
+												"SourceDB": "@item().SourceDBName",
+												"SourceTable": "@item().SourceTableName",
+												"SourceSchema": "@item().SourceSchemaName"
 											}
 										}
 									],
@@ -5659,30 +5748,11 @@
 											"referenceName": "Poc_Archive_Errorlog",
 											"type": "DatasetReference",
 											"parameters": {
-												"Destination": {
-													"value": "@variables('DestinationTableName')",
-													"type": "Expression"
-												}
+												"DestinationTable": "@item().DestinationTableName",
+												"DestinationSchema": "@item().DestinationSchemaName"
 											}
 										}
 									]
-								},
-								{
-									"name": "Destination Table",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"policy": {
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "DestinationTableName",
-										"value": {
-											"value": "@item().DestinationTable",
-											"type": "Expression"
-										}
-									}
 								}
 							]
 						}
@@ -5691,26 +5761,16 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"variables": {
-					"DBName": {
-						"type": "String"
-					},
-					"SourceTableName": {
-						"type": "String"
-					},
-					"SchemaName": {
-						"type": "String"
-					},
-					"DestinationTableName": {
-						"type": "String"
-					}
+				"folder": {
+					"name": "DataRetention"
 				},
 				"annotations": []
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/POC_SqlDataset')]",
 				"[concat(variables('factoryId'), '/datasets/Poc_ErrorloSource')]",
-				"[concat(variables('factoryId'), '/datasets/Poc_Archive_Errorlog')]"
+				"[concat(variables('factoryId'), '/datasets/Poc_Archive_Errorlog')]",
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_ADFPOC')]"
 			]
 		},
 		{
@@ -18128,7 +18188,10 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"Destination": {
+					"DestinationTable": {
+						"type": "string"
+					},
+					"DestinationSchema": {
 						"type": "string"
 					}
 				},
@@ -18187,8 +18250,14 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "Archive_ErrorLog"
+					"schema": {
+						"value": "@dataset().DestinationSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().DestinationTable",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
@@ -18201,14 +18270,17 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_LogDB",
+					"referenceName": "SCCU_LogDBDev",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"DB": {
+					"SourceDB": {
 						"type": "string"
 					},
-					"Table": {
+					"SourceTable": {
+						"type": "string"
+					},
+					"SourceSchema": {
 						"type": "string"
 					}
 				},
@@ -18267,12 +18339,18 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "ErrorLog"
+					"schema": {
+						"value": "@dataset().SourceSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().SourceTable",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_LogDB')]"
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_LogDBDev')]"
 			]
 		},
 		{
@@ -21886,13 +21964,6 @@
 				"pipelines": [
 					{
 						"pipelineReference": {
-							"referenceName": "Archive",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					},
-					{
-						"pipelineReference": {
 							"referenceName": "QA_Archive",
 							"type": "PipelineReference"
 						},
@@ -21910,7 +21981,6 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Archive')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_Archive')]"
 			]
 		},

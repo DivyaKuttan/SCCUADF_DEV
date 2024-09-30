@@ -121,7 +121,10 @@
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"Destination": {
+					"DestinationTable": {
+						"type": "string"
+					},
+					"DestinationSchema": {
 						"type": "string"
 					}
 				},
@@ -180,8 +183,14 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "Archive_ErrorLog"
+					"schema": {
+						"value": "@dataset().DestinationSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().DestinationTable",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": []
@@ -192,14 +201,17 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_LogDB",
+					"referenceName": "SCCU_LogDBDev",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
-					"DB": {
+					"SourceDB": {
 						"type": "string"
 					},
-					"Table": {
+					"SourceTable": {
+						"type": "string"
+					},
+					"SourceSchema": {
 						"type": "string"
 					}
 				},
@@ -258,8 +270,14 @@
 					}
 				],
 				"typeProperties": {
-					"schema": "dbo",
-					"table": "ErrorLog"
+					"schema": {
+						"value": "@dataset().SourceSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().SourceTable",
+						"type": "Expression"
+					}
 				}
 			},
 			"dependsOn": []
