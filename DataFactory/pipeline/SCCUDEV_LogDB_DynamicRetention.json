@@ -32,7 +32,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "Archive_ForEach",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -51,13 +51,13 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "Script1",
+							"name": "LogDb_Script",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "Copy data2",
+									"activity": "LogDb_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -89,7 +89,7 @@
 							}
 						},
 						{
-							"name": "Copy data2",
+							"name": "LogDb_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -146,6 +146,95 @@
 									}
 								}
 							]
+						}
+					]
+				}
+			},
+			{
+				"name": "SCCUDEV_LogDB_Purge",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Archive_ForEach",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "POC_SqlDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Purge_ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "SCCUDEV_LogDB_Purge",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('SCCUDEV_LogDB_Purge').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 1,
+					"activities": [
+						{
+							"name": "LogDb_Purge_Script",
+							"type": "Script",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "SCCU_ADFPOC",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "Query",
+										"text": {
+											"value": "DELETE  FROM @{item().DestinationSchemaName}.@{item().DestinationTableName} WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().PurgeDays}, CAST(GETDATE() AS DATE))",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
 						}
 					]
 				}
