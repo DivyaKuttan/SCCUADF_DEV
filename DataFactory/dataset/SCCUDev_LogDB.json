@@ -1,5 +1,5 @@
 {
-	"name": "Poc_ErrorloSource",
+	"name": "SCCUDev_LogDB",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_LogDBDev",
