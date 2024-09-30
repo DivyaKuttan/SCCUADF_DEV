@@ -51,13 +51,13 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "LogDb_Script",
+							"name": "MetaDB_Script",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "LogDb_Copy data",
+									"activity": "MetaDB_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -89,7 +89,7 @@
 							}
 						},
 						{
-							"name": "LogDb_Copy data",
+							"name": "MetaDB_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -157,7 +157,7 @@
 				}
 			},
 			{
-				"name": "SCCUDEV_LogDB_Purge",
+				"name": "SCCUDEV_METADB_Purge",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -179,7 +179,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDev_MetaDB' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -197,7 +197,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_LogDB_Purge",
+						"activity": "SCCUDEV_METADB_Purge",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -206,7 +206,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Purge').output.value",
+						"value": "@activity('SCCUDev_MetaDB_Purge').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
