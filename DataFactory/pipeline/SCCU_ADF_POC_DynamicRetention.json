@@ -145,7 +145,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Poc_Archive_Errorlog",
+									"referenceName": "Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": "@item().DestinationTableName",
