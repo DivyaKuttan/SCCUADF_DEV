@@ -80,7 +80,7 @@
 									{
 										"type": "Query",
 										"text": {
-											"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName} ",
+											"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName}  WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n\n",
 											"type": "Expression"
 										}
 									}
