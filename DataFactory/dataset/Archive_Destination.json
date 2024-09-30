@@ -1,5 +1,5 @@
 {
-	"name": "Poc_Archive_Errorlog",
+	"name": "Archive_Destination",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_ADFPOC",
