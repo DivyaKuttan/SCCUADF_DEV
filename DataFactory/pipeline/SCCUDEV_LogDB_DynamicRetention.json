@@ -127,7 +127,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "Poc_ErrorloSource",
+									"referenceName": "SCCUDev_LogDB_Source",
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceDB": "@item().SourceDBName",
@@ -138,7 +138,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Poc_Archive_Errorlog",
+									"referenceName": "Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": "@item().DestinationTableName",
