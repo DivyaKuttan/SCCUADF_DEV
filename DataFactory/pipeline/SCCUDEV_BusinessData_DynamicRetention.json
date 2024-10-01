@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SCCUDEV_BusinessData_Archive",
+				"name": "BusinessData_Archive",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_BusinessData_Archive",
+						"activity": "BusinessData_Archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
+						"value": "@activity('BusinessData_Archive').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
