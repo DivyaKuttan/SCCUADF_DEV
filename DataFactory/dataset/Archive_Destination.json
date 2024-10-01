@@ -2,7 +2,7 @@
 	"name": "Archive_Destination",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_ADFPOC",
+			"referenceName": "SCCU_ArchiveDev",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
