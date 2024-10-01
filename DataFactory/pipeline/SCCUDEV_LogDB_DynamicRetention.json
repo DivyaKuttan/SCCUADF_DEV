@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "LogDB_Archive_LookUp",
+				"name": "LogDB_Archive",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LogDB_Archive_LookUp",
+						"activity": "LogDB_Archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LogDB_Archive_LookUp').output.value",
+						"value": "@activity('LogDB_Archive').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
@@ -151,7 +151,7 @@
 				}
 			},
 			{
-				"name": "LogDB_Purge_LookUp",
+				"name": "LogDB_Purge",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -191,7 +191,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LogDB_Purge_LookUp",
+						"activity": "LogDB_Purge",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -200,7 +200,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Purge').output.value",
+						"value": "@activity('LogDB_Purge').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
