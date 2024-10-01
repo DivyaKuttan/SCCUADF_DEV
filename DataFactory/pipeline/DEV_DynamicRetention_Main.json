@@ -30,7 +30,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "Schemas",
 				"type": "ForEach",
 				"dependsOn": [
 					{
