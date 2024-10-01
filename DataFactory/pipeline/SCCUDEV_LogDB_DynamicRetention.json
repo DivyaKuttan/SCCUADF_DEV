@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
+						"value": "@activity('LogDB_Archive_LookUp').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
