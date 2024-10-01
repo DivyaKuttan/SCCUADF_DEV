@@ -53,8 +53,6 @@
 						{
 							"name": "LogDb_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "LogDb_Copy data",
@@ -208,8 +206,6 @@
 						{
 							"name": "LogDb_Purge_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
