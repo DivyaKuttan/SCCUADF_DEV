@@ -51,7 +51,7 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "LogDb_Script",
+							"name": "BusinessData_Script",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
