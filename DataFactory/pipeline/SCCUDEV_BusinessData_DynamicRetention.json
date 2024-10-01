@@ -72,7 +72,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ADFPOC",
+								"referenceName": "SCCU_BusinessDataDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
