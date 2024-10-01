@@ -61,10 +61,10 @@
 								},
 								"cases": [
 									{
-										"value": "SCCU_ADF_POC",
+										"value": "MetaDb",
 										"activities": [
 											{
-												"name": "POC DB",
+												"name": "Meta DB",
 												"type": "ExecutePipeline",
 												"dependsOn": [],
 												"policy": {
@@ -73,7 +73,7 @@
 												"userProperties": [],
 												"typeProperties": {
 													"pipeline": {
-														"referenceName": "SCCU_ADF_POC_DynamicRetention",
+														"referenceName": "SCCUDev_MetaDB_DynamicRetention",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true
