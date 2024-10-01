@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SCCUDEV_LogDB_Archive",
+				"name": "BBAlerts_Archive_LookUp",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BBAlerts' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_LogDB_Archive",
+						"activity": "BBAlerts_Archive_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -57,7 +57,7 @@
 							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "LogDb_Copy data",
+									"activity": "BBAlerts_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -72,7 +72,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ADFPOC",
+								"referenceName": "SCCU_ArchiveDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
@@ -89,7 +89,7 @@
 							}
 						},
 						{
-							"name": "LogDb_Copy data",
+							"name": "BBAlerts_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -127,7 +127,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SCCUDev_LogDB_Source",
+									"referenceName": "SCCUDEV_BBAlerts_Source",
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceDB": "@item().SourceDBName",
@@ -151,7 +151,7 @@
 				}
 			},
 			{
-				"name": "SCCUDEV_LogDB_Purge",
+				"name": "BBAlerts_Purge_LookUp",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -173,7 +173,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BBAlerts' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -191,7 +191,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_LogDB_Purge",
+						"activity": "BBAlerts_Purge_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -206,7 +206,7 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "LogDb_Purge_Script",
+							"name": "BBAlerts_Purge_Script",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
