@@ -206,7 +206,7 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "LogDb_Purge_Script",
+							"name": "BusinessData_Purge_Script",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
@@ -220,7 +220,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ADFPOC",
+								"referenceName": "SCCU_ArchiveDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
