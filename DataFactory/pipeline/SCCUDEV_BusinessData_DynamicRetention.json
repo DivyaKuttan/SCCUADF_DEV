@@ -53,8 +53,6 @@
 						{
 							"name": "BusinessData_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "BusinessData_Copy data",
@@ -208,8 +206,6 @@
 						{
 							"name": "BusinessData_Purge_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
