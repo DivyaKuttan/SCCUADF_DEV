@@ -53,8 +53,6 @@
 						{
 							"name": "MetaDB_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "MetaDB_Copy data",
@@ -214,8 +212,6 @@
 						{
 							"name": "MetaDb_Purge_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
