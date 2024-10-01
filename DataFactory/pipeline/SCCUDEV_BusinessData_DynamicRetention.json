@@ -57,7 +57,7 @@
 							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "LogDb_Copy data",
+									"activity": "BusinessData_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -89,7 +89,7 @@
 							}
 						},
 						{
-							"name": "LogDb_Copy data",
+							"name": "BusinessData_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
