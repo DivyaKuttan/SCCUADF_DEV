@@ -50,7 +50,7 @@
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "DbNameSwich",
+							"name": "DbNameSwitch",
 							"type": "Switch",
 							"dependsOn": [],
 							"userProperties": [],
