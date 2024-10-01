@@ -1,8 +1,8 @@
 {
-	"name": "POC_SqlDataset",
+	"name": "SCCUDEV_ArchiveSqlDataset",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_ADFPOC",
+			"referenceName": "SCCU_ArchiveDev",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {

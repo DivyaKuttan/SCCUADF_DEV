@@ -1,15 +1,18 @@
 {
-	"name": "Poc_Archive_Errorlog",
+	"name": "SCCUDEV_BBAlerts_Source",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_ADFPOC",
+			"referenceName": "SCCU_BBAlertsDev",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"DestinationTable": {
+			"SourceDB": {
 				"type": "string"
 			},
-			"DestinationSchema": {
+			"SourceTable": {
+				"type": "string"
+			},
+			"SourceSchema": {
 				"type": "string"
 			}
 		},
@@ -69,11 +72,11 @@
 		],
 		"typeProperties": {
 			"schema": {
-				"value": "@dataset().DestinationSchema",
+				"value": "@dataset().SourceSchema",
 				"type": "Expression"
 			},
 			"table": {
-				"value": "@dataset().DestinationTable",
+				"value": "@dataset().SourceTable",
 				"type": "Expression"
 			}
 		}

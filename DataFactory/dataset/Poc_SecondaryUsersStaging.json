@@ -1,8 +1,8 @@
 {
-	"name": "Poc_ErrorloSource",
+	"name": "Poc_SecondaryUsersStaging",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_LogDBDev",
+			"referenceName": "SCCU_ADFPOC",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
