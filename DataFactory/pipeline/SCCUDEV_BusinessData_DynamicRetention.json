@@ -151,7 +151,7 @@
 				}
 			},
 			{
-				"name": "SCCUDEV_BusinessData_Purge",
+				"name": "BusinessData_Purge",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -191,7 +191,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_BusinessData_Purge",
+						"activity": "BusinessData_Purge",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -200,7 +200,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Purge').output.value",
+						"value": "@activity('BusinessData_Purge').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
