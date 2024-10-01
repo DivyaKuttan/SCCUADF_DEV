@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "SCCUDEV_LogDB_Archive",
+				"name": "LogDB_Archive_LookUp",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_LogDB_Archive",
+						"activity": "LogDB_Archive_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -151,7 +151,7 @@
 				}
 			},
 			{
-				"name": "SCCUDEV_LogDB_Purge",
+				"name": "LogDB_Purge_LookUp",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -191,7 +191,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "SCCUDEV_LogDB_Purge",
+						"activity": "LogDB_Purge_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
