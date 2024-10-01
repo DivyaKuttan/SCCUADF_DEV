@@ -25,7 +25,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "POC_ArchiveSqlDataset",
+						"referenceName": "SCCUDEV_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -72,7 +72,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ADFPOC",
+								"referenceName": "SCCU_LogDBDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
@@ -180,7 +180,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "POC_ArchiveSqlDataset",
+						"referenceName": "SCCUDEV_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -220,7 +220,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ADFPOC",
+								"referenceName": "SCCU_ArchiveDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
