@@ -1,5 +1,5 @@
 {
-	"name": "POC_ArchiveSqlDataset",
+	"name": "SCCUDEV_ArchiveSqlDataset",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_ArchiveDev",
