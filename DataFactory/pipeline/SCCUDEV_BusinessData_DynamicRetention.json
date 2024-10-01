@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "BusinessData_Archive_LookUp",
+				"name": "BusinessData_Archive",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "BusinessData_Archive_LookUp",
+						"activity": "BusinessData_Archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Archive').output.value",
+						"value": "@activity('BusinessData_Archive').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
@@ -151,7 +151,7 @@
 				}
 			},
 			{
-				"name": "BusinessData_Purge_LookUp",
+				"name": "BusinessData_Purge",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -191,7 +191,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "BusinessData_Purge_LookUp",
+						"activity": "BusinessData_Purge",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -200,7 +200,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDEV_LogDB_Purge').output.value",
+						"value": "@activity('BusinessData_Purge').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
