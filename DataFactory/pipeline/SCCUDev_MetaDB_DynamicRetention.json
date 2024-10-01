@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "MetaDB_Archive_LookUp",
+				"name": "MetaDB_Archive",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "MetaDB_Archive_LookUp",
+						"activity": "MetaDB_Archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,7 +45,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDev_MetaDB_Archive').output.value",
+						"value": "@activity('MetaDB_Archive').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
@@ -157,7 +157,7 @@
 				}
 			},
 			{
-				"name": "METADB_Purge_LookUp",
+				"name": "METADB_Purge",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -197,7 +197,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "METADB_Purge_LookUp",
+						"activity": "METADB_Purge",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -206,13 +206,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('SCCUDev_MetaDB_Purge').output.value",
+						"value": "@activity('METADB_Purge').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "MetaDb_Purge_Script",
+							"name": "LogDb_Purge_Script",
 							"type": "Script",
 							"state": "Inactive",
 							"onInactiveMarkAs": "Succeeded",
