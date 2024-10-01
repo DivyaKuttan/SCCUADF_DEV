@@ -1,0 +1,24 @@
+{
+	"name": "DataRetentionDynamicTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "DEV_DynamicRetention_Main",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2024-10-02T06:00:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
