@@ -1,6 +1,7 @@
 {
-	"name": "DEV_TopDynamic",
+	"name": "DEV_DynamicRetention_Main",
 	"properties": {
+		"description": "This pipeline has activities which archive/purge data from souce DB's to Archive DB ",
 		"activities": [
 			{
 				"name": "Distinct DB",
