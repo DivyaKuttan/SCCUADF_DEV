@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "LogDB_Archive",
+				"name": "BBAlerts_Archive",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LogDB_Archive",
+						"activity": "BBAlerts_Archive",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,19 +45,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LogDB_Archive').output.value",
+						"value": "@activity('BBAlerts_Archive').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "LogDb_Script",
+							"name": "BBAlerts_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
-									"activity": "LogDb_Copy data",
+									"activity": "BBAlerts_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -89,7 +87,7 @@
 							}
 						},
 						{
-							"name": "LogDb_Copy data",
+							"name": "BBAlerts_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -127,12 +125,15 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SCCUDev_LogDB_Source",
+									"referenceName": "SCCUDEV_BBAlerts_Source",
 									"type": "DatasetReference",
 									"parameters": {
-										"SourceDB": "@item().SourceDBName",
-										"SourceTable": "@item().SourceTableName",
-										"SourceSchema": "@item().SourceSchemaName"
+										"SourceDB": {
+											"value": "@item().SourceDBName",
+											"type": "Expression"
+										},
+										"SourceTable": "@item().SourceTable",
+										"SourceSchema": "@item().SourceDBName"
 									}
 								}
 							],
@@ -151,7 +152,7 @@
 				}
 			},
 			{
-				"name": "LogDB_Purge",
+				"name": "BBAlerts_Purge",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -191,7 +192,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LogDB_Purge",
+						"activity": "BBAlerts_Purge",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -200,16 +201,14 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LogDB_Purge').output.value",
+						"value": "@activity('BBAlerts_Purge').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "LogDb_Purge_Script",
+							"name": "BBAlerts_Purge_Script",
 							"type": "Script",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
@@ -220,7 +219,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_BBAlertsDev",
+								"referenceName": "SCCU_ArchiveDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
