@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -173,7 +173,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_LogDB' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
