@@ -127,7 +127,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SCCUDev_LogDB_Source",
+									"referenceName": "SCCUDev_BusinessData_Source",
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceDB": "@item().SourceDBName",
