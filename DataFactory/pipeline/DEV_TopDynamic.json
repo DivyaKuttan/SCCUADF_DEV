@@ -17,12 +17,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT DISTINCT SourceDBName FROM MasterConfig WHERE IsArchiveEnabled=1 OR IsPurgeEnabled=1 ",
+						"sqlReaderQuery": "SELECT DISTINCT DestinationSchemaName FROM MasterConfig WHERE IsArchiveEnabled=1 OR IsPurgeEnabled=1 ",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "POC_SqlDataset",
+						"referenceName": "POC_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
