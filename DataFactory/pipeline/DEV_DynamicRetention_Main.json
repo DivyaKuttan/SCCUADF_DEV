@@ -101,6 +101,48 @@
 												}
 											}
 										]
+									},
+									{
+										"value": "BusinessData",
+										"activities": [
+											{
+												"name": "BusinessData",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "SCCUDEV_BusinessData_DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "BBAlerts",
+										"activities": [
+											{
+												"name": "BBAlerts",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "SCCUDEV_BBAlerts_DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
 									}
 								]
 							}
