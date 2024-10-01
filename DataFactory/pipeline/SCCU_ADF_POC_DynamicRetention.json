@@ -25,7 +25,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "POC_ArchiveSqlDataset",
+						"referenceName": "SCCUDEV_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false

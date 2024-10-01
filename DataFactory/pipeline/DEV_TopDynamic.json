@@ -22,7 +22,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "POC_ArchiveSqlDataset",
+						"referenceName": "SCCUDEV_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -55,7 +55,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"on": {
-									"value": "@item().SourceDBName",
+									"value": "@item().DestinationSchemaName",
 									"type": "Expression"
 								},
 								"cases": [
@@ -81,7 +81,7 @@
 										]
 									},
 									{
-										"value": "SCCUDEV_LogDB",
+										"value": "LogDB",
 										"activities": [
 											{
 												"name": "Log DB",
