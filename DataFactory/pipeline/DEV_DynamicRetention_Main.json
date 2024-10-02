@@ -32,6 +32,8 @@
 			{
 				"name": "Schemas",
 				"type": "ForEach",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Distinct DB",
@@ -82,7 +84,7 @@
 										]
 									},
 									{
-										"value": "LogDB",
+										"value": "LogDb",
 										"activities": [
 											{
 												"name": "Log DB",
