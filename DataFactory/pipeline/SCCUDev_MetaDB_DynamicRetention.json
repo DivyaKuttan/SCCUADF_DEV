@@ -130,11 +130,11 @@
 									"parameters": {
 										"SourceDB": "@item().SourceDBName",
 										"SourceTable": {
-											"value": "@item().SourceTable",
+											"value": "@item().SourceTableName",
 											"type": "Expression"
 										},
 										"SourceSchema": {
-											"value": "@item().SourceDBName",
+											"value": "@item().SourceSchemaName",
 											"type": "Expression"
 										}
 									}
