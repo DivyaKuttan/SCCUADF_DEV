@@ -82,7 +82,7 @@
 										]
 									},
 									{
-										"value": "LogDB",
+										"value": "LogDb",
 										"activities": [
 											{
 												"name": "Log DB",
