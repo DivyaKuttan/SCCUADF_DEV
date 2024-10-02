@@ -294,8 +294,7 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2024-10-02T06:00:00",
-						"timeZone": "India Standard Time",
-						"schedule": {}
+						"timeZone": "India Standard Time"
 					}
 				}
 			},

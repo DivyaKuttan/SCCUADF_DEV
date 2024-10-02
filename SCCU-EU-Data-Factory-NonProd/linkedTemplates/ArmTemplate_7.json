@@ -7852,8 +7852,14 @@
 													"value": "@item().SourceDBName",
 													"type": "Expression"
 												},
-												"SourceTable": "@item().SourceTable",
-												"SourceSchema": "@item().SourceDBName"
+												"SourceTable": {
+													"value": "@item().SourceTableName",
+													"type": "Expression"
+												},
+												"SourceSchema": {
+													"value": "@item().SourceSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									],
@@ -8609,11 +8615,11 @@
 											"parameters": {
 												"SourceDB": "@item().SourceDBName",
 												"SourceTable": {
-													"value": "@item().SourceTable",
+													"value": "@item().SourceTableName",
 													"type": "Expression"
 												},
 												"SourceSchema": {
-													"value": "@item().SourceDBName",
+													"value": "@item().SourceSchemaName",
 													"type": "Expression"
 												}
 											}
@@ -9904,7 +9910,7 @@
 												]
 											},
 											{
-												"value": "LogDB",
+												"value": "LogDb",
 												"activities": [
 													{
 														"name": "Log DB",
