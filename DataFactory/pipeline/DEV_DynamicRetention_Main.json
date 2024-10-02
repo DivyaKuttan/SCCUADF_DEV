@@ -32,8 +32,6 @@
 			{
 				"name": "Schemas",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Distinct DB",
