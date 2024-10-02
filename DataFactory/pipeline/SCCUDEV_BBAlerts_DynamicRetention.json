@@ -132,8 +132,14 @@
 											"value": "@item().SourceDBName",
 											"type": "Expression"
 										},
-										"SourceTable": "@item().SourceTable",
-										"SourceSchema": "@item().SourceDBName"
+										"SourceTable": {
+											"value": "@item().SourceTableName",
+											"type": "Expression"
+										},
+										"SourceSchema": {
+											"value": "@item().SourceSchemaName",
+											"type": "Expression"
+										}
 									}
 								}
 							],
