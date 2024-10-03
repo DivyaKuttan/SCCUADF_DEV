@@ -149,7 +149,7 @@
 				}
 			},
 			{
-				"name": "LogDB_Purge_LookUp",
+				"name": "Admin_LogDB_Purge_LookUp",
 				"type": "Lookup",
 				"dependsOn": [
 					{
@@ -189,7 +189,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "LogDB_Purge_LookUp",
+						"activity": "Admin_LogDB_Purge_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -198,7 +198,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('LogDB_Purge_LookUp').output.value",
+						"value": "@activity('Admin_LogDB_Purge_LookUp').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
