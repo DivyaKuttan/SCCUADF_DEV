@@ -5,6 +5,30 @@
 		"factoryName": {
 			"value": "SCCU-EU-Data-Factory-NonProd"
 		},
+		"SCCUDev_Admin_LogDB_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCUDev_Admin_LogDB_properties_typeProperties_database": {
+			"value": "SCCUDev_Admin_LogDB"
+		},
+		"SCCUDev_Admin_MetaDB_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCUDev_Admin_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUDev_Admin_MetaDB"
+		},
+		"SCCUDev_Anonymous_LogDB_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCUDev_Anonymous_LogDB_properties_typeProperties_database": {
+			"value": "SCCUDev_Anonymous_LogDB"
+		},
+		"SCCUDev_Anonymous_MetaDB_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCUDev_Anonymous_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUDev_Anonymous_MetaDB"
+		},
 		"SCCUQA_ArchiveDB_properties_typeProperties_server": {
 			"value": "sccuqasql01.database.windows.net"
 		},
