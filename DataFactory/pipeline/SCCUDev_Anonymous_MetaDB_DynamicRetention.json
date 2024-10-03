@@ -1,9 +1,9 @@
 {
-	"name": "SCCUDEV_BBAlerts_DynamicRetention",
+	"name": "SCCUDev_Anonymous_MetaDB_DynamicRetention",
 	"properties": {
 		"activities": [
 			{
-				"name": "BBAlerts_Archive",
+				"name": "Anonymous_MetaDB_Archive_LookUp",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -18,7 +18,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_BBAlerts' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='AnonymousMetaDb' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -32,11 +32,11 @@
 				}
 			},
 			{
-				"name": "Archive_ForEach",
+				"name": "Anonymous_MetaDB_Archive_ForEach",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "BBAlerts_Archive",
+						"activity": "Anonymous_MetaDB_Archive_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,17 +45,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('BBAlerts_Archive').output.value",
+						"value": "@activity('Anonymous_MetaDB_Archive_LookUp').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "BBAlerts_Script",
+							"name": "Anonymous_MetaDB_Script",
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "BBAlerts_Copy data",
+									"activity": "Anonymous_MetaDB_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -70,7 +70,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_LogDBDev",
+								"referenceName": "SCCUDev_Anonymous_MetaDB",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
@@ -87,7 +87,7 @@
 							}
 						},
 						{
-							"name": "BBAlerts_Copy data",
+							"name": "Anonymous_MetaDB_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -125,21 +125,12 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SCCUDEV_BBAlerts_Source",
+									"referenceName": "SCCUDev_Anonymous_MetaDB_Source",
 									"type": "DatasetReference",
 									"parameters": {
-										"SourceDB": {
-											"value": "@item().SourceDBName",
-											"type": "Expression"
-										},
-										"SourceTable": {
-											"value": "@item().SourceTableName",
-											"type": "Expression"
-										},
-										"SourceSchema": {
-											"value": "@item().SourceSchemaName",
-											"type": "Expression"
-										}
+										"SourceDB": "@item().SourceDBName",
+										"SourceTable": "@item().SourceTableName",
+										"SourceSchema": "@item().SourceSchemaName"
 									}
 								}
 							],
@@ -158,11 +149,11 @@
 				}
 			},
 			{
-				"name": "BBAlerts_Purge",
+				"name": "METADB_Purge_LookUp",
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Archive_ForEach",
+						"activity": "Anonymous_MetaDB_Archive_ForEach",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -180,7 +171,7 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE SourceDBName='SCCUDEV_BBAlerts' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='MetaDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
@@ -194,11 +185,11 @@
 				}
 			},
 			{
-				"name": "Purge_ForEach",
+				"name": "Anonymous_MetaDB_Purge_ForEach",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "BBAlerts_Purge",
+						"activity": "METADB_Purge_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -207,13 +198,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('BBAlerts_Purge').output.value",
+						"value": "@activity('METADB_Purge_LookUp').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "BBAlerts_Purge_Script",
+							"name": "MetaDb_Purge_Script",
 							"type": "Script",
 							"dependsOn": [],
 							"policy": {

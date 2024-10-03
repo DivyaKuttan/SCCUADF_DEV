@@ -97,7 +97,7 @@
 														"referenceName": "SCCUDEV_LogDB_DynamicRetention",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": false
+													"waitOnCompletion": true
 												}
 											}
 										]
@@ -137,6 +137,90 @@
 												"typeProperties": {
 													"pipeline": {
 														"referenceName": "SCCUDEV_BBAlerts_DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "AdminLogDb",
+										"activities": [
+											{
+												"name": "AdminLogDb",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "SCCUDev_Admin_LogDB_DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "AdminMetaDb",
+										"activities": [
+											{
+												"name": "AdminMetaDb",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "SCCUDev_Admin_MetaDB_DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "AnonymousLogDb",
+										"activities": [
+											{
+												"name": "AnonymousLogDb",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "SCCUDev_Anonymous_LogDB_DynamicRetention",
+														"type": "PipelineReference"
+													},
+													"waitOnCompletion": true
+												}
+											}
+										]
+									},
+									{
+										"value": "AnonymousMetaDb",
+										"activities": [
+											{
+												"name": "AnonymousMetaDb",
+												"type": "ExecutePipeline",
+												"dependsOn": [],
+												"policy": {
+													"secureInput": false
+												},
+												"userProperties": [],
+												"typeProperties": {
+													"pipeline": {
+														"referenceName": "SCCUDev_Anonymous_MetaDB_DynamicRetention",
 														"type": "PipelineReference"
 													},
 													"waitOnCompletion": true

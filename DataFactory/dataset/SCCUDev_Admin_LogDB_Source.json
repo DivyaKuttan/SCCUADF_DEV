@@ -1,8 +1,8 @@
 {
-	"name": "SCCUDEV_BBAlerts_Source",
+	"name": "SCCUDev_Admin_LogDB_Source",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_LogDBDev",
+			"referenceName": "SCCUDev_Admin_LogDB",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
