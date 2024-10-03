@@ -32,8 +32,6 @@
 			{
 				"name": "Schemas",
 				"type": "ForEach",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Distinct DB",
@@ -99,7 +97,7 @@
 														"referenceName": "SCCUDEV_LogDB_DynamicRetention",
 														"type": "PipelineReference"
 													},
-													"waitOnCompletion": false
+													"waitOnCompletion": true
 												}
 											}
 										]
