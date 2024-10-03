@@ -32,7 +32,7 @@
 				}
 			},
 			{
-				"name": "Archive_ForEach",
+				"name": "Anonymous_LogDB_Archive_ForEach",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -153,7 +153,7 @@
 				"type": "Lookup",
 				"dependsOn": [
 					{
-						"activity": "Archive_ForEach",
+						"activity": "Anonymous_LogDB_Archive_ForEach",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -185,7 +185,7 @@
 				}
 			},
 			{
-				"name": "Purge_ForEach",
+				"name": "Anonymous_LogDB_Purge_ForEach",
 				"type": "ForEach",
 				"dependsOn": [
 					{
