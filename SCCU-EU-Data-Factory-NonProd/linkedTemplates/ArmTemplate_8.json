@@ -260,7 +260,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='LogDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='AnonymousLogDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
@@ -512,7 +512,7 @@
 							"source": {
 								"type": "AzureSqlSource",
 								"sqlReaderQuery": {
-									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='MetaDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='AnonymousMetaDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 									"type": "Expression"
 								},
 								"queryTimeout": "02:00:00",
