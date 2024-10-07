@@ -70,7 +70,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_BBAlertsDev",
+								"referenceName": "SCCU_LogDBDev",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
