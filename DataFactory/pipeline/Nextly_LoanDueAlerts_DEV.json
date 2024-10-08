@@ -49,19 +49,19 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "SubscriptionID",
+									"name": "SUBSCRIPTIONID",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "SubscriptionID",
-									"type": "Int32",
-									"physicalType": "int"
+									"type": "Int64",
+									"physicalType": "bigint"
 								}
 							},
 							{
 								"source": {
-									"name": "DueDate",
+									"name": "DUEDATE",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -73,7 +73,7 @@
 							},
 							{
 								"source": {
-									"name": "AmountDue",
+									"name": "AMOUNTDUE",
 									"type": "String",
 									"physicalType": "String"
 								},
