@@ -2,8 +2,19 @@
 	"name": "DEV_TransactionAlert",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Stopped",
-		"pipelines": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Nextly_TransactionAlert_DEV",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"FileName": "@triggerBody().fileName",
+					"FilePath": "@triggerBody().folderPath"
+				}
+			}
+		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/to-nextly/blobs/DEV/TransactionAlerts/",
