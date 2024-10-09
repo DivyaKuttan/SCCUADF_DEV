@@ -131,25 +131,9 @@
 			"type": "string",
 			"defaultValue": "SCCUDev_MetaDB"
 		},
-		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
-		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
-		},
 		"DEV_ThresholdAlert_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
-		},
-		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
-			"type": "string",
-			"defaultValue": "@triggerBody().fileName"
-		},
-		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
-			"type": "string",
-			"defaultValue": "@triggerBody().folderPath"
 		},
 		"DEV_TransactionAlert_properties_typeProperties_scope": {
 			"type": "string",
@@ -6902,7 +6886,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "ExternalAlert_ThresholdStaging_Copy data",
+						"name": "ExternalAlert_TransactionStaging_Copy data",
 						"type": "Copy",
 						"dependsOn": [
 							{
@@ -7015,7 +6999,7 @@
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
-								"activity": "ExternalAlert_ThresholdStaging_Copy data",
+								"activity": "ExternalAlert_TransactionStaging_Copy data",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -13261,8 +13245,8 @@
 												{
 													"source": {
 														"name": "SubscriptionID",
-														"type": "Int32",
-														"physicalType": "int"
+														"type": "Int64",
+														"physicalType": "bigint"
 													},
 													"sink": {
 														"name": "SubscriptionID",
@@ -13438,8 +13422,8 @@
 												{
 													"source": {
 														"name": "SubscriptionID",
-														"type": "Int32",
-														"physicalType": "int"
+														"type": "Int64",
+														"physicalType": "bigint"
 													},
 													"sink": {
 														"name": "SubscriptionID",
@@ -13639,8 +13623,8 @@
 												{
 													"source": {
 														"name": "SubscriptionID",
-														"type": "Int32",
-														"physicalType": "int"
+														"type": "Int64",
+														"physicalType": "bigint"
 													},
 													"sink": {
 														"name": "SubscriptionID",
@@ -24858,19 +24842,8 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Nextly_ThresholdAlert_DEV",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"FileName": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]",
-							"FilePath": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath')]"
-						}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/to-nextly/blobs/DEV/ThresholdAlerts/",
@@ -24882,9 +24855,7 @@
 					]
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Nextly_ThresholdAlert_DEV')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DEV_TransactionAlert')]",
@@ -24892,19 +24863,8 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Nextly_TransactionAlert_DEV",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"FileName": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]",
-							"FilePath": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
-						}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/to-nextly/blobs/DEV/TransactionAlerts/",
@@ -24916,9 +24876,7 @@
 					]
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Nextly_TransactionAlert_DEV')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataRetentionDynamicTrigger')]",
