@@ -131,9 +131,25 @@
 			"type": "string",
 			"defaultValue": "SCCUDev_MetaDB"
 		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
 		"DEV_ThresholdAlert_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
 		},
 		"DEV_TransactionAlert_properties_typeProperties_scope": {
 			"type": "string",
@@ -6394,8 +6410,8 @@
 										},
 										"sink": {
 											"name": "SubscriptionID",
-											"type": "Int32",
-											"physicalType": "int"
+											"type": "Int64",
+											"physicalType": "bigint"
 										}
 									},
 									{
@@ -6938,8 +6954,8 @@
 										},
 										"sink": {
 											"name": "SubscriptionID",
-											"type": "Int32",
-											"physicalType": "int"
+											"type": "Int64",
+											"physicalType": "bigint"
 										}
 									},
 									{
@@ -24842,8 +24858,19 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_ThresholdAlert_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath')]"
+						}
+					}
+				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/to-nextly/blobs/DEV/ThresholdAlerts/",
@@ -24855,7 +24882,9 @@
 					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Nextly_ThresholdAlert_DEV')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DEV_TransactionAlert')]",
@@ -24863,8 +24892,19 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Stopped",
-				"pipelines": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_TransactionAlert_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
+						}
+					}
+				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/to-nextly/blobs/DEV/TransactionAlerts/",
@@ -24876,7 +24916,9 @@
 					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Nextly_TransactionAlert_DEV')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataRetentionDynamicTrigger')]",

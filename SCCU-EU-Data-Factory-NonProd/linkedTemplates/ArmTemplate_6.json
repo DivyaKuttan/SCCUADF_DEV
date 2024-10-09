@@ -13,171 +13,6 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/QA_TransactionLog_JsonDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_LogDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "TransId",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "SessionId",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "ProcessId",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 0
-					},
-					{
-						"name": "TenantId",
-						"type": "varchar"
-					},
-					{
-						"name": "UserName",
-						"type": "varchar"
-					},
-					{
-						"name": "reference",
-						"type": "varchar"
-					},
-					{
-						"name": "Json",
-						"type": "nvarchar"
-					},
-					{
-						"name": "modifiedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "TransactionLog_Json"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_TransactionLog_SqlSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_LogDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "Message",
-						"type": "varchar"
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormName",
-						"type": "varchar"
-					},
-					{
-						"name": "UserHostAddress",
-						"type": "varchar"
-					},
-					{
-						"name": "UserHostName",
-						"type": "varchar"
-					},
-					{
-						"name": "IP",
-						"type": "varchar"
-					},
-					{
-						"name": "URL",
-						"type": "varchar"
-					},
-					{
-						"name": "Browser",
-						"type": "varchar"
-					},
-					{
-						"name": "HasCookies",
-						"type": "bit"
-					},
-					{
-						"name": "InputType",
-						"type": "varchar"
-					},
-					{
-						"name": "IsMobileDevice",
-						"type": "bit"
-					},
-					{
-						"name": "BowserVersion",
-						"type": "varchar"
-					},
-					{
-						"name": "MobileDeviceManufacturer",
-						"type": "varchar"
-					},
-					{
-						"name": "MobileDeviceModel",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "LogonUser",
-						"type": "varchar"
-					},
-					{
-						"name": "UserObjectGUID",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "TransactionLog_Sql"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/QA_UserInvalidAttemptsSourceDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1194,6 +1029,81 @@
 						"folderPath": "UAT/TransactionAlerts",
 						"container": "to-nextly"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_LoanDue_DataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "LoanDueAlerts@{formatDateTime(addHours(utcnow(), -4), 'MMddyyyyHHmm')}.txt",
+							"type": "Expression"
+						},
+						"folderPath": "UAT/LoanDueAlerts",
+						"container": "from-nextly"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": ""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_SQL_DataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_BusinessDataUAT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Username",
+						"type": "varchar"
+					},
+					{
+						"name": "MemberNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "PersonNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "EAgreementNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "Status",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "Adaptive",
+					"table": "ActivityLog"
 				}
 			},
 			"dependsOn": []
