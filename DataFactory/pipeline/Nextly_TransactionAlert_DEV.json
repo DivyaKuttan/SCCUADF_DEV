@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "ExternalAlert_ThresholdStaging_Copy data",
+				"name": "ExternalAlert_TransactionStaging_Copy data",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -115,7 +115,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "ExternalAlert_ThresholdStaging_Copy data",
+						"activity": "ExternalAlert_TransactionStaging_Copy data",
 						"dependencyConditions": [
 							"Succeeded"
 						]

@@ -518,8 +518,8 @@
 										{
 											"source": {
 												"name": "SubscriptionID",
-												"type": "Int32",
-												"physicalType": "int"
+												"type": "Int64",
+												"physicalType": "bigint"
 											},
 											"sink": {
 												"name": "SubscriptionID",
@@ -692,8 +692,8 @@
 										{
 											"source": {
 												"name": "SubscriptionID",
-												"type": "Int32",
-												"physicalType": "int"
+												"type": "Int64",
+												"physicalType": "bigint"
 											},
 											"sink": {
 												"name": "SubscriptionID",
@@ -890,8 +890,8 @@
 										{
 											"source": {
 												"name": "SubscriptionID",
-												"type": "Int32",
-												"physicalType": "int"
+												"type": "Int64",
+												"physicalType": "bigint"
 											},
 											"sink": {
 												"name": "SubscriptionID",
