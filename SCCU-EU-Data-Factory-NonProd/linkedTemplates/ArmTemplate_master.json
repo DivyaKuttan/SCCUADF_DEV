@@ -241,6 +241,14 @@
 			"type": "string",
 			"defaultValue": "managedInstance"
 		},
+		"SCCU_OfflineDev_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_Offline_Dev"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -405,6 +413,12 @@
 					},
 					"SCCU_MetaDBDev_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_database')]"
+					},
+					"SCCU_OfflineDev_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_server')]"
+					},
+					"SCCU_OfflineDev_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -604,6 +618,26 @@
 			},
 			"dependsOn": [
 				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_7')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_9",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_9.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_8')]"
 			]
 		}
 	]

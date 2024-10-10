@@ -180,6 +180,12 @@
 		},
 		"sccuprodsql01_properties_groupId": {
 			"value": "managedInstance"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_database": {
+			"value": "SCCU_Offline_Dev"
 		}
 	}
 }
