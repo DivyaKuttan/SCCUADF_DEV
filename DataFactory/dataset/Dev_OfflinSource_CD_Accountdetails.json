@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"LoanDetailsFileName": {
+			"CD_Accountdetails": {
 				"type": "string"
 			}
 		},
