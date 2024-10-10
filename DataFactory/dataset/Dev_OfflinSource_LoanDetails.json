@@ -5,6 +5,11 @@
 			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"LoanDetailsFileName": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "OfflineServices_DataSets"
 		},
