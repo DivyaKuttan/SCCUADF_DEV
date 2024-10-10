@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
+				"name": "LoanDetails_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Script1",
+						"activity": "LoanDetails_StagingTruncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -482,7 +482,7 @@
 				]
 			},
 			{
-				"name": "Script1",
+				"name": "LoanDetails_StagingTruncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
