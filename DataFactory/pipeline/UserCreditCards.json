@@ -1,0 +1,221 @@
+{
+	"name": "UserCreditCards",
+	"properties": {
+		"activities": [
+			{
+				"name": "UserCreditCards_CopyData",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCards_StagingTruncate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/UserCreditCards",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "DNAACCTNBR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DNAACCTNBR",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "CCMACCTNBR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CCMACCTNBR",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "MEMBERNUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MEMBERNUMBER",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "PERSONNUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PERSONNUMBER",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "Textbox6",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Textbox6",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Textbox14",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Textbox14",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Textbox12",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Textbox12",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Textbox10",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Textbox10",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Textbox8",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Textbox8",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Dev_OfflinSource_UserCreditCards",
+						"type": "DatasetReference",
+						"parameters": {
+							"UserCreditCards": "@pipeline().parameters.FileName"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Dev_OfflineDestination_UserCreditCards",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "UserCreditCards_StagingTruncate",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SCCU_OfflineDev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "TRUNCATE TABLE UserCreditCards_Staging"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "Nextly User Credit Cards DNA_CCM Sample 10_07_2024.csv"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "offline-services/DEV/UserCreditCards"
+			}
+		},
+		"folder": {
+			"name": "OfflineServices"
+		},
+		"annotations": []
+	}
+}
