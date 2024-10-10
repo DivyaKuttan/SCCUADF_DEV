@@ -1,9 +1,12 @@
 {
-	"name": "OfflineServiceLoanDetailsDestination",
+	"name": "Dev_OfflineDestination_LoanDetails",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_OfflineDev",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
