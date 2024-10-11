@@ -184,7 +184,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "LoanDetails_Staging"
+			"table": "CCM_CreditCard_AccountDetails_Staging"
 		}
 	}
 }
