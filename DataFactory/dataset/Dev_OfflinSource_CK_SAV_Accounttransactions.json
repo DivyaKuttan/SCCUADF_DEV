@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"CK_SAV_Accounttransactions": {
+			"CK_SAV_Accounttransactionsons_Staging": {
 				"type": "string"
 			}
 		},
