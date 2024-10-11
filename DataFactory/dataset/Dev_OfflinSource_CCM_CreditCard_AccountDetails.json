@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"LoanDetailsFileName": {
+			"CCM_CreditCard_AccountDetails": {
 				"type": "string"
 			}
 		},
