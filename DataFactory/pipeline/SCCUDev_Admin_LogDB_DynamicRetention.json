@@ -136,11 +136,17 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Archive_Destination",
+									"referenceName": "DEV_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
-										"DestinationTable": "@item().DestinationTableName",
-										"DestinationSchema": "@item().DestinationSchemaName"
+										"DestinationTable": {
+											"value": "@item().DestinationSchema",
+											"type": "Expression"
+										},
+										"DestinationSchema": {
+											"value": "@item().DestinationTable",
+											"type": "Expression"
+										}
 									}
 								}
 							]
