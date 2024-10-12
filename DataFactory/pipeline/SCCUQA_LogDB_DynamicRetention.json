@@ -1,9 +1,9 @@
 {
-	"name": "SCCUDev_MetaDB_DynamicRetention",
+	"name": "SCCUQA_LogDB_DynamicRetention",
 	"properties": {
 		"activities": [
 			{
-				"name": "MetaDB_Archive_LookUp",
+				"name": "LogDB_Archive_LookUp",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -18,14 +18,14 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='MetaDb' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='LogDb' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "SCCUDEV_ArchiveSqlDataset",
+						"referenceName": "SCCUQA_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -36,7 +36,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "MetaDB_Archive_LookUp",
+						"activity": "LogDB_Archive_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,17 +45,17 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('MetaDB_Archive_LookUp').output.value",
+						"value": "@activity('LogDB_Archive_LookUp').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "MetaDB_Script",
+							"name": "LogDb_Script",
 							"type": "Script",
 							"dependsOn": [
 								{
-									"activity": "MetaDB_Copy data",
+									"activity": "LogDb_Copy data",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -70,7 +70,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_MetaDBDev",
+								"referenceName": "SCCUQA_LogDB",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
@@ -87,7 +87,7 @@
 							}
 						},
 						{
-							"name": "MetaDB_Copy data",
+							"name": "LogDb_Copy data",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -125,24 +125,18 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SCCUDev_MetaDB_Source",
+									"referenceName": "SCCUQA_LogDB_Source",
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceDB": "@item().SourceDBName",
-										"SourceTable": {
-											"value": "@item().SourceTableName",
-											"type": "Expression"
-										},
-										"SourceSchema": {
-											"value": "@item().SourceSchemaName",
-											"type": "Expression"
-										}
+										"SourceTable": "@item().SourceTableName",
+										"SourceSchema": "@item().SourceSchemaName"
 									}
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "DEV_Archive_Destination",
+									"referenceName": "QA_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": "@item().DestinationTable",
@@ -155,13 +149,13 @@
 				}
 			},
 			{
-				"name": "METADB_Purge_LookUp",
+				"name": "LogDB_Purge_LookUp",
 				"type": "Lookup",
 				"dependsOn": [
 					{
 						"activity": "Archive_ForEach",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -177,14 +171,14 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderQuery": {
-							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='MetaDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='LogDb' AND IsPurgeEnabled=1 AND PurgeDays > 0",
 							"type": "Expression"
 						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "SCCUDEV_ArchiveSqlDataset",
+						"referenceName": "SCCUQA_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -195,7 +189,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "METADB_Purge_LookUp",
+						"activity": "LogDB_Purge_LookUp",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -204,13 +198,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('METADB_Purge_LookUp').output.value",
+						"value": "@activity('LogDB_Purge_LookUp').output.value",
 						"type": "Expression"
 					},
 					"batchCount": 1,
 					"activities": [
 						{
-							"name": "MetaDb_Purge_Script",
+							"name": "LogDb_Purge_Script",
 							"type": "Script",
 							"dependsOn": [],
 							"policy": {
@@ -222,7 +216,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ArchiveDev",
+								"referenceName": "SCCUQA_ArchiveDB",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {

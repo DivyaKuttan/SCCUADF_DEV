@@ -1,5 +1,5 @@
 {
-	"name": "SCCUDev_MetaDB_DynamicRetention",
+	"name": "SCCUQA_MetaDB_DynamicRetention",
 	"properties": {
 		"activities": [
 			{
@@ -25,7 +25,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "SCCUDEV_ArchiveSqlDataset",
+						"referenceName": "SCCUQA_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -70,7 +70,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_MetaDBDev",
+								"referenceName": "SCCUQA_MetaDB",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
@@ -125,24 +125,18 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "SCCUDev_MetaDB_Source",
+									"referenceName": "SCCUQA_MetaDB_Source",
 									"type": "DatasetReference",
 									"parameters": {
 										"SourceDB": "@item().SourceDBName",
-										"SourceTable": {
-											"value": "@item().SourceTableName",
-											"type": "Expression"
-										},
-										"SourceSchema": {
-											"value": "@item().SourceSchemaName",
-											"type": "Expression"
-										}
+										"SourceTable": "@item().SourceTableName",
+										"SourceSchema": "@item().SourceSchemaName"
 									}
 								}
 							],
 							"outputs": [
 								{
-									"referenceName": "DEV_Archive_Destination",
+									"referenceName": "QA_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": "@item().DestinationTable",
@@ -161,7 +155,7 @@
 					{
 						"activity": "Archive_ForEach",
 						"dependencyConditions": [
-							"Succeeded"
+							"Completed"
 						]
 					}
 				],
@@ -184,7 +178,7 @@
 						"partitionOption": "None"
 					},
 					"dataset": {
-						"referenceName": "SCCUDEV_ArchiveSqlDataset",
+						"referenceName": "SCCUQA_ArchiveSqlDataset",
 						"type": "DatasetReference"
 					},
 					"firstRowOnly": false
@@ -222,7 +216,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ArchiveDev",
+								"referenceName": "SCCUQA_ArchiveDB",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {

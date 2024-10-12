@@ -145,11 +145,11 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Archive_Destination",
+									"referenceName": "DEV_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
-										"DestinationTable": "@item().DestinationTableName",
-										"DestinationSchema": "@item().DestinationSchemaName"
+										"DestinationTable": "@item().DestinationTable",
+										"DestinationSchema": "@item().DestinationSchema"
 									}
 								}
 							]
