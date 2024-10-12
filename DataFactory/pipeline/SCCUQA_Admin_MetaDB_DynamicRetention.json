@@ -139,7 +139,10 @@
 									"referenceName": "QA_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
-										"DestinationTable": "@item().DestinationSchema",
+										"DestinationTable": {
+											"value": "@item().DestinationTable",
+											"type": "Expression"
+										},
 										"DestinationSchema": "@item().DestinationTable"
 									}
 								}
