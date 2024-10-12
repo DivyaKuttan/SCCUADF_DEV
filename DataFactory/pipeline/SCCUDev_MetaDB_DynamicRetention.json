@@ -142,7 +142,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "Archive_Destination",
+									"referenceName": "DEV_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": "@item().DestinationTableName",
