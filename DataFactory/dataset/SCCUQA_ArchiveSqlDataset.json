@@ -1,0 +1,46 @@
+{
+	"name": "SCCUQA_ArchiveSqlDataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_ArchiveDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/Dynamic"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "DBName",
+				"type": "varchar"
+			},
+			{
+				"name": "SchemaName",
+				"type": "varchar"
+			},
+			{
+				"name": "TableName",
+				"type": "varchar"
+			},
+			{
+				"name": "KeyColumn",
+				"type": "varchar"
+			},
+			{
+				"name": "PurgeDays",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "ArchiveDays",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "MasterConfig"
+		}
+	}
+}
