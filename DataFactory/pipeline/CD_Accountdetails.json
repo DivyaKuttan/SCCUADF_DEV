@@ -1,0 +1,366 @@
+{
+	"name": "CD_Accountdetails",
+	"properties": {
+		"activities": [
+			{
+				"name": "CD_Accountdetails_CopyData",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "CD_Accountdetails_StagingTruncate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/CD_Accountdetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "MEMBER_TYPE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MEMBER_TYPE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MEMBER_NUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MEMBER_NUMBER",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "TAX_NUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TAX_NUMBER",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_NUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ACCOUNT_NUMBER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_MAJOR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ACCOUNT_MAJOR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_MINOR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ACCOUNT_MINOR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_STATUS",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ACCOUNT_STATUS",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CURRENT_BALANCE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CURRENT_BALANCE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_INT_RATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ACCOUNT_INT_RATE",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 4,
+									"precision": 5
+								}
+							},
+							{
+								"source": {
+									"name": "PRIOR_YTD_INTEREST_AMT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PRIOR_YTD_INTEREST_AMT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "CURRENT_YTD_INTEREST_AMT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CURRENT_YTD_INTEREST_AMT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "LAST_INTEREST_CREDIT_DATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LAST_INTEREST_CREDIT_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LAST_INTEREST_CREDIT_AMOUNT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LAST_INTEREST_CREDIT_AMOUNT",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "TERM_DAYS",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TERM_DAYS",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "CURRENT_TERM",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CURRENT_TERM",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "ORIGINAL_CONTRACT_DATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ORIGINAL_CONTRACT_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LAST_CONTRACT_DATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LAST_CONTRACT_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "ACCOUNT_MATURITY_DATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ACCOUNT_MATURITY_DATE",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Dev_OfflinSource_CD_Accountdetails",
+						"type": "DatasetReference",
+						"parameters": {
+							"CD_Accountdetails": "@pipeline().parameters.FileName"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Dev_OfflineDestination_CD_Accountdetails",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "CD_Accountdetails_StagingTruncate",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SCCU_OfflineDev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "TRUNCATE TABLE CD_Accountdetails_Staging"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "CD_Accountdetails_CopyData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Spi_InsertToCD_AccountdetailsFromStaging]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SCCU_OfflineDev",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "Nextly CD Accounts Details Sample 10_08_2024.csv"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "offline-services/DEV/CD_Accountdetails"
+			}
+		},
+		"folder": {
+			"name": "OfflineServices"
+		},
+		"annotations": []
+	}
+}

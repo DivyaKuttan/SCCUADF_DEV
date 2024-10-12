@@ -1,0 +1,380 @@
+{
+	"name": "DebitCardDetails",
+	"properties": {
+		"activities": [
+			{
+				"name": "DebitCardDetails_CopyData",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "DebitCardDetails_StagingTruncate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/DebitCardDetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ExternalCardNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ExternalCardNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FullName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "FullName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "IssueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "IssueDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "ExpireDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ExpireDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "AgreementTypeCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AgreementTypeCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentStatusCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentStatusCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimarySavingsAccountNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimarySavingsAccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimarySavingsMajorCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimarySavingsMajorCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimarySavingsMinorCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimarySavingsMinorCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SavingsRoleCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SavingsRoleCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "SavingsRoleDescription",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SavingsRoleDescription",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryCheckingAccountNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimaryCheckingAccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryCheckingMajorCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimaryCheckingMajorCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PrimaryCheckingMinorCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrimaryCheckingMinorCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CheckingRoleCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CheckingRoleCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CheckingRoleDescription",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CheckingRoleDescription",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AgreementNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AgreementNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EntityNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EntityNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerPersonNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OwnerPersonNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerOrganizationNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OwnerOrganizationNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Dev_OfflinSource_DebitCardDetails",
+						"type": "DatasetReference",
+						"parameters": {
+							"DebitCardDetails": "@pipeline().parameters.FileName"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Dev_OfflineDestination_DebitCardDetails",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "DebitCardDetails_StagingTruncate",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SCCU_OfflineDev",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "TRUNCATE TABLE DebitCardDetails_Staging"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "DebitCardDetails_CopyData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Spi_InsertToDebitCardDetailsFromStaging]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SCCU_OfflineDev",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "NextlyDebitCards 2024_10_07_005839.csv"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "offline-services/DEV/DebitCardDetails"
+			}
+		},
+		"folder": {
+			"name": "OfflineServices"
+		},
+		"annotations": []
+	}
+}
