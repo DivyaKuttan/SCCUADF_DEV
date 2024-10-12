@@ -77,6 +77,30 @@
 			"type": "string",
 			"defaultValue": "SCCUDev_Anonymous_MetaDB"
 		},
+		"SCCUQA_Admin_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Admin_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUQA_Admin_LogDB"
+		},
+		"SCCUQA_Admin_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Admin_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUQA_Admin_MetaDB"
+		},
+		"SCCUQA_Anonymous_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Anonymous_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUQA_Anonymous_MetaDB"
+		},
 		"SCCUQA_ArchiveDB_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccuqasql01.database.windows.net"
@@ -84,30 +108,6 @@
 		"SCCUQA_ArchiveDB_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCUQA_ArchiveDB"
-		},
-		"SCCUQA_LogDB_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccuqasql01.database.windows.net"
-		},
-		"SCCUQA_LogDB_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCUQA_LogDB"
-		},
-		"SCCUQA_MetaDB_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccuqasql01.database.windows.net"
-		},
-		"SCCUQA_MetaDB_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCUQA_MetaDB"
-		},
-		"SCCU_ADFPOC_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccudevsql01.database.windows.net"
-		},
-		"SCCU_ADFPOC_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCU_ADF_POC"
 		}
 	},
 	"variables": {
@@ -396,6 +396,90 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_LogDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUQA_Admin_LogDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUQA_Admin_LogDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_QA",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_MetaDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_QA",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Anonymous_MetaDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_QA",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUQA_ArchiveDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -421,90 +505,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCUQA_LogDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCUQA_LogDB_properties_typeProperties_server')]",
-					"database": "[parameters('SCCUQA_LogDB_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_QA",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCUQA_MetaDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCUQA_MetaDB_properties_typeProperties_server')]",
-					"database": "[parameters('SCCUQA_MetaDB_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_QA",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCU_ADFPOC')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCU_ADFPOC_properties_typeProperties_server')]",
-					"database": "[parameters('SCCU_ADFPOC_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_Dev",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/credentials/Credentials_Dev')]"
 			]
 		}
 	]

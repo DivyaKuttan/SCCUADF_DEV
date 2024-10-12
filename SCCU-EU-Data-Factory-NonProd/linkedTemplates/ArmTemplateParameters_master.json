@@ -29,6 +29,24 @@
 		"SCCUDev_Anonymous_MetaDB_properties_typeProperties_database": {
 			"value": "SCCUDev_Anonymous_MetaDB"
 		},
+		"SCCUQA_Admin_LogDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Admin_LogDB_properties_typeProperties_database": {
+			"value": "SCCUQA_Admin_LogDB"
+		},
+		"SCCUQA_Admin_MetaDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Admin_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUQA_Admin_MetaDB"
+		},
+		"SCCUQA_Anonymous_MetaDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Anonymous_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUQA_Anonymous_MetaDB"
+		},
 		"SCCUQA_ArchiveDB_properties_typeProperties_server": {
 			"value": "sccuqasql01.database.windows.net"
 		},
@@ -46,6 +64,12 @@
 		},
 		"SCCUQA_MetaDB_properties_typeProperties_database": {
 			"value": "SCCUQA_MetaDB"
+		},
+		"SCCUQa_Anonymous_LogDB_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQa_Anonymous_LogDB_properties_typeProperties_database": {
+			"value": "SCCUQa_Anonymous_LogDB"
 		},
 		"SCCU_ADFPOC_properties_typeProperties_server": {
 			"value": "sccudevsql01.database.windows.net"
@@ -77,6 +101,12 @@
 		"SCCU_BusinessDataDev_properties_typeProperties_database": {
 			"value": "SCCU_BusinessData_Dev"
 		},
+		"SCCU_BusinessDataQA_properties_typeProperties_server": {
+			"value": "sccuqasql01.database.windows.net"
+		},
+		"SCCU_BusinessDataQA_properties_typeProperties_database": {
+			"value": "SCCU_BusinessDataQA"
+		},
 		"SCCU_BusinessDataUAT_properties_typeProperties_server": {
 			"value": "sccuuatsql01.database.windows.net"
 		},
@@ -97,6 +127,12 @@
 		},
 		"SCCU_MetaDBDev_properties_typeProperties_database": {
 			"value": "SCCUDev_MetaDB"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_server": {
+			"value": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_database": {
+			"value": "SCCU_Offline_Dev"
 		},
 		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
 			"value": "@triggerBody().fileName"
@@ -180,12 +216,6 @@
 		},
 		"sccuprodsql01_properties_groupId": {
 			"value": "managedInstance"
-		},
-		"SCCU_OfflineDev_properties_typeProperties_server": {
-			"value": "sccudevsql01.database.windows.net"
-		},
-		"SCCU_OfflineDev_properties_typeProperties_database": {
-			"value": "SCCU_Offline_Dev"
 		},
 		"containerUri": {
 			"value": ""
