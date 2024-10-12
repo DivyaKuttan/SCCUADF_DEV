@@ -1,5 +1,5 @@
 {
-	"name": "Archive_Destination",
+	"name": "DEV_Archive_Destination",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_ArchiveDev",
