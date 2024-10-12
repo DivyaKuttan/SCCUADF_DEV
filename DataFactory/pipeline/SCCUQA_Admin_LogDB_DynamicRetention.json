@@ -222,7 +222,7 @@
 							},
 							"userProperties": [],
 							"linkedServiceName": {
-								"referenceName": "SCCU_ArchiveDev",
+								"referenceName": "SCCUQA_ArchiveDB",
 								"type": "LinkedServiceReference"
 							},
 							"typeProperties": {
