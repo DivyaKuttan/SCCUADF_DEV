@@ -41,6 +41,7 @@
 						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -64,8 +65,8 @@
 								},
 								"sink": {
 									"name": "NEXTLY_PERS_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -76,8 +77,8 @@
 								},
 								"sink": {
 									"name": "MEMBER_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -94,6 +95,18 @@
 							},
 							{
 								"source": {
+									"name": "RTXN_NUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RTXN_NUMBER",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "RTXN_POSTING_DATE",
 									"type": "String",
 									"physicalType": "String"
@@ -101,17 +114,65 @@
 								"sink": {
 									"name": "RTXN_POSTING_DATE",
 									"type": "DateTime",
-									"physicalType": "date"
+									"physicalType": "datetime"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_TYPE",
+									"name": "RTXN_ACTIVITY_DATE",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_TYPE",
+									"name": "RTXN_ACTIVITY_DATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "DEBIT_CREDIT_FLAG",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DEBIT_CREDIT_FLAG",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "RTXN_STATUS_CODE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RTXN_STATUS_CODE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RTXN_STATUS_DESCRIPTION",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RTXN_STATUS_DESCRIPTION",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RTXN_TYPE_CODE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RTXN_TYPE_CODE",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -141,6 +202,54 @@
 									"scale": 2,
 									"precision": 18
 								}
+							},
+							{
+								"source": {
+									"name": "EXTERNAL_RTXN_DESCNBR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EXTERNAL_RTXN_DESCNBR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EXTERNAL_RTXN_DESCTEXT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EXTERNAL_RTXN_DESCTEXT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "INTERNAL_RTXN_DESCNBR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "INTERNAL_RTXN_DESCNBR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "INTERNAL_RTXN_DESCTEXT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "INTERNAL_RTXN_DESCTEXT",
+									"type": "String",
+									"physicalType": "varchar"
+								}
 							}
 						],
 						"typeConversion": true,
@@ -155,7 +264,7 @@
 						"referenceName": "Dev_OfflinSource_CK_SAV_Accounttransactions",
 						"type": "DatasetReference",
 						"parameters": {
-							"CK_SAV_Accounttransactions": "@pipeline().parameters.FileName"
+							"CK_SAV_Accounttransactionsons_Staging": "@pipeline().parameters.FileName"
 						}
 					}
 				],
@@ -212,7 +321,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToCK_SAV_AccounttransactionsFromStaging]"
+					"storedProcedureName": "Spi_InsertIntoCK_SAV_AccounttransactionsFromStaging"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -223,7 +332,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV Account Transactions Sample 10_08_2024.csv"
+				"defaultValue": "Nextly CK SAV Transactions Prior 15 Days 2024_10_09_201525 (1).csv"
 			},
 			"FilePath": {
 				"type": "string",
