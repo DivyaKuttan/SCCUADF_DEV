@@ -143,7 +143,10 @@
 											"value": "@item().DestinationTable",
 											"type": "Expression"
 										},
-										"DestinationSchema": "@item().DestinationTable"
+										"DestinationSchema": {
+											"value": "@item().DestinationSchema",
+											"type": "Expression"
+										}
 									}
 								}
 							]
