@@ -146,7 +146,11 @@
 							"outputs": [
 								{
 									"referenceName": "DEV_Archive_Destination",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"DestinationTable": "@item().DestinationTable",
+										"DestinationSchema": "@item().DestinationSchema"
+									}
 								}
 							]
 						}
