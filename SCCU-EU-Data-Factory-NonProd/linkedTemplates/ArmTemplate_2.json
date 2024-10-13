@@ -6,12 +6,274 @@
 			"type": "string",
 			"metadata": "Data Factory name",
 			"defaultValue": "SCCU-EU-Data-Factory-NonProd"
+		},
+		"SCCU_MetaDBDev_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_MetaDBDev_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUDev_MetaDB"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccudevsql01.database.windows.net"
+		},
+		"SCCU_OfflineDev_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_Offline_Dev"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCU_MetaDBDev')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCU_MetaDBDev_properties_typeProperties_server')]",
+					"database": "[parameters('SCCU_MetaDBDev_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_Dev",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCU_OfflineDev')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCU_OfflineDev_properties_typeProperties_server')]",
+					"database": "[parameters('SCCU_OfflineDev_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_Dev",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_Archive_Destination')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_ArchiveDev",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"DestinationTable": {
+						"type": "string"
+					},
+					"DestinationSchema": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().DestinationSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().DestinationTable",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_BBAlertsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_BBAlertsDev",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "MigrationId",
+						"type": "nvarchar"
+					},
+					{
+						"name": "ProductVersion",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "__EFMigrationsHistory"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_CompletedLoanDueAlertsSink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/CompletedLoanDueAlerts",
+						"container": "to-nextly"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_CompletedLoanDueAlertsSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/CompletedLoanDueAlerts",
+						"container": "to-nextly"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_CompletedThresholdSink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/CompletedThreshold",
+						"container": "to-nextly"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_CompletedThresholdSource')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/ThresholdAlerts",
+						"container": "to-nextly"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DEV_CompletedTransactionSink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
@@ -573,601 +835,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "BrowserTabInfo_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveBrowserTabLogsDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "BrowserTabLogs_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveErrorLogDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "ErrorLog_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveExternalRequestTxsDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "WebServiceTxsID",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 0
-					},
-					{
-						"name": "DataSourceID",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 0
-					},
-					{
-						"name": "DatasourceName",
-						"type": "varchar"
-					},
-					{
-						"name": "FormName",
-						"type": "varchar"
-					},
-					{
-						"name": "CommandName",
-						"type": "varchar"
-					},
-					{
-						"name": "ContactId",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserID",
-						"type": "varchar"
-					},
-					{
-						"name": "RequestDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "ResponseDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RequestParameters",
-						"type": "text"
-					},
-					{
-						"name": "ResponseData",
-						"type": "text"
-					},
-					{
-						"name": "ErrorCode",
-						"type": "varchar"
-					},
-					{
-						"name": "ErrorData",
-						"type": "text"
-					},
-					{
-						"name": "TenantId",
-						"type": "varchar"
-					},
-					{
-						"name": "EnvCode",
-						"type": "varchar"
-					},
-					{
-						"name": "RequestType",
-						"type": "varchar"
-					},
-					{
-						"name": "CustomerId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "InnerException",
-						"type": "text"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "ExternalRequestTxs_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveFormAPITxsDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "FormAPITxs_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveNF_UserConnectionsDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "NF_UserConnections_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchivePasswordHistoryDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "PasswordHistory_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveRefreshTokensDataSe')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "RefreshTokens_Archive"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_ArchiveRulesLogDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ErrorID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "TenantID",
-						"type": "varchar"
-					},
-					{
-						"name": "FormID",
-						"type": "varchar"
-					},
-					{
-						"name": "SystemIP",
-						"type": "varchar"
-					},
-					{
-						"name": "SiteURL",
-						"type": "nvarchar"
-					},
-					{
-						"name": "Type",
-						"type": "varchar"
-					},
-					{
-						"name": "Message",
-						"type": "nvarchar"
-					},
-					{
-						"name": "InnerException",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedBy",
-						"type": "varchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "Comments",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "RulesLog_Archive"
 				}
 			},
 			"dependsOn": []

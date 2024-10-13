@@ -95,6 +95,62 @@
 			"type": "string",
 			"defaultValue": "SCCUQa_Anonymous_LogDB"
 		},
+		"SCCUUAT_Admin_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Admin_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Admin_LogDB"
+		},
+		"SCCUUAT_Admin_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Admin_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Admin_MetaDB"
+		},
+		"SCCUUAT_Anonymous_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Anonymous_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Anonymous_LogDB"
+		},
+		"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Anonymous_MetaDB"
+		},
+		"SCCUUAT_ArchiveDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_ArchiveDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_ArchiveDB"
+		},
+		"SCCUUAT_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_LogDB"
+		},
+		"SCCUUAT_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_MetaDB"
+		},
 		"SCCU_ADFPOC_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccudevsql01.database.windows.net"
@@ -148,6 +204,14 @@
 			"defaultValue": "sccuuatsql01.database.windows.net"
 		},
 		"SCCU_BusinessDataUAT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_BusinessData_UAT"
+		},
+		"SCCU_BusinessData_UAT_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCU_BusinessData_UAT_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCU_BusinessData_UAT"
 		},
@@ -427,6 +491,48 @@
 					"SCCUQa_Anonymous_LogDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUQa_Anonymous_LogDB_properties_typeProperties_database')]"
 					},
+					"SCCUUAT_Admin_LogDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_Admin_LogDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_Admin_LogDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_Admin_LogDB_properties_typeProperties_database')]"
+					},
+					"SCCUUAT_Admin_MetaDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_Admin_MetaDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_Admin_MetaDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_Admin_MetaDB_properties_typeProperties_database')]"
+					},
+					"SCCUUAT_Anonymous_LogDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_Anonymous_LogDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_Anonymous_LogDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_Anonymous_LogDB_properties_typeProperties_database')]"
+					},
+					"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_Anonymous_MetaDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database')]"
+					},
+					"SCCUUAT_ArchiveDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_ArchiveDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_database')]"
+					},
+					"SCCUUAT_LogDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_LogDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_LogDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_LogDB_properties_typeProperties_database')]"
+					},
+					"SCCUUAT_MetaDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_MetaDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_MetaDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_MetaDB_properties_typeProperties_database')]"
+					},
 					"SCCU_ADFPOC_properties_typeProperties_server": {
 						"value": "[parameters('SCCU_ADFPOC_properties_typeProperties_server')]"
 					},
@@ -469,6 +575,12 @@
 					"SCCU_BusinessDataUAT_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]"
 					},
+					"SCCU_BusinessData_UAT_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_server')]"
+					},
+					"SCCU_BusinessData_UAT_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_database')]"
+					},
 					"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint')]"
 					},
@@ -477,18 +589,6 @@
 					},
 					"SCCU_LogDBDev_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_LogDBDev_properties_typeProperties_database')]"
-					},
-					"SCCU_MetaDBDev_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_server')]"
-					},
-					"SCCU_MetaDBDev_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_database')]"
-					},
-					"SCCU_OfflineDev_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_server')]"
-					},
-					"SCCU_OfflineDev_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -509,6 +609,18 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SCCU_MetaDBDev_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_server')]"
+					},
+					"SCCU_MetaDBDev_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_database')]"
+					},
+					"SCCU_OfflineDev_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_server')]"
+					},
+					"SCCU_OfflineDev_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -669,24 +781,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
-						"value": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]"
-					},
-					"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
-						"value": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath')]"
-					},
-					"DEV_ThresholdAlert_properties_typeProperties_scope": {
-						"value": "[parameters('DEV_ThresholdAlert_properties_typeProperties_scope')]"
-					},
-					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
-						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]"
-					},
-					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
-						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
-					},
-					"DEV_TransactionAlert_properties_typeProperties_scope": {
-						"value": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -707,6 +801,24 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
+						"value": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]"
+					},
+					"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
+						"value": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath')]"
+					},
+					"DEV_ThresholdAlert_properties_typeProperties_scope": {
+						"value": "[parameters('DEV_ThresholdAlert_properties_typeProperties_scope')]"
+					},
+					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
+						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]"
+					},
+					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
+						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
+					},
+					"DEV_TransactionAlert_properties_typeProperties_scope": {
+						"value": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]"
 					},
 					"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
 						"value": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName')]"

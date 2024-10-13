@@ -7,6 +7,30 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "SCCU-EU-Data-Factory-NonProd"
 		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"DEV_ThresholdAlert_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
+			"type": "string",
+			"defaultValue": "@triggerBody().fileName"
+		},
+		"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
+			"type": "string",
+			"defaultValue": "@triggerBody().folderPath"
+		},
+		"DEV_TransactionAlert_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+		},
 		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
@@ -60,6 +84,1096 @@
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCU_LoanDueAlerts_UAT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Count_LoanDueAlerts",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sps_LoanDueAlertSubscriptionToFile]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "UAT_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount_LoanDueAlerts",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_LoanDueAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount_LoanDueAlerts",
+							"value": {
+								"value": "@length(activity('Count_LoanDueAlerts').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount_LoanDueAlerts",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount_LoanDueAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount_LoanDueAlerts'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "LoanDueAlerts_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 3,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": "EXEC sps_LoanDueAlertSubscriptionToFile",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NumOfDaysBeforeDue",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "NumOfDaysBeforeDue",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NumOfDaysAfterPastDue",
+														"type": "Int32",
+														"physicalType": "int"
+													},
+													"sink": {
+														"name": "NumOfDaysAfterPastDue",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "UAT_SQL_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "UAT_LoanDue_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"RowCount_LoanDueAlerts": {
+						"type": "Integer"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UserCreditCards')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "UserCreditCards_CopyData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "UserCreditCards_StagingTruncate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/UserCreditCards",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "DNAACCTNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNAACCTNBR",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "CCMACCTNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CCMACCTNBR",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "MEMBERNUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "MEMBERNUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "PERSONNUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PERSONNUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox6",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox6",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox14",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox14",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox12",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox12",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox10",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox10",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox8",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox8",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Dev_OfflinSource_UserCreditCards",
+								"type": "DatasetReference",
+								"parameters": {
+									"UserCreditCards": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Dev_OfflineDestination_UserCreditCards",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "UserCreditCards_StagingTruncate",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCU_OfflineDev",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "TRUNCATE TABLE UserCreditCards_Staging"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "UserCreditCards_CopyData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[Spi_InsertToUserCreditCardsFromStaging]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_OfflineDev",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "Nextly User Credit Cards DNA_CCM Sample 10_07_2024.csv"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "offline-services/DEV/UserCreditCards"
+					}
+				},
+				"folder": {
+					"name": "OfflineServices"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_DynamicRetention_Main')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This pipeline has activities which archive/purge data from souce DB's to Archive DB ",
+				"activities": [
+					{
+						"name": "Distinct DB",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT DISTINCT DestinationSchemaName FROM MasterConfig WHERE IsArchiveEnabled=1 OR IsPurgeEnabled=1 ",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUDEV_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Schemas",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Distinct DB",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Distinct DB').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "DbNameSwitch",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().DestinationSchemaName",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "MetaDb",
+												"activities": [
+													{
+														"name": "Meta DB",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDev_MetaDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "LogDb",
+												"activities": [
+													{
+														"name": "Log DB",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDEV_LogDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "BusinessData",
+												"activities": [
+													{
+														"name": "BusinessData",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDEV_BusinessData_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "BBAlerts",
+												"activities": [
+													{
+														"name": "BBAlerts",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDEV_BBAlerts_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AdminLogDb",
+												"activities": [
+													{
+														"name": "AdminLogDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDev_Admin_LogDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AdminMetaDb",
+												"activities": [
+													{
+														"name": "AdminMetaDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDev_Admin_MetaDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AnonymousLogDb",
+												"activities": [
+													{
+														"name": "AnonymousLogDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDev_Anonymous_LogDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AnonymousMetaDb",
+												"activities": [
+													{
+														"name": "AnonymousMetaDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUDev_Anonymous_MetaDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": true,
+															"parameters": {}
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_DynamicRetention_Main')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This pipeline has activities which archive/purge data from souce DB's to Archive DB ",
+				"activities": [
+					{
+						"name": "Distinct DB",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT DISTINCT DestinationSchemaName FROM MasterConfig WHERE IsArchiveEnabled=1 OR IsPurgeEnabled=1 ",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUQA_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Schemas",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Distinct DB",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Distinct DB').output.value",
+								"type": "Expression"
+							},
+							"isSequential": false,
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "DbNameSwitch",
+									"type": "Switch",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"on": {
+											"value": "@item().DestinationSchemaName",
+											"type": "Expression"
+										},
+										"cases": [
+											{
+												"value": "MetaDb",
+												"activities": [
+													{
+														"name": "Meta DB",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_MetaDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "LogDb",
+												"activities": [
+													{
+														"name": "Log DB",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_LogDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "BusinessData",
+												"activities": [
+													{
+														"name": "BusinessData",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_BusinessData_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "BBAlerts",
+												"activities": [
+													{
+														"name": "BBAlerts",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_BBAlerts_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AdminLogDb",
+												"activities": [
+													{
+														"name": "AdminLogDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_Admin_LogDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AdminMetaDb",
+												"activities": [
+													{
+														"name": "AdminMetaDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_Admin_MetaDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AnonymousLogDb",
+												"activities": [
+													{
+														"name": "AnonymousLogDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_Anonymous_LogDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											},
+											{
+												"value": "AnonymousMetaDb",
+												"activities": [
+													{
+														"name": "AnonymousMetaDb",
+														"type": "ExecutePipeline",
+														"dependsOn": [],
+														"policy": {
+															"secureInput": false
+														},
+														"userProperties": [],
+														"typeProperties": {
+															"pipeline": {
+																"referenceName": "SCCUQA_Anonymous_MetaDB_DynamicRetention",
+																"type": "PipelineReference"
+															},
+															"waitOnCompletion": false,
+															"parameters": {}
+														}
+													}
+												]
+											}
+										]
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_ThresholdAlert')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_ThresholdAlert_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/DEV/ThresholdAlerts/",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('DEV_ThresholdAlert_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_TransactionAlert')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Nextly_TransactionAlert_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"FileName": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]",
+							"FilePath": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/to-nextly/blobs/DEV/TransactionAlerts/",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dev_Alerts_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SCCUAlerts_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Hour",
+						"interval": 1,
+						"startTime": "2024-08-02T09:51:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Dev_DoneProcessing_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "SCCUDoneProcessing_DEV",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 5,
+						"startTime": "2024-08-03T01:00:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Dev_LoanDueTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
@@ -270,7 +1384,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/SCCU_LoanDueAlerts_UAT')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/DataRetentionDynamicTrigger')]",
@@ -298,7 +1414,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/DEV_DynamicRetention_Main')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/QA_DataRetention')]",
@@ -322,12 +1440,13 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2024-10-13T02:00:00",
-						"timeZone": "India Standard Time",
-						"schedule": {}
+						"timeZone": "India Standard Time"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/QA_DynamicRetention_Main')]"
+			]
 		}
 	]
 }

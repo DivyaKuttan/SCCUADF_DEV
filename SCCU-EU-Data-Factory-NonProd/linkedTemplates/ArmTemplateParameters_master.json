@@ -71,6 +71,48 @@
 		"SCCUQa_Anonymous_LogDB_properties_typeProperties_database": {
 			"value": "SCCUQa_Anonymous_LogDB"
 		},
+		"SCCUUAT_Admin_LogDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Admin_LogDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_Admin_LogDB"
+		},
+		"SCCUUAT_Admin_MetaDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Admin_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_Admin_MetaDB"
+		},
+		"SCCUUAT_Anonymous_LogDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Anonymous_LogDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_Anonymous_LogDB"
+		},
+		"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_Anonymous_MetaDB"
+		},
+		"SCCUUAT_ArchiveDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_ArchiveDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_ArchiveDB"
+		},
+		"SCCUUAT_LogDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_LogDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_LogDB"
+		},
+		"SCCUUAT_MetaDB_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_MetaDB_properties_typeProperties_database": {
+			"value": "SCCUUAT_MetaDB"
+		},
 		"SCCU_ADFPOC_properties_typeProperties_server": {
 			"value": "sccudevsql01.database.windows.net"
 		},
@@ -111,6 +153,12 @@
 			"value": "sccuuatsql01.database.windows.net"
 		},
 		"SCCU_BusinessDataUAT_properties_typeProperties_database": {
+			"value": "SCCU_BusinessData_UAT"
+		},
+		"SCCU_BusinessData_UAT_properties_typeProperties_server": {
+			"value": "sccuuatsql01.database.windows.net"
+		},
+		"SCCU_BusinessData_UAT_properties_typeProperties_database": {
 			"value": "SCCU_BusinessData_UAT"
 		},
 		"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {

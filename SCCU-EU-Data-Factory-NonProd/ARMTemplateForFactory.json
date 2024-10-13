@@ -95,6 +95,62 @@
 			"type": "string",
 			"defaultValue": "SCCUQa_Anonymous_LogDB"
 		},
+		"SCCUUAT_Admin_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Admin_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Admin_LogDB"
+		},
+		"SCCUUAT_Admin_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Admin_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Admin_MetaDB"
+		},
+		"SCCUUAT_Anonymous_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Anonymous_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Anonymous_LogDB"
+		},
+		"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_Anonymous_MetaDB"
+		},
+		"SCCUUAT_ArchiveDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_ArchiveDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_ArchiveDB"
+		},
+		"SCCUUAT_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_LogDB"
+		},
+		"SCCUUAT_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_MetaDB"
+		},
 		"SCCU_ADFPOC_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccudevsql01.database.windows.net"
@@ -148,6 +204,14 @@
 			"defaultValue": "sccuuatsql01.database.windows.net"
 		},
 		"SCCU_BusinessDataUAT_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_BusinessData_UAT"
+		},
+		"SCCU_BusinessData_UAT_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCU_BusinessData_UAT_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCU_BusinessData_UAT"
 		},
@@ -17263,8 +17327,14 @@
 											"referenceName": "DEV_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -17521,8 +17591,14 @@
 											"referenceName": "DEV_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -17780,10 +17856,13 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"DestinationTable": {
-													"value": "@item().DestinationTable",
+													"value": "@item().DestinationTableName",
 													"type": "Expression"
 												},
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -18041,11 +18120,11 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"DestinationTable": {
-													"value": "@item().DestinationSchema",
+													"value": "@item().DestinationTableName",
 													"type": "Expression"
 												},
 												"DestinationSchema": {
-													"value": "@item().DestinationTable",
+													"value": "@item().DestinationSchemaName\n",
 													"type": "Expression"
 												}
 											}
@@ -18304,8 +18383,14 @@
 											"referenceName": "DEV_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationSchema",
-												"DestinationSchema": "@item().DestinationTable"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -18562,8 +18647,14 @@
 											"referenceName": "DEV_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationSchema",
-												"DestinationSchema": "@item().DestinationTable"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -18820,8 +18911,14 @@
 											"referenceName": "DEV_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -19084,8 +19181,14 @@
 											"referenceName": "DEV_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -19866,8 +19969,14 @@
 											"referenceName": "QA_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -20125,11 +20234,11 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"DestinationTable": {
-													"value": "@item().DestinationTable",
+													"value": "@item().DestinationTableName",
 													"type": "Expression"
 												},
 												"DestinationSchema": {
-													"value": "@item().DestinationSchema",
+													"value": "@item().DestinationSchemaName",
 													"type": "Expression"
 												}
 											}
@@ -20389,10 +20498,13 @@
 											"type": "DatasetReference",
 											"parameters": {
 												"DestinationTable": {
-													"value": "@item().DestinationTable",
+													"value": "@item().DestinationTableName",
 													"type": "Expression"
 												},
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -20649,8 +20761,14 @@
 											"referenceName": "QA_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -20907,8 +21025,14 @@
 											"referenceName": "QA_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -21165,8 +21289,14 @@
 											"referenceName": "QA_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -21423,8 +21553,14 @@
 											"referenceName": "QA_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -21681,8 +21817,14 @@
 											"referenceName": "QA_Archive_Destination",
 											"type": "DatasetReference",
 											"parameters": {
-												"DestinationTable": "@item().DestinationTable",
-												"DestinationSchema": "@item().DestinationSchema"
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -33872,6 +34014,202 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_Admin_LogDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_Admin_LogDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_Admin_LogDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_Admin_MetaDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_Admin_MetaDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_Admin_MetaDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_Anonymous_LogDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_Anonymous_LogDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_Anonymous_LogDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_Anonymous_MetaDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_Anonymous_MetaDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_ArchiveDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_LogDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_LogDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_LogDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUUAT_MetaDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUUAT_MetaDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUUAT_MetaDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCU_ADFPOC')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -34050,6 +34388,34 @@
 				"typeProperties": {
 					"server": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_server')]",
 					"database": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_UAT",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_UAT')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCU_BusinessData_UAT')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_server')]",
+					"database": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_database')]",
 					"encrypt": "mandatory",
 					"trustServerCertificate": false,
 					"authenticationType": "UserAssignedManagedIdentity",
@@ -34400,6 +34766,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_DataRetention')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "QA_DynamicRetention_Main",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2024-10-13T02:00:00",
+						"timeZone": "India Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/QA_DynamicRetention_Main')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/RetentionLogTrigger')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -34728,37 +35124,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_DataRetention')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "QA_DynamicRetention_Main",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2024-10-13T02:00:00",
-						"timeZone": "India Standard Time",
-						"schedule": {}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/QA_DynamicRetention_Main')]"
 			]
 		}
 	]

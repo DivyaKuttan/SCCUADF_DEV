@@ -13,6 +13,601 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveBrowserTabLogsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "BrowserTabLogs_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveErrorLogDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "ErrorLog_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveExternalRequestTxsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "WebServiceTxsID",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DataSourceID",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DatasourceName",
+						"type": "varchar"
+					},
+					{
+						"name": "FormName",
+						"type": "varchar"
+					},
+					{
+						"name": "CommandName",
+						"type": "varchar"
+					},
+					{
+						"name": "ContactId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "UserID",
+						"type": "varchar"
+					},
+					{
+						"name": "RequestDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ResponseDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RequestParameters",
+						"type": "text"
+					},
+					{
+						"name": "ResponseData",
+						"type": "text"
+					},
+					{
+						"name": "ErrorCode",
+						"type": "varchar"
+					},
+					{
+						"name": "ErrorData",
+						"type": "text"
+					},
+					{
+						"name": "TenantId",
+						"type": "varchar"
+					},
+					{
+						"name": "EnvCode",
+						"type": "varchar"
+					},
+					{
+						"name": "RequestType",
+						"type": "varchar"
+					},
+					{
+						"name": "CustomerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "InnerException",
+						"type": "text"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "ExternalRequestTxs_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveFormAPITxsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "FormAPITxs_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveNF_UserConnectionsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "NF_UserConnections_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchivePasswordHistoryDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "PasswordHistory_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveRefreshTokensDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "RefreshTokens_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveRulesLogDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "RulesLog_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_ArchiveSecurityLogDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -922,516 +1517,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "ErrorLog"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_ExternalRequestTxsSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_LogDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "WebServiceTxsID",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 0
-					},
-					{
-						"name": "DataSourceID",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 0
-					},
-					{
-						"name": "DatasourceName",
-						"type": "varchar"
-					},
-					{
-						"name": "FormName",
-						"type": "varchar"
-					},
-					{
-						"name": "CommandName",
-						"type": "varchar"
-					},
-					{
-						"name": "ContactId",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserID",
-						"type": "varchar"
-					},
-					{
-						"name": "RequestDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "ResponseDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RequestParameters",
-						"type": "text"
-					},
-					{
-						"name": "ResponseData",
-						"type": "text"
-					},
-					{
-						"name": "ErrorCode",
-						"type": "varchar"
-					},
-					{
-						"name": "ErrorData",
-						"type": "text"
-					},
-					{
-						"name": "TenantId",
-						"type": "varchar"
-					},
-					{
-						"name": "EnvCode",
-						"type": "varchar"
-					},
-					{
-						"name": "RequestType",
-						"type": "varchar"
-					},
-					{
-						"name": "CustomerId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "InnerException",
-						"type": "text"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "ExternalRequestTxs"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_FormAPITxsSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_LogDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "WebServiceTxsID",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 0
-					},
-					{
-						"name": "DataSourceID",
-						"type": "decimal",
-						"precision": 15,
-						"scale": 0
-					},
-					{
-						"name": "DatasourceName",
-						"type": "varchar"
-					},
-					{
-						"name": "FormName",
-						"type": "varchar"
-					},
-					{
-						"name": "CommandName",
-						"type": "varchar"
-					},
-					{
-						"name": "ContactId",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserID",
-						"type": "varchar"
-					},
-					{
-						"name": "RequestDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "ResponseDateTime",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "RequestParameters",
-						"type": "text"
-					},
-					{
-						"name": "ResponseData",
-						"type": "text"
-					},
-					{
-						"name": "ErrorCode",
-						"type": "varchar"
-					},
-					{
-						"name": "ErrorData",
-						"type": "text"
-					},
-					{
-						"name": "TenantId",
-						"type": "varchar"
-					},
-					{
-						"name": "EnvCode",
-						"type": "varchar"
-					},
-					{
-						"name": "RequestType",
-						"type": "varchar"
-					},
-					{
-						"name": "CustomerId",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "InnerException",
-						"type": "text"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "FormAPITxs"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_NF_UserConnectionsSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "NF_UserConnections"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_PasswordHistorySourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "PasswordHistory"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_RefreshTokensSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "RefreshTokens"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_RulesLogSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "RulesLog"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_SecurityLogSourceDateSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "SecurityLog"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_TempUserLoginValidationsSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "TempUserLoginValidations"
 				}
 			},
 			"dependsOn": []
