@@ -148,8 +148,14 @@
 									"referenceName": "DEV_Archive_Destination",
 									"type": "DatasetReference",
 									"parameters": {
-										"DestinationTable": "@item().DestinationTable",
-										"DestinationSchema": "@item().DestinationSchema"
+										"DestinationTable": {
+											"value": "@item().DestinationTableName",
+											"type": "Expression"
+										},
+										"DestinationSchema": {
+											"value": "@item().DestinationSchemaName",
+											"type": "Expression"
+										}
 									}
 								}
 							]
