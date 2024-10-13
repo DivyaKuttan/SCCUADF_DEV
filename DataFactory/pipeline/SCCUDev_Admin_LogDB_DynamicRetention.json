@@ -140,11 +140,11 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"DestinationTable": {
-											"value": "@item().DestinationSchema",
+											"value": "@item().DestinationTableName",
 											"type": "Expression"
 										},
 										"DestinationSchema": {
-											"value": "@item().DestinationTable",
+											"value": "@item().DestinationSchemaName\n",
 											"type": "Expression"
 										}
 									}
