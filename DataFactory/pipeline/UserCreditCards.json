@@ -28,7 +28,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/UserCreditCards",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -46,6 +49,18 @@
 						"mappings": [
 							{
 								"source": {
+									"name": "MEMBERTYPE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MEMBERTYPE",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "DNAACCTNBR",
 									"type": "String",
 									"physicalType": "String"
@@ -70,24 +85,60 @@
 							},
 							{
 								"source": {
-									"name": "MEMBERNUMBER",
+									"name": "NEXTLYPERSONNUMBER",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MEMBERNUMBER",
+									"name": "NEXTLYPERSONNUMBER",
 									"type": "Int64",
 									"physicalType": "bigint"
 								}
 							},
 							{
 								"source": {
-									"name": "PERSONNUMBER",
+									"name": "DNABUSINESSORGNBR",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PERSONNUMBER",
+									"name": "DNABUSINESSORGNBR",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DNAMEMBERNUMBER",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DNAMEMBERNUMBER",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "NEXTLYSIGNUPDATE",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NEXTLYSIGNUPDATE",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "DNACREDITCARDAGREEMENTNBR",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DNACREDITCARDAGREEMENTNBR",
 									"type": "Int64",
 									"physicalType": "bigint"
 								}
@@ -125,7 +176,7 @@
 								"sink": {
 									"name": "Textbox12",
 									"type": "DateTime",
-									"physicalType": "date"
+									"physicalType": "datetime"
 								}
 							},
 							{
@@ -233,7 +284,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM Sample 10_07_2024.csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619(in).csv"
 			},
 			"FilePath": {
 				"type": "string",
