@@ -1,0 +1,23 @@
+{
+	"name": "copybacsourc",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_ADFPOC",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"Datasetparam": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"table": {
+				"value": "@dataset().Datasetparam",
+				"type": "Expression"
+			}
+		}
+	}
+}
