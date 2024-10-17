@@ -6,7 +6,10 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"Datasetparam": {
+			"SchemaName": {
+				"type": "string"
+			},
+			"TableName": {
 				"type": "string"
 			}
 		},
