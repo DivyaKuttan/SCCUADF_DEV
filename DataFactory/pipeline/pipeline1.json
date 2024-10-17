@@ -95,13 +95,7 @@
 				"inputs": [
 					{
 						"referenceName": "copybacsourc",
-						"type": "DatasetReference",
-						"parameters": {
-							"Datasetparam": {
-								"value": "@variables('NewTable')",
-								"type": "Expression"
-							}
-						}
+						"type": "DatasetReference"
 					}
 				]
 			}
