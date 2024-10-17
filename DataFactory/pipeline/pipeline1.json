@@ -98,7 +98,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Datasetparam": {
-								"value": "@pipeline().parameters.pipelineparam",
+								"value": "@variables('NewTable')",
 								"type": "Expression"
 							}
 						}
@@ -108,7 +108,8 @@
 		],
 		"parameters": {
 			"pipelineparam": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@{activity('Lookup1').output.firstRow.NewTableName}"
 			}
 		},
 		"variables": {
