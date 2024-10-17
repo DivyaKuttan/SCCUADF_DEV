@@ -107,9 +107,11 @@
 			}
 		],
 		"parameters": {
-			"pipelineparam": {
-				"type": "string",
-				"defaultValue": "@{activity('Lookup1').output.firstRow.NewTableName}"
+			"TableName": {
+				"type": "string"
+			},
+			"Schemaname": {
+				"type": "string"
 			}
 		},
 		"variables": {
