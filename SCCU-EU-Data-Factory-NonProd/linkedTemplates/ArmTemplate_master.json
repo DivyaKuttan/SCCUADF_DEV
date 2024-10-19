@@ -243,6 +243,10 @@
 			"type": "string",
 			"defaultValue": "SCCU_Offline_Dev"
 		},
+		"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sccunextlylogsnonprod.blob.core.windows.net/"
+		},
 		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
@@ -345,6 +349,14 @@
 			"type": "string",
 			"defaultValue": "managedInstance"
 		},
+		"sccunextlylogsnonprod_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-DEV-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccunextlylogsnonprod"
+		},
+		"sccunextlylogsnonprod_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		},
 		"sccuprodsql01_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Sql/managedInstances/sccuprodsql01"
@@ -401,6 +413,12 @@
 					"sccudrsql01_properties_groupId": {
 						"value": "[parameters('sccudrsql01_properties_groupId')]"
 					},
+					"sccunextlylogsnonprod_properties_privateLinkResourceId": {
+						"value": "[parameters('sccunextlylogsnonprod_properties_privateLinkResourceId')]"
+					},
+					"sccunextlylogsnonprod_properties_groupId": {
+						"value": "[parameters('sccunextlylogsnonprod_properties_groupId')]"
+					},
 					"sccuprodsql01_properties_privateLinkResourceId": {
 						"value": "[parameters('sccuprodsql01_properties_privateLinkResourceId')]"
 					},
@@ -448,12 +466,6 @@
 					},
 					"SCCUQA_Anonymous_MetaDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_database')]"
-					},
-					"SCCUQA_ArchiveDB_properties_typeProperties_server": {
-						"value": "[parameters('SCCUQA_ArchiveDB_properties_typeProperties_server')]"
-					},
-					"SCCUQA_ArchiveDB_properties_typeProperties_database": {
-						"value": "[parameters('SCCUQA_ArchiveDB_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -472,6 +484,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SCCUQA_ArchiveDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUQA_ArchiveDB_properties_typeProperties_server')]"
+					},
+					"SCCUQA_ArchiveDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUQA_ArchiveDB_properties_typeProperties_database')]"
 					},
 					"SCCUQA_LogDB_properties_typeProperties_server": {
 						"value": "[parameters('SCCUQA_LogDB_properties_typeProperties_server')]"
@@ -583,12 +601,6 @@
 					},
 					"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint')]"
-					},
-					"SCCU_LogDBDev_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_LogDBDev_properties_typeProperties_server')]"
-					},
-					"SCCU_LogDBDev_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_LogDBDev_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -610,6 +622,12 @@
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
 					},
+					"SCCU_LogDBDev_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_LogDBDev_properties_typeProperties_server')]"
+					},
+					"SCCU_LogDBDev_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_LogDBDev_properties_typeProperties_database')]"
+					},
 					"SCCU_MetaDBDev_properties_typeProperties_server": {
 						"value": "[parameters('SCCU_MetaDBDev_properties_typeProperties_server')]"
 					},
@@ -621,6 +639,9 @@
 					},
 					"SCCU_OfflineDev_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_database')]"
+					},
+					"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint')]"
 					}
 				}
 			},

@@ -243,6 +243,10 @@
 			"type": "string",
 			"defaultValue": "SCCU_Offline_Dev"
 		},
+		"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sccunextlylogsnonprod.blob.core.windows.net/"
+		},
 		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
 			"type": "string",
 			"defaultValue": "@triggerBody().fileName"
@@ -344,6 +348,14 @@
 		"sccudrsql01_properties_groupId": {
 			"type": "string",
 			"defaultValue": "managedInstance"
+		},
+		"sccunextlylogsnonprod_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-DEV-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccunextlylogsnonprod"
+		},
+		"sccunextlylogsnonprod_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
 		},
 		"sccuprodsql01_properties_privateLinkResourceId": {
 			"type": "string",
@@ -22388,6 +22400,18 @@
 								"mappings": [
 									{
 										"source": {
+											"name": "MEMBERTYPE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "MEMBERTYPE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
 											"name": "DNAACCTNBR",
 											"type": "String",
 											"physicalType": "String"
@@ -22412,24 +22436,60 @@
 									},
 									{
 										"source": {
-											"name": "MEMBERNUMBER",
+											"name": "NEXTLYPERSONNUMBER",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "MEMBERNUMBER",
+											"name": "NEXTLYPERSONNUMBER",
 											"type": "Int64",
 											"physicalType": "bigint"
 										}
 									},
 									{
 										"source": {
-											"name": "PERSONNUMBER",
+											"name": "DNABUSINESSORGNBR",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "PERSONNUMBER",
+											"name": "DNABUSINESSORGNBR",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "DNAMEMBERNUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNAMEMBERNUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "NEXTLYSIGNUPDATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NEXTLYSIGNUPDATE",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "DNACREDITCARDAGREEMENTNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNACREDITCARDAGREEMENTNBR",
 											"type": "Int64",
 											"physicalType": "bigint"
 										}
@@ -22467,7 +22527,7 @@
 										"sink": {
 											"name": "Textbox12",
 											"type": "DateTime",
-											"physicalType": "date"
+											"physicalType": "datetime"
 										}
 									},
 									{
@@ -22579,7 +22639,7 @@
 				"parameters": {
 					"FileName": {
 						"type": "string",
-						"defaultValue": "Nextly User Credit Cards DNA_CCM Sample 10_07_2024.csv"
+						"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619(in).csv"
 					},
 					"FilePath": {
 						"type": "string",
@@ -34544,6 +34604,31 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/sccu_nextlylogs_nonprod')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"serviceEndpoint": "[parameters('sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint')]",
+					"accountKind": "StorageV2",
+					"credential": {
+						"referenceName": "Credentials_Storage",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_Storage')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DEV_ThresholdAlert')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -35109,6 +35194,18 @@
 			"properties": {
 				"privateLinkResourceId": "[parameters('sccudrsql01_properties_privateLinkResourceId')]",
 				"groupId": "[parameters('sccudrsql01_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/sccunextlylogsnonprod')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('sccunextlylogsnonprod_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('sccunextlylogsnonprod_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

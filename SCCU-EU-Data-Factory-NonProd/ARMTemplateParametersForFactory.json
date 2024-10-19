@@ -182,6 +182,9 @@
 		"SCCU_OfflineDev_properties_typeProperties_database": {
 			"value": "SCCU_Offline_Dev"
 		},
+		"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sccunextlylogsnonprod.blob.core.windows.net/"
+		},
 		"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
 			"value": "@triggerBody().fileName"
 		},
@@ -258,6 +261,12 @@
 		},
 		"sccudrsql01_properties_groupId": {
 			"value": "managedInstance"
+		},
+		"sccunextlylogsnonprod_properties_privateLinkResourceId": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-DEV-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccunextlylogsnonprod"
+		},
+		"sccunextlylogsnonprod_properties_groupId": {
+			"value": "blob"
 		},
 		"sccuprodsql01_properties_privateLinkResourceId": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Sql/managedInstances/sccuprodsql01"
