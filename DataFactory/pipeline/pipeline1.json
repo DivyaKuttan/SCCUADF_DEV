@@ -1,0 +1,135 @@
+{
+	"name": "pipeline1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[Spi_BackUpTableData]",
+						"storedProcedureParameters": {
+							"CreateTableScript": {
+								"type": "String",
+								"value": {
+									"value": "CREATE TABLE [logdb].[SecondaryUsers](\n\t[ID] [int] IDENTITY(1,1) primary key NOT NULL,\n\t[PRIMARYUSERID] [varchar](50) NULL,\n\t[SECONDARYUSERID] [varchar](50) NULL,\n\t[TITLE] [varchar](50) NULL,\n\t[FIRSTNAME] [varchar](100) NULL,\n\t[MIDDLENAME] [varchar](100) NULL,\n\t[LASTNAME] [varchar](100) NULL,\n\t[SUFFIX] [varchar](50) NULL,\n\t[BIRTHDATE] [varchar](50) NULL,\n\t[STATUS] [varchar](50) NULL,\n\t[LOGINNAME] [varchar](100) NULL,\n\t[LASTLOGINDATEUTC] [varchar](50) NULL,\n\t[STREETADDRESS] [varchar](max) NULL,\n\t[CITY] [varchar](100) NULL,\n\t[STATE] [varchar](50) NULL,\n\t[POSTALCODE] [varchar](50) NULL,\n\t[EMAILADDRESS] [varchar](255) NULL,\n\t[HOMEPHONENUMBER] [varchar](50) NULL,\n\t[MOBILEPHONENUMBER] [varchar](50) NULL,\n\t[WORKPHONENUMBER] [varchar](50) NULL,\n\t[WORKPHONENUMBEREXTENSION] [varchar](50) NULL,\n\t[TAXID] [varchar](50) NULL,\n\t[IsDeleted] [bit] NULL)",
+									"type": "Expression"
+								}
+							},
+							"TableName": {
+								"type": "String",
+								"value": "[logdb].[SecondaryUsers]"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": true
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "NewTable",
+					"value": {
+						"value": "@{activity('Lookup1').output.firstRow.NewTableName}",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM @{pipeline().parameters.Schemaname}.@{pipeline().parameters.TableName}",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "copybacsourc",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": {
+								"value": "@pipeline().parameters.Schemaname",
+								"type": "Expression"
+							},
+							"TableName": {
+								"value": "@pipeline().parameters.TableName",
+								"type": "Expression"
+							}
+						}
+					}
+				]
+			}
+		],
+		"parameters": {
+			"TableName": {
+				"type": "string"
+			},
+			"Schemaname": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"NewTable": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "BacPac"
+		},
+		"annotations": []
+	}
+}
