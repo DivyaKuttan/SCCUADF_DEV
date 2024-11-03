@@ -184,7 +184,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "MemberDataDetails_Staging"
+			"table": "[dbo].[MemberDataDetails_Staging]"
 		}
 	}
 }
