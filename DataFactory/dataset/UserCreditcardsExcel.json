@@ -1,0 +1,61 @@
+{
+	"name": "UserCreditcardsExcel",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "in",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619.xlsx",
+				"folderPath": "DEV/UserCreditCards",
+				"container": "offline-services"
+			}
+		},
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
+	}
+}
