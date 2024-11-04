@@ -28,7 +28,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/MemberDataDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -144,12 +147,12 @@
 							},
 							{
 								"source": {
-									"name": "EntityNumber",
+									"name": "RoleEntityNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "EntityNumber",
+									"name": "RoleEntityNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -429,6 +432,102 @@
 									"type": "DateTime",
 									"physicalType": "date"
 								}
+							},
+							{
+								"source": {
+									"name": "Email",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Email",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HomePhone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "HomePhone",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HomePhoneUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "HomePhoneUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CellPhone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CellPhone",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CellPhoneUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CellPhoneUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BusinessPhone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BusinessPhone",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BusinessPhoneUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BusinessPhoneUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonTaxId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PersonTaxId",
+									"type": "String",
+									"physicalType": "varchar"
+								}
 							}
 						],
 						"typeConversion": true,
@@ -443,7 +542,10 @@
 						"referenceName": "Dev_OfflinSource_MemberDataDetails",
 						"type": "DatasetReference",
 						"parameters": {
-							"MemberDataDetails": "@pipeline().parameters.FileName"
+							"MemberDataDetails": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							}
 						}
 					}
 				],
@@ -474,7 +576,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE MemberDataDetails_Staging"
+							"text": "TRUNCATE TABLE [dbo].[MemberDataDetails_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -500,7 +602,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToMemberDataDetailsFromStaging]"
+					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -511,7 +613,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_10_07_003532.csv"
+				"defaultValue": "NextlyMemberData 2024_10_14_151741 (1).csv"
 			},
 			"FilePath": {
 				"type": "string",
@@ -519,7 +621,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}
