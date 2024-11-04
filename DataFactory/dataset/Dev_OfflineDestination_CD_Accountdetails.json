@@ -184,7 +184,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "CD_Accountdetails_Staging"
+			"table": "TD_Accountdetails_Staging"
 		}
 	}
 }
