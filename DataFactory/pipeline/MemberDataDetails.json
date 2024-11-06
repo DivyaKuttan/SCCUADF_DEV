@@ -569,7 +569,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCU_OfflineDev",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
