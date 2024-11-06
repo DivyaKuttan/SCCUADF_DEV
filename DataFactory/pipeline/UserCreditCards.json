@@ -127,8 +127,8 @@
 								},
 								"sink": {
 									"name": "NEXTLYSIGNUPDATE",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -175,8 +175,8 @@
 								},
 								"sink": {
 									"name": "ExpiryDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
