@@ -2,7 +2,7 @@
 	"name": "Dev_OfflineDestination_MemberDataDetails",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_OfflineDev",
+			"referenceName": "SCCUQA_OfflineModeDB",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
