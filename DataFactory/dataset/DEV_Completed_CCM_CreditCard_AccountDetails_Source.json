@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "DEV/COMPLETED/Completed_CCM_CreditCard_AccountDetails",
+				"folderPath": "DEV/Completed_CCM_CreditCard_AccountDetails",
 				"container": "offline-services"
 			}
 		}
