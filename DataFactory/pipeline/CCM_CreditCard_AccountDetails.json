@@ -28,7 +28,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -341,7 +344,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_LoanDetails",
+						"referenceName": "Dev_OfflineDestination_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -392,7 +395,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "Spi_InsertToCCM_CreditCard_AccountDetailsFromStaging"
+					"storedProcedureName": "[dbo].[Spi_InsertToCreditCardAccountBalanceInfo]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -411,7 +414,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}

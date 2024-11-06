@@ -28,7 +28,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CK_SAV_Accountdetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -238,7 +241,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE CK_SAV_Accountdetails_Staging"
+							"text": "TRUNCATE TABLE [dbo].[CK_SAV_Accountdetails_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -264,7 +267,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToCK_SAV_AccountdetailsFromStaging]"
+					"storedProcedureName": "[dbo].[Spi_InsertIntoCKANDSAVAccountsBalanceInfo]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -283,7 +286,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}

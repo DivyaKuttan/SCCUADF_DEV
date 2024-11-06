@@ -28,7 +28,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/LoanDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -501,7 +504,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE LoanDetails_Staging"
+							"text": "TRUNCATE TABLE [dbo].[LoanDetails_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -527,7 +530,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToLoanDetailsFromStaging]"
+					"storedProcedureName": "[dbo].[Spi_InsertIntoLoanAccountsBalanceInfo]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -546,7 +549,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}

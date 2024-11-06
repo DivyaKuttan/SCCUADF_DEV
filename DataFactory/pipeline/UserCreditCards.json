@@ -150,7 +150,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Textbox6",
+									"name": "CardHolderName",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -162,7 +162,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Textbox14",
+									"name": "CreditCardNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -174,7 +174,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Textbox12",
+									"name": "ExpiryDate",
 									"type": "DateTime",
 									"physicalType": "datetime"
 								}
@@ -186,7 +186,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Textbox10",
+									"name": "CardType",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -198,7 +198,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "Textbox8",
+									"name": "CardStatus",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -273,7 +273,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToUserCreditCardsFromStaging]"
+					"storedProcedureName": "[dbo].[Spi_InsertInToMemberCreditCardDetails]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -292,7 +292,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}

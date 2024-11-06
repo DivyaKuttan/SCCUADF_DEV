@@ -1,13 +1,13 @@
 {
-	"name": "CD_Accountdetails",
+	"name": "TD_Accountdetails",
 	"properties": {
 		"activities": [
 			{
-				"name": "CD_Accountdetails_CopyData",
+				"name": "TD_Accountdetails_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "CD_Accountdetails_StagingTruncate",
+						"activity": "TD_Accountdetails_StagingTruncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,8 +27,11 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CD_Accountdetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFolderPath": "DEV/TD_Accountdetails",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -295,7 +298,7 @@
 				]
 			},
 			{
-				"name": "CD_Accountdetails_StagingTruncate",
+				"name": "TD_Accountdetails_StagingTruncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -314,7 +317,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE CD_Accountdetails_Staging"
+							"text": "TRUNCATE TABLE [dbo].[TD_Accountdetails_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -325,7 +328,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "CD_Accountdetails_CopyData",
+						"activity": "TD_Accountdetails_CopyData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -340,7 +343,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToCD_AccountdetailsFromStaging]"
+					"storedProcedureName": "[dbo].[Spi_InsertIntoTDAccountsBalanceInfo]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -359,7 +362,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}
