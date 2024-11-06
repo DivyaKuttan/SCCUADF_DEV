@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CK_SAV_Accountdetails",
+							"wildcardFolderPath": "QA/CK_SAV_Accountdetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -207,7 +207,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_CK_SAV_Accountdetails",
+						"referenceName": "QA_OfflinSource_CK_SAV_Accountdetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"CK_SAV_Accountdetails": "@pipeline().parameters.FileName"
@@ -216,7 +216,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_CK_SAV_Accountdetails",
+						"referenceName": "QA_OfflineDestination_CK_SAV_Accountdetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -270,7 +270,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoCKANDSAVAccountsBalanceInfo]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -278,7 +278,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV Account Details Sample 10_08_2024.csv"
+				"defaultValue": "Nextly CK SAV Account Details 2024_10_09_205159.csv"
 			},
 			"FilePath": {
 				"type": "string",

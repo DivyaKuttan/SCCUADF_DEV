@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/DebitCardDetails",
+							"wildcardFolderPath": "QA/DebitCardDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -297,7 +297,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_DebitCardDetails",
+						"referenceName": "QA_OfflinSource_DebitCardDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"DebitCardDetails": "@pipeline().parameters.FileName"
@@ -306,7 +306,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_DebitCardDetails",
+						"referenceName": "QA_OfflineDestination_DebitCardDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -360,7 +360,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertInToMemberDebitCardDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -368,7 +368,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyDebitCards 2024_10_07_005839.csv"
+				"defaultValue": "NextlyDebitCards 2024_10_09_202741.csV"
 			},
 			"FilePath": {
 				"type": "string",

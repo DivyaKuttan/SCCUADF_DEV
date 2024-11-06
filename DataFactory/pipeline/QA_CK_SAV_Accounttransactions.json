@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -264,7 +264,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_CK_SAV_Accounttransactions",
+						"referenceName": "QA_OfflinSource_CK_SAV_Accounttransactions",
 						"type": "DatasetReference",
 						"parameters": {
 							"CK_SAV_Accounttransactionsons_Staging": "@pipeline().parameters.FileName"
@@ -273,7 +273,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_CK_SAV_Accounttransactions",
+						"referenceName": "QA_OfflineDestination_CK_SAV_Accounttransactions",
 						"type": "DatasetReference"
 					}
 				]
@@ -327,7 +327,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToAccountTransactionsDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}

@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/MemberDataDetails",
+							"wildcardFolderPath": "QA/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -539,13 +539,10 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_MemberDataDetails",
+						"referenceName": "QA_OfflinSource_MemberDataDetails",
 						"type": "DatasetReference",
 						"parameters": {
-							"MemberDataDetails": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							}
+							"MemberDataDetails": "@pipeline().parameters.FileName"
 						}
 					}
 				],
@@ -605,7 +602,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}

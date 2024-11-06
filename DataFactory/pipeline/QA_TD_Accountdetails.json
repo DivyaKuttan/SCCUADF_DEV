@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/TD_Accountdetails",
+							"wildcardFolderPath": "QA/TD_Accountdetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -283,7 +283,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_CD_Accountdetails",
+						"referenceName": "QA_OfflinSource_CD_Accountdetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"CD_Accountdetails": "@pipeline().parameters.FileName"
@@ -292,7 +292,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_CD_Accountdetails",
+						"referenceName": "QA_OfflineDestination_CD_Accountdetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -346,7 +346,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoTDAccountsBalanceInfo]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}

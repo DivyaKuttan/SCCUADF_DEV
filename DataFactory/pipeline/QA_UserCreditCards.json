@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/UserCreditCards",
+							"wildcardFolderPath": "QA/UserCreditCards",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -127,8 +127,8 @@
 								},
 								"sink": {
 									"name": "NEXTLYSIGNUPDATE",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -213,7 +213,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_UserCreditCards",
+						"referenceName": "QA_OfflinSource_UserCreditCards",
 						"type": "DatasetReference",
 						"parameters": {
 							"UserCreditCards": "@pipeline().parameters.FileName"
@@ -222,7 +222,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_UserCreditCards",
+						"referenceName": "QA_OfflineDestination_UserCreditCards",
 						"type": "DatasetReference"
 					}
 				]
@@ -276,7 +276,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertInToMemberCreditCardDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
