@@ -548,7 +548,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_MemberDataDetails",
+						"referenceName": "QA_OfflineDestination_MemberDataDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -566,7 +566,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
