@@ -1,0 +1,75 @@
+{
+	"name": "Excel1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "in",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619.xlsx",
+				"folderPath": "DEV/UserCreditCards",
+				"container": "offline-services"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "MEMBERTYPE",
+				"type": "String"
+			},
+			{
+				"name": "DNAACCTNBR",
+				"type": "String"
+			},
+			{
+				"name": "CCMACCTNBR",
+				"type": "String"
+			},
+			{
+				"name": "NEXTLYPERSONNUMBER",
+				"type": "String"
+			},
+			{
+				"name": "DNABUSINESSORGNBR",
+				"type": "String"
+			},
+			{
+				"name": "DNAMEMBERNUMBER",
+				"type": "String"
+			},
+			{
+				"name": "NEXTLYSIGNUPDATE",
+				"type": "String"
+			},
+			{
+				"name": "DNACREDITCARDAGREEMENTNBR",
+				"type": "String"
+			},
+			{
+				"name": "Textbox6",
+				"type": "String"
+			},
+			{
+				"name": "Textbox14",
+				"type": "String"
+			},
+			{
+				"name": "Textbox12",
+				"type": "String"
+			},
+			{
+				"name": "Textbox10",
+				"type": "String"
+			},
+			{
+				"name": "Textbox8",
+				"type": "String"
+			}
+		]
+	}
+}

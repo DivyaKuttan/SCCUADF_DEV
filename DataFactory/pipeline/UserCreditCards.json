@@ -23,7 +23,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "DelimitedTextSource",
+						"type": "ExcelSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
@@ -33,9 +33,6 @@
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
@@ -213,11 +210,8 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_UserCreditCards",
-						"type": "DatasetReference",
-						"parameters": {
-							"UserCreditCards": "@pipeline().parameters.FileName"
-						}
+						"referenceName": "Excel1",
+						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
