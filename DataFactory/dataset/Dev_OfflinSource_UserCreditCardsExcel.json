@@ -5,6 +5,9 @@
 			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Source"
+		},
 		"annotations": [],
 		"type": "Excel",
 		"typeProperties": {
