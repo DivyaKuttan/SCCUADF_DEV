@@ -1,5 +1,5 @@
 {
-	"name": "Excel1",
+	"name": "Dev_OfflinSource_UserCreditCardsExcel",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
