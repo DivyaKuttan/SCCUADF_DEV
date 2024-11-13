@@ -1,0 +1,21 @@
+{
+	"name": "QA_Completed_DebitCardDetails_Source_",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Completed"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "QA/DebitCardDetails",
+				"container": "offline-services"
+			}
+		}
+	}
+}
