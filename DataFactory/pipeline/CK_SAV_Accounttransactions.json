@@ -332,7 +332,7 @@
 				}
 			},
 			{
-				"name": "Copy data2",
+				"name": "completed copy",
 				"type": "Copy",
 				"dependsOn": [
 					{
