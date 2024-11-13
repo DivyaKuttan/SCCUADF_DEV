@@ -1,19 +1,19 @@
 {
-	"name": "QA_Completed_CK_SAV_Accountdetails_Source",
+	"name": "QA_Completed_CK_SAV_Accounttransactions_Source",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/QA_Offline/QA_Completed"
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Completed"
 		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "QA/CK_SAV_Accountdetails",
+				"folderPath": "QA/CK_SAV_Accounttransactions",
 				"container": "offline-services"
 			}
 		}
