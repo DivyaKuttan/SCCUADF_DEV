@@ -1,5 +1,5 @@
 {
-	"name": "QA_Completed_DebitCardDetails_Source_",
+	"name": "QA_Completed_DebitCardDetails_Source",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
