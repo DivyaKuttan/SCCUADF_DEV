@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"CCM_CreditCard_AccountDetails": {
+			"NextlyAccountRoles": {
 				"type": "string"
 			}
 		},
