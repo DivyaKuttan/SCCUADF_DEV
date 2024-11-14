@@ -44,6 +44,20 @@
 						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
+					"enableSkipIncompatibleRow": true,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "SCCU_DataFactory_Storage",
+								"type": "LinkedServiceReference"
+							}
+						}
+					},
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
@@ -358,7 +372,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
