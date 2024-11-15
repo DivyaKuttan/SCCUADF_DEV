@@ -1,5 +1,5 @@
 {
-	"name": "NextlyAccountlockout_Staging",
+	"name": "NextlyAccountlockout",
 	"properties": {
 		"activities": [
 			{
@@ -200,7 +200,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
