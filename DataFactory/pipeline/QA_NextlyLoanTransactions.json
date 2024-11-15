@@ -337,7 +337,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToCreditCardAccountBalanceInfo]"
+					"storedProcedureName": "[dbo].[Spi_InsertToLoanTransactionsDetails]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCUQA_OfflineModeDB",
