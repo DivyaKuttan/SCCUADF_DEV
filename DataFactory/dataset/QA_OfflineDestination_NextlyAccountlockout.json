@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets"
+			"name": "OfflineServices_DataSets/QA_Offline/QA_Destination"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
