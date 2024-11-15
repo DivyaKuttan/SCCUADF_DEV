@@ -23,7 +23,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "ExcelSource",
+						"type": "DelimitedTextSource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
@@ -33,6 +33,9 @@
 								"type": "Expression"
 							},
 							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
 						}
 					},
 					"sink": {
@@ -147,7 +150,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardHolderName",
+									"name": "Textbox6",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -159,7 +162,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CreditCardNumber",
+									"name": "Textbox14",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -171,7 +174,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ExpiryDate",
+									"name": "Textbox12",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -183,7 +186,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardType",
+									"name": "Textbox10",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -195,7 +198,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardStatus",
+									"name": "Textbox8",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -210,8 +213,11 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_UserCreditCardsExcel",
-						"type": "DatasetReference"
+						"referenceName": "QA_OfflinSource_UserCreditCards",
+						"type": "DatasetReference",
+						"parameters": {
+							"UserCreditCards": "@pipeline().parameters.FileName"
+						}
 					}
 				],
 				"outputs": [
@@ -278,7 +284,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619 (1).csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_12_130839.csv"
 			},
 			"FilePath": {
 				"type": "string",

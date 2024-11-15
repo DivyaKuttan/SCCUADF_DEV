@@ -80,7 +80,7 @@
 								"sink": {
 									"name": "RoleCode",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{

@@ -154,7 +154,7 @@
 								"sink": {
 									"name": "DEBIT_CREDIT_FLAG",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{

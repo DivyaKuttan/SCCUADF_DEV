@@ -68,7 +68,7 @@
 								"sink": {
 									"name": "LockoutFlagCode",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{
