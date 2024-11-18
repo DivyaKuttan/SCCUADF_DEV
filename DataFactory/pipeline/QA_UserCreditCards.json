@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/UserCreditCards",
+							"wildcardFolderPath": "QA/UserCreditCards",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -127,8 +127,8 @@
 								},
 								"sink": {
 									"name": "NEXTLYSIGNUPDATE",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -150,7 +150,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardHolderName",
+									"name": "Textbox6",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -162,7 +162,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CreditCardNumber",
+									"name": "Textbox14",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -174,9 +174,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ExpiryDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"name": "Textbox12",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -186,7 +186,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardType",
+									"name": "Textbox10",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -198,7 +198,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardStatus",
+									"name": "Textbox8",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -213,7 +213,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_UserCreditCards",
+						"referenceName": "QA_OfflinSource_UserCreditCards",
 						"type": "DatasetReference",
 						"parameters": {
 							"UserCreditCards": "@pipeline().parameters.FileName"
@@ -222,7 +222,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_UserCreditCards",
+						"referenceName": "QA_OfflineDestination_UserCreditCards",
 						"type": "DatasetReference"
 					}
 				]
@@ -240,7 +240,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -276,7 +276,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertInToMemberCreditCardDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -284,7 +284,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619(in).csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_12_130839.csv"
 			},
 			"FilePath": {
 				"type": "string",

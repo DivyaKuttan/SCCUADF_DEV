@@ -349,12 +349,66 @@
 					"referenceName": "SCCU_OfflineDev",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "completed copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/TD_Accountdetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DEV_Completed_TD_Accountdetails_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DEV_Completed_TD_Accountdetails_Sink",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CD Accounts Details Sample 10_08_2024.csv"
+				"defaultValue": "Nextly TD Account Details 2024_11_12_131052.csv"
 			},
 			"FilePath": {
 				"type": "string",

@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/LoanDetails",
+							"wildcardFolderPath": "QA/LoanDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -467,19 +467,16 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_LoanDetails",
+						"referenceName": "QA_OfflinSource_LoanDetails",
 						"type": "DatasetReference",
 						"parameters": {
-							"LoanDetailsFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							}
+							"LoanDetailsFileName": "@pipeline().parameters.FileName"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_LoanDetails",
+						"referenceName": "QA_OfflineDestination_LoanDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -497,7 +494,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -533,7 +530,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoLoanAccountsBalanceInfo]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -541,7 +538,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyLoanDetails 2024_10_08_182418.csv"
+				"defaultValue": "NextlyLoanDetails 2024_11_12_112850.csv"
 			},
 			"FilePath": {
 				"type": "string",

@@ -61,6 +61,18 @@
 							},
 							{
 								"source": {
+									"name": "DateLastContact",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DateLastContact",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
 									"name": "CurrentAccountStatusCode",
 									"type": "String",
 									"physicalType": "String"
@@ -73,48 +85,48 @@
 							},
 							{
 								"source": {
-									"name": "NickName",
+									"name": "CurrentAccountStatusDesc",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "NickName",
+									"name": "CurrentAccountStatusDesc",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "MinorCustomerDescription",
+									"name": "AccountOwnershipCode",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MinorCustomerDescription",
+									"name": "AccountOwnershipCode",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "AccountOwnershipDesc",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AccountOwnershipDesc",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "ProductFullName",
+									"name": "MajorAccountTypeCode1",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ProductFullName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MajorAccountTypeCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MajorAccountTypeCode",
+									"name": "MajorAccountTypeCode1",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -133,50 +145,48 @@
 							},
 							{
 								"source": {
-									"name": "CurrentBalance",
+									"name": "MinorAccountTypeDescription",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CurrentBalance",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "RoleEntityNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "RoleEntityNumber",
+									"name": "MinorAccountTypeDescription",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RoleCode",
+									"name": "ProductFullName1",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RoleCode",
+									"name": "ProductFullName1",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RoleDescription",
+									"name": "AccountNickName",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RoleDescription",
+									"name": "AccounntNickName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MemberNumber1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MemberNumber1",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -243,42 +253,6 @@
 							},
 							{
 								"source": {
-									"name": "LockoutFlagCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "LockoutFlagCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "LockoutFlagDesciption",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "LockoutFlagDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "InactiveDate",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "InactiveDate",
-									"type": "DateTime",
-									"physicalType": "date"
-								}
-							},
-							{
-								"source": {
 									"name": "OrgName1",
 									"type": "String",
 									"physicalType": "String"
@@ -297,18 +271,6 @@
 								},
 								"sink": {
 									"name": "OrgTypeDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MemberNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MemberNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -375,6 +337,18 @@
 							},
 							{
 								"source": {
+									"name": "ZipCode1",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ZipCode1",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "StateCode",
 									"type": "String",
 									"physicalType": "String"
@@ -387,50 +361,26 @@
 							},
 							{
 								"source": {
-									"name": "ZipCode",
+									"name": "CountryCode",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ZipCode",
+									"name": "CountryCode",
 									"type": "String",
-									"physicalType": "varchar"
+									"physicalType": "char"
 								}
 							},
 							{
 								"source": {
-									"name": "OrgTaxIds",
+									"name": "CountryName",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "OrgTaxIds",
+									"name": "CountryName",
 									"type": "String",
 									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ShareAccountNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ShareAccountNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "DateOfBirth",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "DateOfBirth",
-									"type": "DateTime",
-									"physicalType": "date"
 								}
 							},
 							{
@@ -441,6 +391,30 @@
 								},
 								"sink": {
 									"name": "Email",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailTypeCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EmailTypeCode",
+									"type": "String",
+									"physicalType": "char"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailTypeDescription",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EmailTypeDescription",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -519,6 +493,18 @@
 							},
 							{
 								"source": {
+									"name": "OrgTaxIds",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrgTaxIds",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "PersonTaxId",
 									"type": "String",
 									"physicalType": "String"
@@ -527,6 +513,30 @@
 									"name": "PersonTaxId",
 									"type": "String",
 									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ShareAccountNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ShareAccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DateOfBirth",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DateOfBirth",
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							}
 						],
@@ -608,12 +618,66 @@
 					"referenceName": "SCCU_OfflineDev",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "completed copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/MemberDataDetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DEV_Completed_MemberDataDetails_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DEV_Completed_MemberDataDetails_Sink",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_10_14_151741 (1).csv"
+				"defaultValue": "NextlyMemberData 2024_11_12_104850.csv"
 			},
 			"FilePath": {
 				"type": "string",

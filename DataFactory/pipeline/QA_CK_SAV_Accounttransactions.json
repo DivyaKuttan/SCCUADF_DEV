@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -141,7 +141,7 @@
 								"sink": {
 									"name": "DEBIT_CREDIT_FLAG",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -264,7 +264,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_CK_SAV_Accounttransactions",
+						"referenceName": "QA_OfflinSource_CK_SAV_Accounttransactions",
 						"type": "DatasetReference",
 						"parameters": {
 							"CK_SAV_Accounttransactionsons_Staging": "@pipeline().parameters.FileName"
@@ -273,7 +273,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_CK_SAV_Accounttransactions",
+						"referenceName": "QA_OfflineDestination_CK_SAV_Accounttransactions",
 						"type": "DatasetReference"
 					}
 				]
@@ -291,7 +291,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -327,7 +327,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToAccountTransactionsDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -335,7 +335,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV Transactions Prior 15 Days 2024_10_09_201525 (1).csv"
+				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_11_12_132444.csv"
 			},
 			"FilePath": {
 				"type": "string",

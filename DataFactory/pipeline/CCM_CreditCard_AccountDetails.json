@@ -401,12 +401,66 @@
 					"referenceName": "SCCU_OfflineDev",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Copy data2",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Sink",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CCM Credit Card Account Details 2024_10_09_195724.csv"
+				"defaultValue": "Nextly CCM Credit Card Account Details2024_11_12_130519.csv"
 			},
 			"FilePath": {
 				"type": "string",

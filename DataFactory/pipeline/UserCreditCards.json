@@ -127,8 +127,8 @@
 								},
 								"sink": {
 									"name": "NEXTLYSIGNUPDATE",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -150,7 +150,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardHolderName",
+									"name": "Textbox6",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -162,7 +162,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CreditCardNumber",
+									"name": "Textbox14",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -174,9 +174,9 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ExpiryDate",
-									"type": "DateTime",
-									"physicalType": "datetime"
+									"name": "Textbox12",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -186,7 +186,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardType",
+									"name": "Textbox10",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -198,7 +198,7 @@
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CardStatus",
+									"name": "Textbox8",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -279,12 +279,66 @@
 					"referenceName": "SCCU_OfflineDev",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "completed copy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/UserCreditCards",
+							"wildcardFileName": "@pipeline().parameters.FileName",
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DEV_Completed_UserCreditCards_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DEV_Completed_UserCreditCards_Source",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619(in).csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_12_130839.csv"
 			},
 			"FilePath": {
 				"type": "string",

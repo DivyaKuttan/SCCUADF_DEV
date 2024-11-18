@@ -1,0 +1,21 @@
+{
+	"name": "QA_Completed_CK_SAV_Accounttransactions_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/QA_Offline/QA_Completed"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "QA/COMPLETED/Completed_CK_SAV_Accounttransactions",
+				"container": "offline-services"
+			}
+		}
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"name": "QA_Completed_CCM_CreditCard_AccountDetails_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/QA_Offline/QA_Completed"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "QA/COMPLETED/Completed_CCM_CreditCard_AccountDetails",
+				"container": "offline-services"
+			}
+		}
+	}
+}

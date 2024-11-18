@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
+							"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -335,7 +335,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_CCM_CreditCard_AccountDetails",
+						"referenceName": "QA_OfflinSource_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"CCM_CreditCard_AccountDetails": "@pipeline().parameters.FileName"
@@ -344,7 +344,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_CCM_CreditCard_AccountDetails",
+						"referenceName": "QA_OfflineDestination_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -398,7 +398,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToCreditCardAccountBalanceInfo]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -406,7 +406,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CCM Credit Card Account Details 2024_10_09_195724.csv"
+				"defaultValue": "Nextly CCM Credit Card Account Details2024_11_12_130519.csv"
 			},
 			"FilePath": {
 				"type": "string",
