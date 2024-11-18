@@ -17,7 +17,7 @@
 			}
 		},
 		"folder": {
-			"name": "DataRetentionDatasets/Dynamic"
+			"name": "DataRetentionDatasets/Dynamic/UAT"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
