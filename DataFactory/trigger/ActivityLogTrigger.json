@@ -1,0 +1,24 @@
+{
+	"name": "ActivityLogTrigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "SCCUUAT_ActivityLog_BusinessData_DynamicRetention",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2024-11-19T11:30:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
