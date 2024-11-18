@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "DataRetentionDatasets/Dynamic"
+			"name": "DataRetentionDatasets/Dynamic/UAT"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
