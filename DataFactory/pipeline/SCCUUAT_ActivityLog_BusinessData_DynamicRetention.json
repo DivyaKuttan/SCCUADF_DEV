@@ -1,0 +1,131 @@
+{
+	"name": "SCCUUAT_ActivityLog_BusinessData_DynamicRetention",
+	"properties": {
+		"activities": [
+			{
+				"name": "BusinessData_Archive",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='ActivityLog'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "SCCUUAT_ArchiveSqlDataset",
+						"type": "DatasetReference"
+					},
+					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "Archive_ForEach",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "BusinessData_Archive",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('BusinessData_Archive').output.value",
+						"type": "Expression"
+					},
+					"batchCount": 1,
+					"activities": [
+						{
+							"name": "BusinessData_Copy data",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(@{item().KeyColumn} AS DATE) > DATEADD(DAY, -1, CAST(GETDATE() AS DATE)) OR CAST(@{item().KeyColumn2} AS DATE) > DATEADD(DAY, -1, CAST(GETDATE() AS DATE))",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "upsert",
+									"upsertSettings": {
+										"useTempDB": true,
+										"keys": [
+											"ID"
+										]
+									},
+									"sqlWriterUseTableLock": false,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "SCCUUAT_BusinessData_Source",
+									"type": "DatasetReference",
+									"parameters": {
+										"SourceDB": "@item().SourceDBName",
+										"SourceTable": "@item().DestinationTableName",
+										"SourceSchema": "@item().DestinationSchemaName"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "UAT_Archive_Destination",
+									"type": "DatasetReference",
+									"parameters": {
+										"DestinationTable": "@item().DestinationTableName",
+										"DestinationSchema": {
+											"value": "dbo",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			}
+		],
+		"folder": {
+			"name": "DataRetention"
+		},
+		"annotations": []
+	}
+}
