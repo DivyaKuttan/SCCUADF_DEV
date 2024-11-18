@@ -87,6 +87,14 @@
 			"type": "string",
 			"defaultValue": "SCCUQA_MetaDB"
 		},
+		"SCCUQA_OfflineModeDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_OfflineModeDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUQA_OfflineModeDB"
+		},
 		"SCCUQa_Anonymous_LogDB_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccuqasql01.database.windows.net"
@@ -150,6 +158,14 @@
 		"SCCUUAT_MetaDB_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCUUAT_MetaDB"
+		},
+		"SCCUUAT_OfflineModeDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuuatsql01.database.windows.net"
+		},
+		"SCCUUAT_OfflineModeDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUUAT_OfflineModeDB"
 		},
 		"SCCU_ADFPOC_properties_typeProperties_server": {
 			"type": "string",
@@ -503,6 +519,12 @@
 					"SCCUQA_MetaDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUQA_MetaDB_properties_typeProperties_database')]"
 					},
+					"SCCUQA_OfflineModeDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUQA_OfflineModeDB_properties_typeProperties_server')]"
+					},
+					"SCCUQA_OfflineModeDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUQA_OfflineModeDB_properties_typeProperties_database')]"
+					},
 					"SCCUQa_Anonymous_LogDB_properties_typeProperties_server": {
 						"value": "[parameters('SCCUQa_Anonymous_LogDB_properties_typeProperties_server')]"
 					},
@@ -551,6 +573,12 @@
 					"SCCUUAT_MetaDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUUAT_MetaDB_properties_typeProperties_database')]"
 					},
+					"SCCUUAT_OfflineModeDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_OfflineModeDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_OfflineModeDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_OfflineModeDB_properties_typeProperties_database')]"
+					},
 					"SCCU_ADFPOC_properties_typeProperties_server": {
 						"value": "[parameters('SCCU_ADFPOC_properties_typeProperties_server')]"
 					},
@@ -592,15 +620,6 @@
 					},
 					"SCCU_BusinessDataUAT_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]"
-					},
-					"SCCU_BusinessData_UAT_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_server')]"
-					},
-					"SCCU_BusinessData_UAT_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_database')]"
-					},
-					"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {
-						"value": "[parameters('SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint')]"
 					}
 				}
 			},
@@ -621,6 +640,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SCCU_BusinessData_UAT_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_server')]"
+					},
+					"SCCU_BusinessData_UAT_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_database')]"
+					},
+					"SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('SCCU_DataFactory_Storage_properties_typeProperties_serviceEndpoint')]"
 					},
 					"SCCU_LogDBDev_properties_typeProperties_server": {
 						"value": "[parameters('SCCU_LogDBDev_properties_typeProperties_server')]"
@@ -822,6 +850,86 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_10')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_12",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_12.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_11')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_13",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_13.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_12')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_14",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_14.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_13')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_15",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_15.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName": {
 						"value": "[parameters('DEV_ThresholdAlert_properties_Nextly_ThresholdAlert_DEV_parameters_FileName')]"
@@ -880,27 +988,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_10')]"
-			]
-		},
-		{
-			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_12",
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "2024-03-01",
-			"properties": {
-				"mode": "incremental",
-				"templateLink": {
-					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_12.json', parameters('containerSasToken'))]",
-					"contentVersion": "1.0.0.0"
-				},
-				"parameters": {
-					"factoryName": {
-						"value": "[parameters('factoryName')]"
-					}
-				}
-			},
-			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_11')]"
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_14')]"
 			]
 		}
 	]

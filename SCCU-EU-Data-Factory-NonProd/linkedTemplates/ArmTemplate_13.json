@@ -13,384 +13,1652 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/UAT_LoanDue_DataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/Nextly_LoanDueAlerts_DEV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "LoanDueAlerts@{formatDateTime(addHours(utcnow(), -4), 'MMddyyyyHHmm')}.txt",
-							"type": "Expression"
+				"activities": [
+					{
+						"name": "ExternalAlert_ThresholdStaging_Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
 						},
-						"folderPath": "UAT/LoanDueAlerts",
-						"container": "from-nextly"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_SQL_DataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataUAT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Username",
-						"type": "varchar"
-					},
-					{
-						"name": "MemberNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "PersonNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "EAgreementNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "Status",
-						"type": "bit"
-					}
-				],
-				"typeProperties": {
-					"schema": "Adaptive",
-					"table": "ActivityLog"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_ThresholdSinkDastaSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataUAT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "SubscriptionID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "BalanceAmount",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "",
-					"table": "ExternalAlert_ThresholdStaging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_ThresholdSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"ThresholdFilename": {
-						"type": "string"
-					}
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "@dataset().ThresholdFilename",
-							"type": "Expression"
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/LoanDueAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "DueDate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DueDate",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "AmountDue",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "AmountDue",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
-						"folderPath": "UAT/ThresholdAlerts",
-						"container": "to-nextly"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": [
-					{
-						"name": "SubscriptionID|BalanceAmount",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_TransactionSinkDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataUAT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
+						"inputs": [
+							{
+								"referenceName": "Dev_LoanDueAlertsSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Dev_LoanDueAlertsSinkDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					},
 					{
-						"name": "SubscriptionID",
-						"type": "int",
-						"precision": 10
+						"name": "External_LoanAlertQueue_Stored procedure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExternalAlert_ThresholdStaging_Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "spi_ExternalLoanALertQueue"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						}
 					},
 					{
-						"name": "EmailContent",
-						"type": "varchar"
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Truncate LoanDueAlerts staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Dev_LoanDueAlertsSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": " @pipeline().parameters.FileName"
+								}
+							},
+							"fieldList": [
+								"exists"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
 					},
 					{
-						"name": "TextContent",
-						"type": "varchar"
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "External_LoanAlertQueue_Stored procedure",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/LoanDueAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_CompletedLoanDueAlertsSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_CompletedLoanDueAlertsSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate LoanDueAlerts staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "sp_Truncate_External_LoanDueAlertStaging"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "ExternalAlert_TransactionStaging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_TransactionSourceDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
-					"TransactionFileName": {
-						"type": "string"
+					"FileName": {
+						"type": "string",
+						"defaultValue": "LoanDueAlert09192024.txt"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "to-nextly/DEV/LoanDueAlerts"
 					}
 				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/TransactionAlerts",
-						"container": "to-nextly"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
+				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Uat_LoanDueAlertsSinkDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/Nextly_LoanDueAlerts_UAT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataUAT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
+				"activities": [
 					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
+						"name": "LoanDue_Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "UAT/LoanDueAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "DueDate",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DueDate",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "AmountDue",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "AmountDue",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Uat_LoanDueAlertsSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": " @pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Uat_LoanDueAlertsSinkDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
 					},
 					{
-						"name": "SubscriptionID",
-						"type": "int",
-						"precision": 10
+						"name": "External_LoanAlertQueue_Stored procedure",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "LoanDue_Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "spi_ExternalLoanALertQueue"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
 					},
 					{
-						"name": "EmailContent",
-						"type": "varchar"
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Truncate LoanDueAlerts staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Uat_LoanDueAlertsSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": " @pipeline().parameters.FileName"
+								}
+							},
+							"fieldList": [
+								"exists"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
 					},
 					{
-						"name": "TextContent",
-						"type": "varchar"
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "External_LoanAlertQueue_Stored procedure",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "UAT/LoanDueAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "UAT_CompletedLoanDueAlertsSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "UAT_CompletedLoanDueAlertsSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate LoanDueAlerts staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "sp_Truncate_External_LoanDueAlertStaging"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "External_LoanDueAlertStaging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Uat_LoanDueAlertsSourceDataset')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
-					"TransactionFileName": {
-						"type": "string"
+					"FileName": {
+						"type": "string",
+						"defaultValue": "LoanDueAlert09192023.txt"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "to-nextly/UAT/LoanDueAlerts"
 					}
 				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/LoanDueAlerts",
-						"container": "to-nextly"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
+				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/UserCreditcardsExcel')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
+			"name": "[concat(parameters('factoryName'), '/Nextly_ThresholdAlert_DEV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Excel",
-				"typeProperties": {
-					"sheetName": "in",
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Nextly User Credit Cards DNA_CCM 2024_10_11_122619.xlsx",
-						"folderPath": "DEV/UserCreditCards",
-						"container": "offline-services"
+				"activities": [
+					{
+						"name": "ExternalAlert_ThresholdStaging_Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": {
+										"value": "DEV/ThresholdAlerts",
+										"type": "Expression"
+									},
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName\n",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "BalanceAmount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "BalanceAmount",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Dev_ThresholdSourceDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"ThresholdFilename": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Dev_ThresholdSinkDastaSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExternalAlert_ThresholdStaging_Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spi_ExtThresholdAlertToQueue]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Truncate Threshold staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Dev_ThresholdSourceDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"ThresholdFilename": "@pipeline().parameters.FileName"
+								}
+							},
+							"fieldList": [
+								"exists"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/ThresholdAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": false
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_CompletedThresholdSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_CompletedThresholdSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate Threshold staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_Truncate_ExternalAlert_ThresholdStaging]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						}
 					}
-				},
-				"schema": [
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					},
-					{
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/copybacsourc')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_ADFPOC",
-					"type": "LinkedServiceReference"
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
 				},
 				"parameters": {
-					"SchemaName": {
+					"FileName": {
 						"type": "string"
 					},
-					"TableName": {
+					"FilePath": {
 						"type": "string"
 					}
 				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [],
-				"typeProperties": {
-					"table": ""
-				}
+				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Archive')]",
+			"name": "[concat(parameters('factoryName'), '/Nextly_ThresholdAlert_UAT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExternalAlert_ThresholdStaging_Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": {
+										"value": "UAT/ThresholdAlerts",
+										"type": "Expression"
+									},
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName\n",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "BalanceAmount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "BalanceAmount",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "UAT_ThresholdSourceDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"ThresholdFilename": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "UAT_ThresholdSinkDastaSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExternalAlert_ThresholdStaging_Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spi_ExtThresholdAlertToQueue]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Truncate Threshold staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "UAT_ThresholdSourceDataSet",
+								"type": "DatasetReference",
+								"parameters": {
+									"ThresholdFilename": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"exists"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "UAT/ThresholdAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "UAT_CompletedThresholdSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "UAT_CompletedThresholdSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate Threshold staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[sp_Truncate_ExternalAlert_ThresholdStaging]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					},
+					"FilePath": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Nextly_TransactionAlert_DEV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExternalAlert_TransactionStaging_Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/TransactionAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "EmailContent",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "EmailContent",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SMSContent",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SMSContent",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Dev_TransactionSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Dev_TransactionSinkDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExternalAlert_TransactionStaging_Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "spi_ExtTransactionAlertToQueue"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Truncate Transaction staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Dev_TransactionSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": "@pipeline().parameters.FileName"
+								}
+							},
+							"fieldList": [
+								"exists"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/TransactionAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_CompletedTransactionSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_CompletedTransactionSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate Transaction staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "sp_Truncate_ExternalAlert_TransactionStaging"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataDev",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					},
+					"FilePath": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Nextly_TransactionAlert_UAT')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExternalAlert_ThresholdStaging_Copy data",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "UAT/TransactionAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "EmailContent",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "EmailContent",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "SMSContent",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "SMSContent",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "UAT_TransactionSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "UAT_TransactionSinkDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "ExternalAlert_ThresholdStaging_Copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "spi_ExtTransactionAlertToQueue"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "Get Metadata1",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Truncate Transaction staging",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "UAT_TransactionSourceDataset",
+								"type": "DatasetReference",
+								"parameters": {
+									"TransactionFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									}
+								}
+							},
+							"fieldList": [
+								"exists"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "DelimitedTextReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 3,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "UAT/TransactionAlerts",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "UAT_CompletedTransactionSource",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "UAT_CompletedTransactionSink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Truncate Transaction staging",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "sp_Truncate_ExternalAlert_TransactionStaging"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					},
+					"FilePath": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_Archive')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -415,7 +1683,7 @@
 								"partitionOption": "None"
 							},
 							"dataset": {
-								"referenceName": "Dev_BrowserTabLogsSourceDataSet",
+								"referenceName": "QA_BrowserTabInfoSourceDataSet",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -643,14 +1911,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_ErrorLogSourceDataSet",
+																"referenceName": "QA_ErrorLogSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveErrorLogDataset",
+																"referenceName": "QA_ArchiveErrorLogDataset",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -699,7 +1967,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ErrorLogSourceDataSet",
+																"referenceName": "QA_ErrorLogSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -860,14 +2128,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_TransactionLog_JsonDataSet",
+																"referenceName": "QA_TransactionLog_JsonDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveTransactionLog_JsonDataSet",
+																"referenceName": "QA_ArchiveTransactionLog_JsonDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -916,7 +2184,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_TransactionLog_JsonDataSet",
+																"referenceName": "QA_TransactionLog_JsonDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -944,7 +2212,7 @@
 															"source": {
 																"type": "AzureSqlSource",
 																"sqlReaderQuery": {
-																	"value": "SELECT * FROM ExternalRequestTxs\n WHERE CAST(RequestDateTime AS DATE)\n < DATEADD(DAY, -@{variables('ArchiveDays')}, CAST(GETDATE() AS DATE))\n",
+																	"value": "SELECT * FROM ExternalRequestTxs\n WHERE CAST(RequestDateTime AS DATE)\n < DATEADD(DAY, -@{variables('ArchiveDays')}, CAST(GETDATE() AS DATE))",
 																	"type": "Expression"
 																},
 																"queryTimeout": "02:00:00",
@@ -953,7 +2221,8 @@
 															"sink": {
 																"type": "AzureSqlSink",
 																"writeBehavior": "insert",
-																"sqlWriterUseTableLock": false
+																"sqlWriterUseTableLock": false,
+																"disableMetricsCollection": false
 															},
 															"enableStaging": false,
 															"translator": {
@@ -1193,14 +2462,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_ExternalRequestTxsSourceDataSet",
+																"referenceName": "QA_ExternalRequestTxsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveExternalRequestTxsDataSet",
+																"referenceName": "QA_ArchiveExternalRequestTxsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -1249,7 +2518,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ExternalRequestTxsSourceDataSet",
+																"referenceName": "QA_ExternalRequestTxsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -1530,14 +2799,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_TraceDataSourceData",
+																"referenceName": "QA_TraceDataSourceData",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveTraceData",
+																"referenceName": "QA_ArchiveTraceData",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -1586,7 +2855,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_TraceDataSourceData",
+																"referenceName": "QA_TraceDataSourceData",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -1851,14 +3120,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_TransactionLog_SqlSourceDataSet",
+																"referenceName": "QA_TransactionLog_SqlSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveTransactionLog_SqlDataSet",
+																"referenceName": "QA_ArchiveTransactionLog_SqlDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -1907,7 +3176,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_TransactionLog_SqlSourceDataSet",
+																"referenceName": "QA_TransactionLog_SqlSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -2156,14 +3425,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "DEV_FormAPITxsSourceDataSet",
+																"referenceName": "QA_FormAPITxsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveFormAPITxsDataSet",
+																"referenceName": "QA_ArchiveFormAPITxsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -2212,7 +3481,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "DEV_FormAPITxsSourceDataSet",
+																"referenceName": "QA_FormAPITxsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -2421,14 +3690,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_BrowserTabLogsSourceDataSet",
+																"referenceName": "QA_BrowserTabLogsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveBrowserTabLogsDataSet",
+																"referenceName": "QA_ArchiveBrowserTabLogsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -2477,7 +3746,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_BrowserTabLogsSourceDataSet",
+																"referenceName": "QA_BrowserTabLogsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -2614,14 +3883,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_BrowserTabInfoSourceDataSet",
+																"referenceName": "QA_BrowserTabInfoSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveBrowserTabInfoDataSet",
+																"referenceName": "QA_ArchiveBrowserTabInfoDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -2670,7 +3939,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_BrowserTabInfoSourceDataSet",
+																"referenceName": "QA_BrowserTabInfoSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -2807,14 +4076,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_AF_Log4NetDBSourceDataSet",
+																"referenceName": "QA_AF_Log4NetDBSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveAF_Log4NetDBDataSet",
+																"referenceName": "QA_ArchiveAF_Log4NetDBDBDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -2863,7 +4132,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_AF_Log4NetDBSourceDataSet",
+																"referenceName": "QA_AF_Log4NetDBSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -2988,14 +4257,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_NF_UserConnectionsSourceDataSet",
+																"referenceName": "QA_NF_UserConnectionsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveNF_UserConnectionsDataSet",
+																"referenceName": "QA_ArchiveNF_UserConnectionsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -3044,7 +4313,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_NF_UserConnectionsSourceDataSet",
+																"referenceName": "QA_NF_UserConnectionsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -3181,14 +4450,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_SecurityLogSourceDateSet",
+																"referenceName": "QA_SecurityLogSourceDateSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveSecurityLogDataSet",
+																"referenceName": "QA_ArchiveSecurityLogDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -3237,7 +4506,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_SecurityLogSourceDateSet",
+																"referenceName": "QA_SecurityLogSourceDateSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -3362,14 +4631,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_RefreshTokensSourceDataSet",
+																"referenceName": "QA_RefreshTokensSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveRefreshTokensDataSe",
+																"referenceName": "QA_ArchiveRefreshTokensDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -3418,7 +4687,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_RefreshTokensSourceDataSet",
+																"referenceName": "QA_RefreshTokensSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -3543,14 +4812,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_UserInvalidAttemptsSourceDataSet",
+																"referenceName": "QA_UserInvalidAttemptsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveUserInvalidAttemptsDataSet",
+																"referenceName": "QA_ArchiveUserInvalidAttemptsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -3599,7 +4868,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_UserInvalidAttemptsSourceDataSet",
+																"referenceName": "QA_UserInvalidAttemptsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -3704,14 +4973,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_PasswordHistorySourceDataSet",
+																"referenceName": "QA_PasswordHistorySourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchivePasswordHistoryDataSet",
+																"referenceName": "QA_ArchivePasswordHistoryDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -3760,7 +5029,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_PasswordHistorySourceDataSet",
+																"referenceName": "QA_PasswordHistorySourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -3885,14 +5154,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_TempUserLoginValidationsSourceDataSet",
+																"referenceName": "QA_TempUserLoginValidationsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveTempUserLoginValidationsDataSet",
+																"referenceName": "QA_ArchiveTempUserLoginValidationsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -3941,7 +5210,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_TempUserLoginValidationsSourceDataSet",
+																"referenceName": "QA_TempUserLoginValidationsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -4066,14 +5335,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_RulesLogSourceDataSet",
+																"referenceName": "QA_RulesLogSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveRulesLogDataSet",
+																"referenceName": "QA_ArchiveRulesLogDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4122,7 +5391,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_RulesLogSourceDataSet",
+																"referenceName": "QA_RulesLogSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -4355,14 +5624,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_UserLoginAttemptsSourceDataSet",
+																"referenceName": "QA_UserLoginAttemptsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveUserLoginAttemptsDataSet",
+																"referenceName": "QA_ArchiveUserLoginAttemptsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4411,7 +5680,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_UserLoginAttemptsSourceDataSet",
+																"referenceName": "QA_UserLoginAttemptsSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -4512,14 +5781,14 @@
 														},
 														"inputs": [
 															{
-																"referenceName": "Dev_UserMappingConfigurationSourceDataSet",
+																"referenceName": "QA_UserMappingConfigurationSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
 														],
 														"outputs": [
 															{
-																"referenceName": "Dev_ArchiveUserMappingConfigurationDataSet",
+																"referenceName": "QA_ArchiveUserMappingConfigurationDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4568,7 +5837,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_UserMappingConfigurationSourceDataSet",
+																"referenceName": "QA_UserMappingConfigurationSourceDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															},
@@ -4762,7 +6031,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveErrorLogDataset",
+																"referenceName": "QA_ArchiveErrorLogDataset",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4809,7 +6078,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTransactionLog_JsonDataSet",
+																"referenceName": "QA_ArchiveTransactionLog_JsonDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4856,7 +6125,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveExternalRequestTxsDataSet",
+																"referenceName": "QA_ArchiveExternalRequestTxsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4903,7 +6172,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTraceData",
+																"referenceName": "QA_ArchiveTraceData",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4950,7 +6219,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTransactionLog_SqlDataSet",
+																"referenceName": "QA_ArchiveTransactionLog_SqlDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -4997,7 +6266,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveFormAPITxsDataSet",
+																"referenceName": "QA_ArchiveFormAPITxsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5044,7 +6313,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveBrowserTabLogsDataSet",
+																"referenceName": "QA_ArchiveBrowserTabLogsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5091,7 +6360,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveBrowserTabInfoDataSet",
+																"referenceName": "QA_ArchiveBrowserTabInfoDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5138,7 +6407,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveAF_Log4NetDBDataSet",
+																"referenceName": "QA_ArchiveAF_Log4NetDBDBDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5185,7 +6454,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveNF_UserConnectionsDataSet",
+																"referenceName": "QA_ArchiveNF_UserConnectionsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5232,7 +6501,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveSecurityLogDataSet",
+																"referenceName": "QA_ArchiveSecurityLogDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5279,7 +6548,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveRefreshTokensDataSe",
+																"referenceName": "QA_ArchiveRefreshTokensDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5326,7 +6595,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveUserInvalidAttemptsDataSet",
+																"referenceName": "QA_ArchiveUserInvalidAttemptsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5373,7 +6642,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchivePasswordHistoryDataSet",
+																"referenceName": "QA_ArchivePasswordHistoryDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5420,7 +6689,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveTempUserLoginValidationsDataSet",
+																"referenceName": "QA_ArchiveTempUserLoginValidationsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5467,7 +6736,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveRulesLogDataSet",
+																"referenceName": "QA_ArchiveRulesLogDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5514,7 +6783,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveUserLoginAttemptsDataSet",
+																"referenceName": "QA_ArchiveUserLoginAttemptsDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5561,7 +6830,7 @@
 																"partitionOption": "None"
 															},
 															"dataset": {
-																"referenceName": "Dev_ArchiveUserMappingConfigurationDataSet",
+																"referenceName": "QA_ArchiveUserMappingConfigurationDataSet",
 																"type": "DatasetReference",
 																"parameters": {}
 															}
@@ -5621,7 +6890,7 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CCM_CreditCard_AccountDetails')]",
+			"name": "[concat(parameters('factoryName'), '/QA_CCM_CreditCard_AccountDetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -5651,7 +6920,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
+									"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -5959,7 +7228,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_CCM_CreditCard_AccountDetails",
+								"referenceName": "QA_OfflinSource_CCM_CreditCard_AccountDetails",
 								"type": "DatasetReference",
 								"parameters": {
 									"CCM_CreditCard_AccountDetails": "@pipeline().parameters.FileName"
@@ -5968,7 +7237,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_CCM_CreditCard_AccountDetails",
+								"referenceName": "QA_OfflineDestination_CCM_CreditCard_AccountDetails",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -5987,7 +7256,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -6023,68 +7292,9 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertToCreditCardAccountBalanceInfo]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
-					},
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"deleteFilesAfterCompletion": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -6097,18 +7307,18 @@
 					},
 					"FilePath": {
 						"type": "string",
-						"defaultValue": "offline-services/DEV/CCM_CreditCard_AccountDetails"
+						"defaultValue": "offline-services/QA/CCM_CreditCard_AccountDetails"
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CK_SAV_Accountdetails')]",
+			"name": "[concat(parameters('factoryName'), '/QA_CK_SAV_Accountdetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -6138,7 +7348,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/CK_SAV_Accountdetails",
+									"wildcardFolderPath": "QA/CK_SAV_Accountdetails",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -6318,7 +7528,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_CK_SAV_Accountdetails",
+								"referenceName": "QA_OfflinSource_CK_SAV_Accountdetails",
 								"type": "DatasetReference",
 								"parameters": {
 									"CK_SAV_Accountdetails": "@pipeline().parameters.FileName"
@@ -6327,7 +7537,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_CK_SAV_Accountdetails",
+								"referenceName": "QA_OfflineDestination_CK_SAV_Accountdetails",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -6346,7 +7556,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -6382,68 +7592,9 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertIntoCKANDSAVAccountsBalanceInfo]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
-					},
-					{
-						"name": "Copy data2",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "DEV/CK_SAV_Accountdetails",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"deleteFilesAfterCompletion": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DEV_Completed_CK_SAV_Accountdetails_Source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DEV_Completed_CK_SAV_Accountdetails_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -6456,18 +7607,18 @@
 					},
 					"FilePath": {
 						"type": "string",
-						"defaultValue": "offline-services/DEV/CK_SAV_Accountdetails"
+						"defaultValue": "offline-services/QA/CK_SAV_Accountdetails"
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/CK_SAV_Accounttransactions')]",
+			"name": "[concat(parameters('factoryName'), '/QA_CK_SAV_Accounttransactions')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -6497,7 +7648,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/CK_SAV_Accounttransactions",
+									"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -6611,7 +7762,7 @@
 										"sink": {
 											"name": "DEBIT_CREDIT_FLAG",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -6734,7 +7885,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_CK_SAV_Accounttransactions",
+								"referenceName": "QA_OfflinSource_CK_SAV_Accounttransactions",
 								"type": "DatasetReference",
 								"parameters": {
 									"CK_SAV_Accounttransactionsons_Staging": "@pipeline().parameters.FileName"
@@ -6743,7 +7894,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_CK_SAV_Accounttransactions",
+								"referenceName": "QA_OfflineDestination_CK_SAV_Accounttransactions",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -6762,7 +7913,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -6798,68 +7949,9 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertToAccountTransactionsDetails]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
-					},
-					{
-						"name": "completed copy",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "DEV/CK_SAV_Accounttransactions",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"deleteFilesAfterCompletion": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DEV_Completed_CK_SAV_Accounttransactions_Source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DEV_Completed_CK_SAV_Accounttransactions_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -6872,18 +7964,18 @@
 					},
 					"FilePath": {
 						"type": "string",
-						"defaultValue": "offline-services/DEV/CK_SAV_Accounttransactions"
+						"defaultValue": "offline-services/QA/CK_SAV_Accounttransactions"
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/DebitCardDetails')]",
+			"name": "[concat(parameters('factoryName'), '/QA_DebitCardDetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -6913,7 +8005,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/DebitCardDetails",
+									"wildcardFolderPath": "QA/DebitCardDetails",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -7183,7 +8275,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_DebitCardDetails",
+								"referenceName": "QA_OfflinSource_DebitCardDetails",
 								"type": "DatasetReference",
 								"parameters": {
 									"DebitCardDetails": "@pipeline().parameters.FileName"
@@ -7192,7 +8284,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_DebitCardDetails",
+								"referenceName": "QA_OfflineDestination_DebitCardDetails",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -7211,7 +8303,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -7247,68 +8339,9 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertInToMemberDebitCardDetails]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
-					},
-					{
-						"name": "completed copy",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "DEV/DebitCardDetails",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"deleteFilesAfterCompletion": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DEV_Completed_DebitCardDetails_Source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DEV_Completed_DebitCardDetails_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -7321,18 +8354,18 @@
 					},
 					"FilePath": {
 						"type": "string",
-						"defaultValue": "offline-services/DEV/DebitCardDetails"
+						"defaultValue": "offline-services/QA/DebitCardDetails"
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/LoanDetails')]",
+			"name": "[concat(parameters('factoryName'), '/QA_LoanDetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -7362,7 +8395,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/LoanDetails",
+									"wildcardFolderPath": "QA/LoanDetails",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -7802,19 +8835,16 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_LoanDetails",
+								"referenceName": "QA_OfflinSource_LoanDetails",
 								"type": "DatasetReference",
 								"parameters": {
-									"LoanDetailsFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									}
+									"LoanDetailsFileName": "@pipeline().parameters.FileName"
 								}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_LoanDetails",
+								"referenceName": "QA_OfflineDestination_LoanDetails",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -7833,7 +8863,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -7869,68 +8899,9 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertIntoLoanAccountsBalanceInfo]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
-					},
-					{
-						"name": "completed copy",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "DEV/LoanDetails",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"deleteFilesAfterCompletion": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DEV_Completed_LoanDetails_Source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DEV_Completed_LoanDetails_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -7943,18 +8914,18 @@
 					},
 					"FilePath": {
 						"type": "string",
-						"defaultValue": "offline-services/DEV/LoanDetails"
+						"defaultValue": "offline-services/QA/LoanDetails"
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MemberDataDetails')]",
+			"name": "[concat(parameters('factoryName'), '/QA_MemberDataDetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -7984,7 +8955,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/MemberDataDetails",
+									"wildcardFolderPath": "QA/MemberDataDetails",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -8061,7 +9032,7 @@
 										"sink": {
 											"name": "AccountOwnershipCode",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -8325,7 +9296,7 @@
 										"sink": {
 											"name": "CountryCode",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -8361,7 +9332,7 @@
 										"sink": {
 											"name": "EmailTypeCode",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -8506,19 +9477,16 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_MemberDataDetails",
+								"referenceName": "QA_OfflinSource_MemberDataDetails",
 								"type": "DatasetReference",
 								"parameters": {
-									"MemberDataDetails": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									}
+									"MemberDataDetails": "@pipeline().parameters.FileName"
 								}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_MemberDataDetails",
+								"referenceName": "QA_OfflineDestination_MemberDataDetails",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -8537,7 +9505,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -8573,68 +9541,9 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertIntoMembersOffline]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
-					},
-					{
-						"name": "completed copy",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Stored procedure1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"wildcardFolderPath": "DEV/MemberDataDetails",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
-									"deleteFilesAfterCompletion": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobStorageWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "DEV_Completed_MemberDataDetails_Source",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "DEV_Completed_MemberDataDetails_Sink",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
 					}
 				],
 				"policy": {
@@ -8647,18 +9556,18 @@
 					},
 					"FilePath": {
 						"type": "string",
-						"defaultValue": "offline-services/DEV/MemberDataDetails"
+						"defaultValue": "offline-services/QA/MemberDataDetails"
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NextlyAccountRoles')]",
+			"name": "[concat(parameters('factoryName'), '/QA_NextlyAccountRoles')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -8688,7 +9597,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/NextlyAccountRoles",
+									"wildcardFolderPath": "QA/NextlyAccountRoles",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -8741,7 +9650,7 @@
 										"sink": {
 											"name": "RoleCode",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -8766,7 +9675,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_NextlyAccountRoles",
+								"referenceName": "QA_OfflinSource_NextlyAccountRoles",
 								"type": "DatasetReference",
 								"parameters": {
 									"NextlyAccountRoles": "@pipeline().parameters.FileName"
@@ -8775,7 +9684,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_NextlyAccountRoles",
+								"referenceName": "QA_OfflineDestination_NextlyAccountRoles",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -8794,7 +9703,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -8830,7 +9739,7 @@
 							"storedProcedureName": "Spi_InsertToMemberRolesDetails"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -8910,14 +9819,14 @@
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NextlyAccountlockout')]",
+			"name": "[concat(parameters('factoryName'), '/QA_NextlyAccountlockout')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -8947,7 +9856,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/NextlyAccountlockout",
+									"wildcardFolderPath": "QA/NextlyAccountlockout",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -8988,7 +9897,7 @@
 										"sink": {
 											"name": "LockoutFlagCode",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -9025,7 +9934,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_NextlyAccountlockout",
+								"referenceName": "QA_OfflinSource_NextlyAccountlockout",
 								"type": "DatasetReference",
 								"parameters": {
 									"NextlyAccountlockout": "@pipeline().parameters.FileName"
@@ -9034,7 +9943,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_NextlyAccountlockout",
+								"referenceName": "QA_OfflineDestination_NextlyAccountlockout",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -9053,7 +9962,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -9089,7 +9998,7 @@
 							"storedProcedureName": "Spi_InsertToMemberLockOutFlagDetails"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -9169,14 +10078,14 @@
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
 				},
 				"annotations": []
 			},
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/NextlyLoanTransactions')]",
+			"name": "[concat(parameters('factoryName'), '/QA_NextlyLoanTransactions')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -9206,7 +10115,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/NextlyLoanTransactions",
+									"wildcardFolderPath": "QA/NextlyLoanTransactions",
 									"wildcardFileName": {
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
@@ -9333,7 +10242,7 @@
 										"sink": {
 											"name": "DEBIT_CREDIT_FLAG",
 											"type": "String",
-											"physicalType": "char"
+											"physicalType": "varchar"
 										}
 									},
 									{
@@ -9456,7 +10365,7 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Dev_OfflinSource_NExtlyLoanTransactions",
+								"referenceName": "QA_OfflinSource_NExtlyLoanTransactions",
 								"type": "DatasetReference",
 								"parameters": {
 									"NextlyLoanTransactions": "@pipeline().parameters.FileName"
@@ -9465,7 +10374,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "Dev_OfflineDestination_NextlyLoanTransactions",
+								"referenceName": "QA_OfflineDestination_NextlyLoanTransactions",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -9484,7 +10393,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -9520,7 +10429,7 @@
 							"storedProcedureName": "[[dbo].[Spi_InsertToLoanTransactionsDetails]"
 						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
 						}
 					},
@@ -9600,7 +10509,2035 @@
 					}
 				},
 				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices"
+					"name": "OfflineServices/QA_OfflineServices"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_TD_Accountdetails')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "TD_Accountdetails_CopyData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "TD_Accountdetails_StagingTruncate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "QA/TD_Accountdetails",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MEMBER_TYPE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "MEMBER_TYPE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "MEMBER_NUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "MEMBER_NUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "TAX_NUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TAX_NUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_NUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_NUMBER",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_MAJOR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_MAJOR",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_MINOR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_MINOR",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_STATUS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_STATUS",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_BALANCE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CURRENT_BALANCE",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_INT_RATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_INT_RATE",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 5
+										}
+									},
+									{
+										"source": {
+											"name": "PRIOR_YTD_INTEREST_AMT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PRIOR_YTD_INTEREST_AMT",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_YTD_INTEREST_AMT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CURRENT_YTD_INTEREST_AMT",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "LAST_INTEREST_CREDIT_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LAST_INTEREST_CREDIT_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "LAST_INTEREST_CREDIT_AMOUNT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LAST_INTEREST_CREDIT_AMOUNT",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "TERM_DAYS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TERM_DAYS",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_TERM",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CURRENT_TERM",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGINAL_CONTRACT_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ORIGINAL_CONTRACT_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "LAST_CONTRACT_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LAST_CONTRACT_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_MATURITY_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_MATURITY_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "QA_OfflinSource_CD_Accountdetails",
+								"type": "DatasetReference",
+								"parameters": {
+									"CD_Accountdetails": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "QA_OfflineDestination_CD_Accountdetails",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "TD_Accountdetails_StagingTruncate",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCUQA_OfflineModeDB",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "TRUNCATE TABLE [dbo].[TD_Accountdetails_Staging]"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "TD_Accountdetails_CopyData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[Spi_InsertIntoTDAccountsBalanceInfo]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCUQA_OfflineModeDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "Nextly TD Account Details 2024_11_12_131052.csv"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "offline-services/QA/CD_Accountdetails"
+					}
+				},
+				"folder": {
+					"name": "OfflineServices/QA_OfflineServices"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_UserCreditCards')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "UserCreditCards_CopyData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "UserCreditCards_StagingTruncate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "QA/UserCreditCards",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "MEMBERTYPE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "MEMBERTYPE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "DNAACCTNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNAACCTNBR",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "CCMACCTNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CCMACCTNBR",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "NEXTLYPERSONNUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NEXTLYPERSONNUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "DNABUSINESSORGNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNABUSINESSORGNBR",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "DNAMEMBERNUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNAMEMBERNUMBER",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "NEXTLYSIGNUPDATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "NEXTLYSIGNUPDATE",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "DNACREDITCARDAGREEMENTNBR",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DNACREDITCARDAGREEMENTNBR",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox6",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox6",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox14",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox14",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox12",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox12",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox10",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox10",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Textbox8",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Textbox8",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "QA_OfflinSource_UserCreditCards",
+								"type": "DatasetReference",
+								"parameters": {
+									"UserCreditCards": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "QA_OfflineDestination_UserCreditCards",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "UserCreditCards_StagingTruncate",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCUQA_OfflineModeDB",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "TRUNCATE TABLE UserCreditCards_Staging"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "UserCreditCards_CopyData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[Spi_InsertInToMemberCreditCardDetails]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCUQA_OfflineModeDB",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_12_130839.csv"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "offline-services/QA/UserCreditCards"
+					}
+				},
+				"folder": {
+					"name": "OfflineServices/QA_OfflineServices"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUAlerts_DEV')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "ExternalAlerts_Copy data1",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "EXEC sps_GetExternalAlertRecipients",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "AccountID",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "AccountID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "EMAIL",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "EMAIL",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "PHONE",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "PHONE",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_GetExternalAlertRecipientsDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "GetThresholdAlertSubscriptions_Copy data",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "EXEC Sps_GetThresholdAlertSubscriptionsToFile",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "AccountID",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "AccountID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "BalanceThreshold",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "BalanceThreshold",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "BalanceType",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "BalanceType",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "BalanceTypeAvailable",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "BalanceTypeAvailable",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_GetThresholdAlertSubscriptionsDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "GetTransactionAlertSubscription_Copy data",
+						"type": "Copy",
+						"state": "Inactive",
+						"onInactiveMarkAs": "Succeeded",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "EXEC sps_GetTransactionAlertSubscriptionToFile",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "SubscriptionID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "SubscriptionID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "AccountID",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "AccountID",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "TransactionTypeString",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "TransactionTypeString",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "NoAmountFlag",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "NoAmountFlag",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MoreThanFlag",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "MoreThanFlag",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "MoreThanAmount",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "MoreThanAmount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LessThanFlag",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "LessThanFlag",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "LessThanAmount",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "LessThanAmount",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Language",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Language",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_GetTransactionAlertSubscriptionDataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Count_ExternalAlerts",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sps_GetExternalAlertRecipients]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount_ExternalAlerts",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_ExternalAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount_ExternalAlerts",
+							"value": {
+								"value": "@length(activity('Count_ExternalAlerts').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount_ExternalAlerts",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount_ExternalAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount_ExternalAlerts'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "ExternalAlerts_Copy data1_copy1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": "EXEC sps_GetExternalAlertRecipients",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int64",
+														"physicalType": "bigint"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "EMAIL",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "EMAIL",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "PHONE",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "PHONE",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DEV_SQL_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_GetExternalAlertRecipientsDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Count_ThresholdAlerts",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[Sps_GetThresholdAlertSubscriptionsToFile]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount_ThresholdAlerts",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_ThresholdAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount_ThresholdAlerts",
+							"value": {
+								"value": "@length(activity('Count_ThresholdAlerts').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount_ThresholdAlerts",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount_ThresholdAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount_ThresholdAlerts'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "GetThresholdAlertSubscriptions_Copy data_copy1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": "EXEC Sps_GetThresholdAlertSubscriptionsToFile",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int64",
+														"physicalType": "bigint"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "BalanceThreshold",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "BalanceThreshold",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "BalanceType",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "BalanceType",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "BalanceTypeAvailable",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "BalanceTypeAvailable",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Type",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "Type",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DEV_SQL_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_GetThresholdAlertSubscriptionsDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "Count_TransactionAlerts",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderStoredProcedureName": "[[dbo].[sps_GetTransactionAlertSubscriptionToFile]",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "DEV_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Set_RowCount_TransactionAlerts",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Count_TransactionAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RowCount_TransactionAlerts",
+							"value": {
+								"value": "@length(activity('Count_TransactionAlerts').output.value)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Check_RowCount_Transaction",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Set_RowCount_TransactionAlerts",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(variables('RowCount_TransactionAlerts'), 0)\n",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "GetTransactionAlertSubscription_Copy data_copy1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": "EXEC sps_GetTransactionAlertSubscriptionToFile",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "DelimitedTextSink",
+											"storeSettings": {
+												"type": "AzureBlobStorageWriteSettings"
+											},
+											"formatSettings": {
+												"type": "DelimitedTextWriteSettings",
+												"quoteAllText": true,
+												"fileExtension": ".txt"
+											}
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"mappings": [
+												{
+													"source": {
+														"name": "SubscriptionID",
+														"type": "Int64",
+														"physicalType": "bigint"
+													},
+													"sink": {
+														"name": "SubscriptionID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "AccountID",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "TransactionTypeString",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "TransactionTypeString",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "NoAmountFlag",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "NoAmountFlag",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "MoreThanFlag",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "MoreThanFlag",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "MoreThanAmount",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "MoreThanAmount",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "LessThanFlag",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "LessThanFlag",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "LessThanAmount",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "LessThanAmount",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Language",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "Language",
+														"type": "String",
+														"physicalType": "String"
+													}
+												},
+												{
+													"source": {
+														"name": "Type",
+														"type": "String",
+														"physicalType": "varchar"
+													},
+													"sink": {
+														"name": "Type",
+														"type": "String",
+														"physicalType": "String"
+													}
+												}
+											],
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "DEV_SQL_DataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_GetTransactionAlertSubscriptionDataSet",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"concurrency": 1,
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"variables": {
+					"DateFormat": {
+						"type": "String"
+					},
+					"FromDateTime": {
+						"type": "String"
+					},
+					"SampleDate": {
+						"type": "String"
+					},
+					"RowCount_ExternalAlerts": {
+						"type": "Integer"
+					},
+					"RowCount_ThresholdAlerts": {
+						"type": "Integer"
+					},
+					"RowCount_TransactionAlerts": {
+						"type": "Integer"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUDEV_BBAlerts_DynamicRetention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BBAlerts_Archive",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BBAlerts'  AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUDEV_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Archive_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BBAlerts_Archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BBAlerts_Archive').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BBAlerts_Script",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "BBAlerts_Copy data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCU_LogDBDev",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName}  WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n\n",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "BBAlerts_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SCCUDEV_BBAlerts_Source",
+											"type": "DatasetReference",
+											"parameters": {
+												"SourceDB": {
+													"value": "@item().SourceDBName",
+													"type": "Expression"
+												},
+												"SourceTable": {
+													"value": "@item().SourceTableName",
+													"type": "Expression"
+												},
+												"SourceSchema": {
+													"value": "@item().SourceSchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_Archive_Destination",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "BBAlerts_Purge",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Archive_ForEach",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BBAlerts' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUDEV_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Purge_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BBAlerts_Purge",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BBAlerts_Purge').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BBAlerts_Purge_Script",
+									"type": "Script",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCU_ArchiveDev",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DECLARE @BatchSize INT = 10000;  -- Define the batch size for deletion\nDECLARE @RowsAffected INT = 1;    -- Initialize with a non-zero value\nDECLARE @TotalRowsDeleted INT = 0; -- Variable to accumulate total rows deleted\nDECLARE @LoopCount INT = 0;       -- Variable to count the number of loop executions\n \n-- Start the batch-wise deletion process\nWHILE @RowsAffected > 0\nBEGIN\n    -- Increment the loop execution count\n    SET @LoopCount = @LoopCount + 1;\n \n    -- Delete top (@BatchSize) rows based on the purge condition\n    DELETE TOP (@BatchSize)\n    FROM @{item().DestinationSchemaName}.@{item().DestinationTableName}\n    WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().PurgeDays}, CAST(GETDATE() AS DATE));\n \n    -- Get the number of rows deleted in the last batch\n    SET @RowsAffected = @@ROWCOUNT;\n \n    -- Accumulate the total number of rows deleted\n    SET @TotalRowsDeleted = @TotalRowsDeleted + @RowsAffected;\nEND\n \n-- Optionally, you can output the total rows deleted and loop execution count for logging purposes\nSELECT @TotalRowsDeleted AS TotalRowsDeleted, @LoopCount AS LoopExecutionCount;",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
 				},
 				"annotations": []
 			},
