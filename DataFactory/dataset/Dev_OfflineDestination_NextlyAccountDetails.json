@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets"
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Destination"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
