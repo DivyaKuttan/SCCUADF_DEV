@@ -253,12 +253,12 @@
 							},
 							{
 								"source": {
-									"name": "EntityNumber",
+									"name": "RoleEntityNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "EntityNumber",
+									"name": "RoleEntityNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -390,7 +390,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/DebitCardDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -422,7 +425,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyDebitCards 2024_11_12_111128.csv"
+				"defaultValue": "NextlyDebitCards 2024_11_18_200711.csv"
 			},
 			"FilePath": {
 				"type": "string",

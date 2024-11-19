@@ -428,7 +428,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -460,7 +463,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CCM Credit Card Account Details2024_11_12_130519.csv"
+				"defaultValue": "Nextly CCM Credit Card Account Details2024_11_18_204825.csv"
 			},
 			"FilePath": {
 				"type": "string",

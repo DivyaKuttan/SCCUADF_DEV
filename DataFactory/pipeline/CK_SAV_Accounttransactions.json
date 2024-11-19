@@ -50,42 +50,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "ACCOUNT_NUMBER",
 									"type": "String",
 									"physicalType": "String"
@@ -141,7 +105,7 @@
 								"sink": {
 									"name": "DEBIT_CREDIT_FLAG",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -357,7 +321,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CK_SAV_Accounttransactions",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -389,7 +356,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_11_12_132444.csv"
+				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_11_16_112429.csv"
 			},
 			"FilePath": {
 				"type": "string",

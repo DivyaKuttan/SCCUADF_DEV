@@ -49,12 +49,12 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "Int64",
 									"physicalType": "bigint"
 								}
@@ -68,7 +68,7 @@
 								"sink": {
 									"name": "LockoutFlagCode",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -235,7 +235,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountLockout 2024_11_12_110012.csv"
+				"defaultValue": "NextlyAccountLockout 2024_11_18_213540.csv"
 			},
 			"FilePath": {
 				"type": "string",

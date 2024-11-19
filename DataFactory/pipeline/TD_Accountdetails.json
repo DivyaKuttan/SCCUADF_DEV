@@ -49,84 +49,12 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
-								}
-							},
-							{
-								"source": {
-									"name": "TAX_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "TAX_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
-								}
-							},
-							{
-								"source": {
 									"name": "ACCOUNT_NUMBER",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "ACCOUNT_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ACCOUNT_MAJOR",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ACCOUNT_MAJOR",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ACCOUNT_MINOR",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ACCOUNT_MINOR",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ACCOUNT_STATUS",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ACCOUNT_STATUS",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -197,6 +125,18 @@
 									"name": "LAST_INTEREST_CREDIT_DATE",
 									"type": "DateTime",
 									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "DATE_LAST_CONTACT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DATE_LAST_CONTACT",
+									"type": "DateTime",
+									"physicalType": "datetime"
 								}
 							},
 							{
@@ -376,7 +316,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/TD_Accountdetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -408,7 +351,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly TD Account Details 2024_11_12_131052.csv"
+				"defaultValue": "Nextly TD Account Details 2024_11_16_120124.csv"
 			},
 			"FilePath": {
 				"type": "string",
