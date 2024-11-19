@@ -175,8 +175,6 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -199,8 +197,11 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFolderPath": "DEV/NextlyAccountRoles",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -217,13 +218,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Source",
+						"referenceName": "DEV_Completed_NextlyAccountRoles_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Sink",
+						"referenceName": "DEV_Completed_NextlyAccountRoles_Sink",
 						"type": "DatasetReference"
 					}
 				]
