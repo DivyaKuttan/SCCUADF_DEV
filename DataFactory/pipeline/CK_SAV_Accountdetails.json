@@ -49,90 +49,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
-								}
-							},
-							{
-								"source": {
-									"name": "PERSORG_TAX_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PERSORG_TAX_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
-								}
-							},
-							{
-								"source": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_NUMBER",
-									"type": "Int64",
-									"physicalType": "bigint"
-								}
-							},
-							{
-								"source": {
-									"name": "ACCOUNT_MAJOR",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ACCOUNT_MAJOR",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ACCOUNT_MINOR",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ACCOUNT_MINOR",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ACCOUNT_STATUS",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ACCOUNT_STATUS",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "ACCOUNT_NUMBER",
 									"type": "String",
 									"physicalType": "String"
@@ -195,6 +111,18 @@
 									"physicalType": "decimal",
 									"scale": 2,
 									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "DATE_LAST_CONTACT",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DATE_LAST_CONTACT",
+									"type": "DateTime",
+									"physicalType": "datetime"
 								}
 							}
 						],
@@ -300,7 +228,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/CK_SAV_Accountdetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -332,7 +263,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV Account Details 2024_11_12_131441.csv"
+				"defaultValue": "Nextly CK SAV Account Details 2024_11_16_110220.csv"
 			},
 			"FilePath": {
 				"type": "string",

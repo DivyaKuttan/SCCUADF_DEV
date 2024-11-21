@@ -61,20 +61,6 @@
 							},
 							{
 								"source": {
-									"name": "CurrentBalance",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CurrentBalance",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
 									"name": "BalanceCategoryCodeEscrow",
 									"type": "String",
 									"physicalType": "String"
@@ -563,7 +549,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/LoanDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -595,7 +584,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyLoanDetails 2024_11_12_112850.csv"
+				"defaultValue": "NextlyLoanAccountDetails 2024_11_18_203334.csv"
 			},
 			"FilePath": {
 				"type": "string",

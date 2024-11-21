@@ -44,7 +44,7 @@
 						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
+					"enableSkipIncompatibleRow": false,
 					"logSettings": {
 						"enableCopyActivityLog": true,
 						"copyActivityLogSettings": {
@@ -63,42 +63,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "ACCOUNT_NUMBER",
 									"type": "String",
 									"physicalType": "String"
@@ -154,7 +118,7 @@
 								"sink": {
 									"name": "DEBIT_CREDIT_FLAG",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -347,8 +311,6 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -371,7 +333,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
+							"wildcardFolderPath": "DEV/NextlyLoanTransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -392,13 +354,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Source",
+						"referenceName": "DEV_Completed_NextlyLoanTransactions_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Sink",
+						"referenceName": "DEV_Completed_NextlyLoanTransactions_Sink",
 						"type": "DatasetReference"
 					}
 				]
@@ -407,7 +369,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyLoanTransactions 2024_11_12_135122.csv"
+				"defaultValue": "Nextly Loan Account Transactions Prior 15 Days 2024_11_16_114606.csv"
 			},
 			"FilePath": {
 				"type": "string",

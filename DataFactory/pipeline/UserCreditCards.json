@@ -306,7 +306,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/UserCreditCards",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -338,7 +341,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_12_130839.csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_18_204737.csv"
 			},
 			"FilePath": {
 				"type": "string",

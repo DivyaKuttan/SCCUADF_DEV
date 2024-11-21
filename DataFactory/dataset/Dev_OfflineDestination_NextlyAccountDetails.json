@@ -1,5 +1,5 @@
 {
-	"name": "Dev_OfflineDestination_LoanDetails",
+	"name": "Dev_OfflineDestination_NextlyAccountDetails",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_OfflineDev",
@@ -184,7 +184,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "LoanDetails_Staging"
+			"table": "NextlyAccountDetails_Staging"
 		}
 	}
 }

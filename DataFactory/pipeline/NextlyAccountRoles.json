@@ -49,12 +49,12 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "Int64",
 									"physicalType": "bigint"
 								}
@@ -73,6 +73,18 @@
 							},
 							{
 								"source": {
+									"name": "RoleEntityTypeCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RoleEntityTypeCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "RoleCode",
 									"type": "String",
 									"physicalType": "String"
@@ -80,7 +92,7 @@
 								"sink": {
 									"name": "RoleCode",
 									"type": "String",
-									"physicalType": "char"
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -175,8 +187,6 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -199,8 +209,11 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/CCM_CreditCard_AccountDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFolderPath": "DEV/NextlyAccountRoles",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -217,13 +230,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Source",
+						"referenceName": "DEV_Completed_NextlyAccountRoles_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_CCM_CreditCard_AccountDetails_Sink",
+						"referenceName": "DEV_Completed_NextlyAccountRoles_Sink",
 						"type": "DatasetReference"
 					}
 				]
@@ -232,7 +245,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountRoles 2024_11_12_110546.csv"
+				"defaultValue": "NextlyAccountRoles 2024_11_18_213228.csv"
 			},
 			"FilePath": {
 				"type": "string",
