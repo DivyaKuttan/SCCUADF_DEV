@@ -9,6 +9,12 @@
 					"referenceName": "SCCUUAT_ActivityLog_BusinessData_DynamicRetention",
 					"type": "PipelineReference"
 				}
+			},
+			{
+				"pipelineReference": {
+					"referenceName": "SCCUUAT_BusinessData_DynamicRetention",
+					"type": "PipelineReference"
+				}
 			}
 		],
 		"type": "ScheduleTrigger",
