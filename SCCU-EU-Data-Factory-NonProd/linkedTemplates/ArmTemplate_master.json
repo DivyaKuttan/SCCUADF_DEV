@@ -957,6 +957,26 @@
 					},
 					"Dev_LoanDueTrigger_properties_typeProperties_scope": {
 						"value": "[parameters('Dev_LoanDueTrigger_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_14')]"
+			]
+		},
+		{
+			"name": "SCCU-EU-Data-Factory-NonProd_ArmTemplate_16",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_16.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FileName": {
 						"value": "[parameters('UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FileName')]"
@@ -988,7 +1008,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_14')]"
+				"[resourceId('Microsoft.Resources/deployments', 'SCCU-EU-Data-Factory-NonProd_ArmTemplate_15')]"
 			]
 		}
 	]
