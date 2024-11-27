@@ -3,11 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "NextlyAccountDetails_Staging_CopyData",
+				"name": "StagingTable_AccountDetails_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "NextlyAccountDetails_Staging Truncate",
+						"activity": "StagingTable_AccountDetails_Truncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountDetails",
+							"wildcardFolderPath": "DEV/ NextlyAccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -236,13 +236,13 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_NextlyAccountDetails",
+						"referenceName": "Dev_OfflineDestination_NextlyAccountDetailsDuplicate",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "NextlyAccountDetails_Staging Truncate",
+				"name": "StagingTable_AccountDetails_Truncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -261,7 +261,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE NextlyAccountDetails_Staging"
+							"text": "TRUNCATE TABLE StagingTable_AccountDetails"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -272,7 +272,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "NextlyAccountDetails_Staging_CopyData",
+						"activity": "StagingTable_AccountDetails_CopyData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
