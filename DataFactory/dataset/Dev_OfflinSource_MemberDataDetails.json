@@ -18,6 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "NextlyMemberData 2024_11_27_165033.csv",
 				"folderPath": "DEV/MemberDataDetails",
 				"container": "offline-services"
 			},
