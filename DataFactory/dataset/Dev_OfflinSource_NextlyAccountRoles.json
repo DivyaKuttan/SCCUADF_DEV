@@ -18,6 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "NextlyAccountRoles 2024_11_27_165050.csv",
 				"folderPath": "DEV/NextlyAccountRoles",
 				"container": "offline-services"
 			},

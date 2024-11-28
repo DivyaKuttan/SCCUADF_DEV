@@ -27,11 +27,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountRoles",
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -55,8 +50,8 @@
 								},
 								"sink": {
 									"name": "AccountNumber",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -67,8 +62,8 @@
 								},
 								"sink": {
 									"name": "RoleEntityNumber",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -103,6 +98,18 @@
 								},
 								"sink": {
 									"name": "RoleDescription",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MemberName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MemberName",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -160,6 +167,8 @@
 			{
 				"name": "Stored procedure1",
 				"type": "SqlServerStoredProcedure",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "NextlyAccountRoles_CopyData",
@@ -187,6 +196,8 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -245,7 +256,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountRoles 2024_11_18_213228.csv"
+				"defaultValue": "NextlyAccountRoles 2024_11_27_165050"
 			},
 			"FilePath": {
 				"type": "string",
