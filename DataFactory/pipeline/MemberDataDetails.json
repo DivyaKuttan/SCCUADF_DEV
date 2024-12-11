@@ -480,7 +480,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
+					"storedProcedureName": "Spi_InsertIntoMembersOffline"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
@@ -548,7 +548,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_11_18_213244.csv"
+				"defaultValue": "NextlyMemberData 2024_12_04_211410.csv"
 			},
 			"FilePath": {
 				"type": "string",
