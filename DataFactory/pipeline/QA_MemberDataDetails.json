@@ -49,492 +49,360 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "AccountNumber",
+									"name": "MemberNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AccountNumber",
+									"name": "MemberNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "DateLastContact",
+									"name": "OwnerPersonNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "DateLastContact",
+									"name": "OwnerPersonNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerOrganizationNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OwnerOrganizationNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AgreementNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AgreementNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AgreementType",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AgreementType",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OrgName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrgName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OrgTypeDescription",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrgTypeDescription",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "FirstName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "FirstName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "LastName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LastName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AddressUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AddressUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "AddressLineText",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AddressLineText",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CityName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CityName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ZipCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ZipCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "StateCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "StateCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CountryCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CountryCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CountryName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CountryName",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Email",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Email",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailTypeCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EmailTypeCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "EmailTypeDescription",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "EmailTypeDescription",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HomePhone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "HomePhone",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "HomePhoneUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "HomePhoneUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CellPhone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CellPhone",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CellPhoneUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CellPhoneUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BusinessPhone",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BusinessPhone",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "BusinessPhoneUseCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BusinessPhoneUseCode",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "OrgTaxIds",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrgTaxIds",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "PersonTaxId",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PersonTaxId",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "ShareAccountNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ShareAccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "DateOfBirth",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "DateOfBirth",
 									"type": "DateTime",
 									"physicalType": "date"
 								}
 							},
 							{
 								"source": {
-									"name": "CurrentAccountStatusCode",
+									"name": "MemberDateLastContact",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "CurrentAccountStatusCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CurrentAccountStatusDesc",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CurrentAccountStatusDesc",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AccountOwnershipCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AccountOwnershipCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AccountOwnershipDesc",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AccountOwnershipDesc",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MajorAccountTypeCode1",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MajorAccountTypeCode1",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MinorAccountTypeCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MinorAccountTypeCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MinorAccountTypeDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MinorAccountTypeDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ProductFullName1",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ProductFullName1",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AccountNickName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AccounntNickName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MemberNumber1",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MemberNumber1",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OwnerPersonNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OwnerPersonNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OwnerOrganizationNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OwnerOrganizationNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AgreementNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AgreementNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AgreementType",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AgreementType",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AllowCrossAccountTransferFlag",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AllowCrossAccountTransferFlag",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OrgName1",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OrgName1",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OrgTypeDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OrgTypeDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "FirstName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "FirstName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "LastName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "LastName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AddressUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AddressUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AddressLineText",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AddressLineText",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CityName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CityName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ZipCode1",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ZipCode1",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "StateCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "StateCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CountryCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CountryCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CountryName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CountryName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Email",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Email",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "EmailTypeCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "EmailTypeCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "EmailTypeDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "EmailTypeDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "HomePhone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "HomePhone",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "HomePhoneUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "HomePhoneUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CellPhone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CellPhone",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CellPhoneUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CellPhoneUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "BusinessPhone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "BusinessPhone",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "BusinessPhoneUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "BusinessPhoneUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OrgTaxIds",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OrgTaxIds",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PersonTaxId",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PersonTaxId",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ShareAccountNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ShareAccountNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "DateOfBirth",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "DateOfBirth",
+									"name": "MemeberDateLastContact",
 									"type": "DateTime",
 									"physicalType": "date"
 								}
@@ -620,7 +488,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_11_12_104850.csv"
+				"defaultValue": "NextlyMemberData 2024_12_04_211410.csv"
 			},
 			"FilePath": {
 				"type": "string",

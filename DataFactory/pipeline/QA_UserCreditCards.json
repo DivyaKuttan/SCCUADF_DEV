@@ -247,7 +247,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE UserCreditCards_Staging"
+							"text": "TRUNCATE TABLE [dbo].[UserCreditCards_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -284,7 +284,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_11_12_130839.csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_12_02_234830.csv"
 			},
 			"FilePath": {
 				"type": "string",

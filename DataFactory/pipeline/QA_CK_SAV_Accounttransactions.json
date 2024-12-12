@@ -50,42 +50,6 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_TYPE",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "NEXTLY_PERS_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MEMBER_NUMBER",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "ACCOUNT_NUMBER",
 									"type": "String",
 									"physicalType": "String"
@@ -335,7 +299,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_11_12_132444.csv"
+				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_12_02_234528.csv"
 			},
 			"FilePath": {
 				"type": "string",

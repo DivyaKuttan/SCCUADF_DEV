@@ -49,14 +49,14 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AccountNumber1",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"name": "AccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -67,8 +67,20 @@
 								},
 								"sink": {
 									"name": "RoleEntityNumber",
-									"type": "Int64",
-									"physicalType": "bigint"
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "RoleEntityTypeCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RoleEntityTypeCode",
+									"type": "String",
+									"physicalType": "varchar"
 								}
 							},
 							{
@@ -91,6 +103,18 @@
 								},
 								"sink": {
 									"name": "RoleDescription",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "MemberName",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MemberName",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -235,7 +259,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountRoles 2024_11_12_110546.csv"
+				"defaultValue": "NextlyAccountRoles 2024_12_04_212156.csv"
 			},
 			"FilePath": {
 				"type": "string",

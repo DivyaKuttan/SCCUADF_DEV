@@ -49,12 +49,12 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AccountNumber1",
+									"name": "AccountNumber",
 									"type": "Int64",
 									"physicalType": "bigint"
 								}
@@ -73,7 +73,7 @@
 							},
 							{
 								"source": {
-									"name": "LockoutFlagDesciption",
+									"name": "LockoutFlagDescription",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -165,7 +165,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "Spi_InsertToMemberLockOutFlagDetails"
+					"storedProcedureName": "[dbo].[Spi_InsertToMemberLockOutFlagDetails]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCUQA_OfflineModeDB",
@@ -235,7 +235,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountLockout 2024_11_12_110012.csv"
+				"defaultValue": "NextlyAccountLockout 2024_12_04_205557.csv"
 			},
 			"FilePath": {
 				"type": "string",
