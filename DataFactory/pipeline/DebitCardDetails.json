@@ -133,54 +133,6 @@
 							},
 							{
 								"source": {
-									"name": "PrimarySavingsMajorCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PrimarySavingsMajorCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PrimarySavingsMinorCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PrimarySavingsMinorCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "SavingsRoleCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "SavingsRoleCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "SavingsRoleDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "SavingsRoleDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
 									"name": "PrimaryCheckingAccountNumber",
 									"type": "String",
 									"physicalType": "String"
@@ -193,60 +145,12 @@
 							},
 							{
 								"source": {
-									"name": "PrimaryCheckingMajorCode",
+									"name": "AgreementNumber1",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "PrimaryCheckingMajorCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PrimaryCheckingMinorCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PrimaryCheckingMinorCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CheckingRoleCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CheckingRoleCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CheckingRoleDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CheckingRoleDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AgreementNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AgreementNumber",
+									"name": "AgreementNumber1",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -425,7 +329,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyDebitCards 2024_11_18_200711.csv"
+				"defaultValue": "NextlyDebitCards 2024_12_11_230841.csv"
 			},
 			"FilePath": {
 				"type": "string",
