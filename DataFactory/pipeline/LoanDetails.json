@@ -516,7 +516,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertIntoLoanAccountsBalanceInfo]"
+					"storedProcedureName": "[dbo].[Spi_InsertToLoanTransactionsDetails]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",

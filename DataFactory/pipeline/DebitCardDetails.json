@@ -357,7 +357,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertInToMemberDebitCardDetails]"
+					"storedProcedureName": "[Spi_InsertInToMemberDebitCardDetails]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCU_OfflineDev",
