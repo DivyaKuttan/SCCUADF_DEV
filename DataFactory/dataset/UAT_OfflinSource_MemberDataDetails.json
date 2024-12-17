@@ -11,7 +11,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/UAT_Offline"
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Source"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
