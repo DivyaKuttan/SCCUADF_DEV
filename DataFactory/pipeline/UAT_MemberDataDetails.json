@@ -476,6 +476,9 @@
 					"secureInput": false
 				},
 				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
+				},
 				"linkedServiceName": {
 					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
@@ -508,7 +511,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/MemberDataDetails",
+							"wildcardFolderPath": "UAT/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -544,15 +547,15 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_12_11_172806.csv"
+				"defaultValue": "NextlyMemberData 2024_12_04_211410.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/MemberDataDetails"
+				"defaultValue": "offline-services/UAT/MemberDataDetails"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/Dev_OfflineServices"
+			"name": "OfflineServices/UAT_OfflineServices"
 		},
 		"annotations": []
 	}
