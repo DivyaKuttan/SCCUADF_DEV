@@ -1,5 +1,5 @@
 {
-	"name": "UAT_Dev_OfflinSource_NextlyAccountDetails",
+	"name": "UAT_OfflinSource_NextlyAccountDetails",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
@@ -11,7 +11,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Source"
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Source"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
