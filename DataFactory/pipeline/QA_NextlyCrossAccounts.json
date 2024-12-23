@@ -1,13 +1,13 @@
 {
-	"name": "NextlyAccountDetails",
+	"name": "QA_NextlyCrossAccounts",
 	"properties": {
 		"activities": [
 			{
-				"name": "NextlyAccountDetails_Staging_CopyData",
+				"name": "NextlyCrossAccounts_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "NextlyAccountDetails_Staging Truncate",
+						"activity": "NextlyCrossAccounst_StagingTruncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountDetails",
+							"wildcardFolderPath": "QA/CrossAccounts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -61,14 +61,26 @@
 							},
 							{
 								"source": {
+									"name": "AllowCrossAcctXferYN",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AllowCrossAcctXferYN",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
 									"name": "OpenDate",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
 									"name": "OpenDate",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -79,8 +91,8 @@
 								},
 								"sink": {
 									"name": "AccountDateLastContact",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -283,8 +295,8 @@
 								},
 								"sink": {
 									"name": "NextPaymentDueDate",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -295,8 +307,8 @@
 								},
 								"sink": {
 									"name": "CurrentDueDate",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -307,8 +319,8 @@
 								},
 								"sink": {
 									"name": "LastPaymentDate",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -595,8 +607,8 @@
 								},
 								"sink": {
 									"name": "DepositLastInterestPostDate",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -619,32 +631,8 @@
 								},
 								"sink": {
 									"name": "MaturityDate",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OwnerPersonNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OwnerPersonNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OwnerOrganizationNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OwnerOrganizationNumber",
-									"type": "String",
-									"physicalType": "varchar"
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							},
 							{
@@ -661,26 +649,74 @@
 							},
 							{
 								"source": {
-									"name": "MemberNumber",
+									"name": "PersonNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MemberNumber",
-									"type": "String",
-									"physicalType": "varchar"
+									"name": "PersonNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
 								}
 							},
 							{
 								"source": {
-									"name": "AgreementNumber",
+									"name": "CrossAcctAgreementNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AgreementNumber",
+									"name": "CrossAcctAgreementNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "CrossAcctMemberNumber",
 									"type": "String",
-									"physicalType": "varchar"
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CrossAcctMemberNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerPersonNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OwnerPersonNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerOrganizationNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OwnerOrganizationNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "OwnerMemberNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OwnerMemberNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
 								}
 							}
 						],
@@ -693,22 +729,22 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_NextlyAccountDetails",
+						"referenceName": "QA_OfflinSource_NextlyCrossAccounts",
 						"type": "DatasetReference",
 						"parameters": {
-							"NextlyAccountDetails": "@pipeline().parameters.FileName"
+							"CrossAccounts": "@pipeline().parameters.FileName"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_NextlyAccountDetails",
+						"referenceName": "QA_OfflineDestination_NextlyCrossAccounts",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "NextlyAccountDetails_Staging Truncate",
+				"name": "NextlyCrossAccounst_StagingTruncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -720,14 +756,14 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE StagingTable_AccountDetails"
+							"text": "TRUNCATE TABLE NextlyCrossAccounts_Staging"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -738,7 +774,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "NextlyAccountDetails_Staging_CopyData",
+						"activity": "NextlyCrossAccounts_CopyData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -753,83 +789,26 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertIntoAccountDetails]"
+					"storedProcedureName": "[dbo].[Spi_InsertIntoMemberCrossAccounts]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
-			},
-			{
-				"name": "Copy data2",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Stored procedure1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountDetails",
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
-							"deleteFilesAfterCompletion": true
-						},
-						"formatSettings": {
-							"type": "BinaryReadSettings"
-						}
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "DEV_Completed_NextlyAccountDetails_Source",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "DEV_Completed_NextlyAccountDetails_Sink",
-						"type": "DatasetReference"
-					}
-				]
 			}
 		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccounts 2024_12_16_143702.csv"
+				"defaultValue": "NextlyCrossAccounts 2024_12_03_205553.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyAccountDetails"
+				"defaultValue": "offline-services/QA/CrossAccounts"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/Dev_OfflineServices"
+			"name": "OfflineServices/QA_OfflineServices"
 		},
 		"annotations": []
 	}

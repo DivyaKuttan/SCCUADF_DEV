@@ -73,7 +73,7 @@
 							},
 							{
 								"source": {
-									"name": "LockoutFlagDesciption",
+									"name": "LockoutFlagDescription",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -235,7 +235,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountLockout 2024_11_18_213540.csv"
+				"defaultValue": "NextlyAccountLockout 2024_12_16_143300.csv"
 			},
 			"FilePath": {
 				"type": "string",

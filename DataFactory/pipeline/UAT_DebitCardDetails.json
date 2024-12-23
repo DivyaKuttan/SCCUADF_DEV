@@ -1,13 +1,13 @@
 {
-	"name": "QA_CK_SAV_Accounttransactions",
+	"name": "UAT_DebitCardDetails",
 	"properties": {
 		"activities": [
 			{
-				"name": "CK_SAV_Accounttransactions_CopyData",
+				"name": "DebitCardDetails_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "CK_SAV_Accounttransactions_StagingTruncate",
+						"activity": "DebitCardDetails_StagingTruncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "UAT/DebitCardDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -44,176 +44,149 @@
 						"sqlWriterUseTableLock": false
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": true,
 					"translator": {
 						"type": "TabularTranslator",
 						"mappings": [
 							{
 								"source": {
-									"name": "ACCOUNT_NUMBER",
+									"name": "ExternalCardNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "ACCOUNT_NUMBER",
+									"name": "ExternalCardNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_NUMBER",
+									"name": "FullName",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_NUMBER",
+									"name": "FullName",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_POSTING_DATE",
+									"name": "IssueDate",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_POSTING_DATE",
+									"name": "IssueDate",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "date"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_ACTIVITY_DATE",
+									"name": "ExpireDate",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_ACTIVITY_DATE",
+									"name": "ExpireDate",
 									"type": "DateTime",
-									"physicalType": "datetime"
+									"physicalType": "date"
 								}
 							},
 							{
 								"source": {
-									"name": "DEBIT_CREDIT_FLAG",
+									"name": "AgreementTypeCode",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "DEBIT_CREDIT_FLAG",
+									"name": "AgreementTypeCode",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_STATUS_CODE",
+									"name": "CurrentStatusCode",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_STATUS_CODE",
+									"name": "CurrentStatusCode",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_STATUS_DESCRIPTION",
+									"name": "PrimarySavingsAccountNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_STATUS_DESCRIPTION",
+									"name": "PrimarySavingsAccountNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_TYPE_CODE",
+									"name": "PrimaryCheckingAccountNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_TYPE_CODE",
+									"name": "PrimaryCheckingAccountNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_DESCRIPTION",
+									"name": "AgreementNumber1",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_DESCRIPTION",
+									"name": "AgreementNumber1",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RTXN_AMOUNT",
+									"name": "RoleEntityNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RTXN_AMOUNT",
-									"type": "Decimal",
-									"physicalType": "decimal",
-									"scale": 2,
-									"precision": 18
-								}
-							},
-							{
-								"source": {
-									"name": "EXTERNAL_RTXN_DESCNBR",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "EXTERNAL_RTXN_DESCNBR",
+									"name": "RoleEntityNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "EXTERNAL_RTXN_DESCTEXT",
+									"name": "OwnerPersonNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "EXTERNAL_RTXN_DESCTEXT",
+									"name": "OwnerPersonNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "INTERNAL_RTXN_DESCNBR",
+									"name": "OwnerOrganizationNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "INTERNAL_RTXN_DESCNBR",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "INTERNAL_RTXN_DESCTEXT",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "INTERNAL_RTXN_DESCTEXT",
+									"name": "OwnerOrganizationNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -228,22 +201,22 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_CK_SAV_Accounttransactions",
+						"referenceName": "UAT_OfflinSource_DebitCardDetails",
 						"type": "DatasetReference",
 						"parameters": {
-							"CK_SAV_Accounttransactionsons_Staging": "@pipeline().parameters.FileName"
+							"DebitCardDetails": "@pipeline().parameters.FileName"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_CK_SAV_Accounttransactions",
+						"referenceName": "UAT_OfflineDestination_DebitCardDetails",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "CK_SAV_Accounttransactions_StagingTruncate",
+				"name": "DebitCardDetails_StagingTruncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -255,14 +228,14 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE [dbo].[CK_SAV_Accounttransactions_Staging]"
+							"text": "TRUNCATE TABLE [dbo].[DebitCardDetails_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -273,7 +246,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "CK_SAV_Accounttransactions_CopyData",
+						"activity": "DebitCardDetails_CopyData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -288,26 +261,85 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToAccountTransactionsDetails]"
+					"storedProcedureName": "[Spi_InsertInToMemberDebitCardDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "completed copy",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "DEV/DebitCardDetails",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DEV_Completed_DebitCardDetails_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DEV_Completed_DebitCardDetails_Sink",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_12_02_234528.csv"
+				"defaultValue": "NextlyDebitCards 2024_12_11_230841.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CK_SAV_Accounttransactions"
+				"defaultValue": "offline-services/UAT/DebitCardDetails"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/QA_OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}

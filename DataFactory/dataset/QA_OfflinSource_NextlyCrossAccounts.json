@@ -1,12 +1,12 @@
 {
-	"name": "QA_OfflinSource_NextlyAccountlockout",
+	"name": "QA_OfflinSource_NextlyCrossAccounts",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"NextlyAccountlockout": {
+			"CrossAccounts": {
 				"type": "string"
 			}
 		},
@@ -18,7 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "QA/NextlyAccountlockout",
+				"folderPath": "QA/CrossAccounts",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",

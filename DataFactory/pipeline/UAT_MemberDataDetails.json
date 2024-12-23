@@ -1,5 +1,5 @@
 {
-	"name": "QA_MemberDataDetails",
+	"name": "UAT_MemberDataDetails",
 	"properties": {
 		"activities": [
 			{
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/MemberDataDetails",
+							"wildcardFolderPath": "UAT/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -417,7 +417,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_MemberDataDetails",
+						"referenceName": "UAT_OfflinSource_MemberDataDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"MemberDataDetails": "@pipeline().parameters.FileName"
@@ -426,7 +426,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_MemberDataDetails",
+						"referenceName": "UAT_OfflineDestination_MemberDataDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -444,7 +444,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -480,9 +480,68 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "completed copy",
+				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "UAT/MemberDataDetails",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"deleteFilesAfterCompletion": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "DEV_Completed_MemberDataDetails_Source",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DEV_Completed_MemberDataDetails_Sink",
+						"type": "DatasetReference"
+					}
+				]
 			}
 		],
 		"parameters": {
@@ -492,11 +551,11 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/MemberDataDetails"
+				"defaultValue": "offline-services/UAT/MemberDataDetails"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/QA_OfflineServices"
+			"name": "OfflineServices/UAT_OfflineServices"
 		},
 		"annotations": []
 	}

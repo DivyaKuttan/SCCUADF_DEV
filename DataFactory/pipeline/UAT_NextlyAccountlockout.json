@@ -1,5 +1,5 @@
 {
-	"name": "QA_NextlyAccountlockout",
+	"name": "UAT_NextlyAccountlockout",
 	"properties": {
 		"activities": [
 			{
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyAccountlockout",
+							"wildcardFolderPath": "UAT/NextlyAccountlockout",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -105,7 +105,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_NextlyAccountlockout",
+						"referenceName": "UAT_OfflinSource_NextlyAccountlockout",
 						"type": "DatasetReference",
 						"parameters": {
 							"NextlyAccountlockout": "@pipeline().parameters.FileName"
@@ -114,7 +114,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_NextlyAccountlockout",
+						"referenceName": "UAT_OfflineDestination_NextlyAccountlockout",
 						"type": "DatasetReference"
 					}
 				]
@@ -132,7 +132,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -165,10 +165,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertToMemberLockOutFlagDetails]"
+					"storedProcedureName": "Spi_InsertToMemberLockOutFlagDetails"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},
@@ -235,15 +235,15 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountLockout 2024_12_04_205557.csv"
+				"defaultValue": "NextlyAccountLockout 2024_12_11_171409.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyAccountlockout"
+				"defaultValue": "offline-services/UAT/NextlyAccountlockout"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/QA_OfflineServices"
+			"name": "OfflineServices/UAT_OfflineServices"
 		},
 		"annotations": []
 	}

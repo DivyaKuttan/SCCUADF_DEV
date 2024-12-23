@@ -1,5 +1,5 @@
 {
-	"name": "NextlyAccountDetails",
+	"name": "UAT_NextlyAccountDetails",
 	"properties": {
 		"activities": [
 			{
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountDetails",
+							"wildcardFolderPath": "UAT/NextlyAccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -693,7 +693,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_NextlyAccountDetails",
+						"referenceName": "UAT_OfflinSource_NextlyAccountDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"NextlyAccountDetails": "@pipeline().parameters.FileName"
@@ -702,7 +702,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_NextlyAccountDetails",
+						"referenceName": "UAT_OfflineDestination_NextlyAccountDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -720,7 +720,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -756,13 +756,15 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoAccountDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUUAT_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},
 			{
 				"name": "Copy data2",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -821,15 +823,15 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccounts 2024_12_16_143702.csv"
+				"defaultValue": "NextlyAccounts 2024_12_11_180222.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyAccountDetails"
+				"defaultValue": "offline-services/UAT/NextlyAccountDetails"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/Dev_OfflineServices"
+			"name": "OfflineServices/UAT_OfflineServices"
 		},
 		"annotations": []
 	}

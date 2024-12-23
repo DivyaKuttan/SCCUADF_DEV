@@ -1,12 +1,12 @@
 {
-	"name": "QA_OfflineDestination_NextlyLoanTransactions",
+	"name": "UAT_OfflineDestination_NextlyAccountlockout",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCUQA_OfflineModeDB",
+			"referenceName": "SCCUUAT_OfflineModeDB",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/QA_Offline/QA_Destination"
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Destination"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
@@ -184,7 +184,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "NExtlyLoanTransactions_Staging"
+			"table": "NextlyAccountlockout_Staging"
 		}
 	}
 }

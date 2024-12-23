@@ -1,5 +1,5 @@
 {
-	"name": "QA_OfflineDestination_NextlyLoanTransactions",
+	"name": "QA_OfflineDestination_NextlyAccountDetails",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCUQA_OfflineModeDB",
@@ -184,7 +184,7 @@
 		],
 		"typeProperties": {
 			"schema": "dbo",
-			"table": "NExtlyLoanTransactions_Staging"
+			"table": "StagingTable_AccountDetails"
 		}
 	}
 }

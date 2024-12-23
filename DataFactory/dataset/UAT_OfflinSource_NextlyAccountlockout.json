@@ -1,5 +1,5 @@
 {
-	"name": "QA_OfflinSource_NextlyAccountlockout",
+	"name": "UAT_OfflinSource_NextlyAccountlockout",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
@@ -11,14 +11,14 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/QA_Offline/QA_Source"
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Source"
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "QA/NextlyAccountlockout",
+				"folderPath": "UAT/NextlyAccountlockout",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
