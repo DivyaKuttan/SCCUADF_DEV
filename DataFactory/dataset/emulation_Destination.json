@@ -1,0 +1,16 @@
+{
+	"name": "emulation_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_ArchiveDev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "BusinessData",
+			"table": "EmulationActivityDynamicDescriptionValue"
+		}
+	}
+}
