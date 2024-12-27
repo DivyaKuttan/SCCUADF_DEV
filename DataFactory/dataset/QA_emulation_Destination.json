@@ -1,0 +1,19 @@
+{
+	"name": "QA_emulation_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_ArchiveDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/Static"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "BusinessData",
+			"table": "EmulationActivityDynamicDescriptionValue"
+		}
+	}
+}
