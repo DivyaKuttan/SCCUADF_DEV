@@ -1,0 +1,34 @@
+{
+	"name": "EmulationActivityDynamicDescriptionValue_Souce",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_BusinessDataDev",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/Static"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "EmulationActivityLogID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "ActivityDynamicDescriptionValue",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "EmulationActivityDynamicDescriptionValue"
+		}
+	}
+}
