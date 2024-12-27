@@ -1,0 +1,43 @@
+{
+	"name": "QA_TransferMemberActivityLog_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_ArchiveDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/Static"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "MemberActivityLogID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "PayeeOrDestination",
+				"type": "varchar"
+			},
+			{
+				"name": "TransactionAmount",
+				"type": "float",
+				"precision": 15
+			},
+			{
+				"name": "SourceAccountNumber",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "BusinessData",
+			"table": "TransferMemberActivityLog"
+		}
+	}
+}
