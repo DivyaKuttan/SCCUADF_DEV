@@ -9,7 +9,7 @@
 					{
 						"activity": "Execute Pipeline1",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
