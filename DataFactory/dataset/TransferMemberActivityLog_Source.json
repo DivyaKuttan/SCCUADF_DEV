@@ -5,6 +5,9 @@
 			"referenceName": "SCCU_BusinessDataDev",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "DataRetentionDatasets/Static"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
