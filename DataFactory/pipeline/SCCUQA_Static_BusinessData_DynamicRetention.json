@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT t1.* FROM EmulationActivityDynamicDescriptionValue t1 LEFT JOIN EmulationActivityLogs t2 on t1.emulationactivitylogid=t2.id\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null\n",
+						"sqlReaderQuery": "SELECT t1.*,t2.createddate FROM EmulationActivityDynamicDescriptionValue t1 LEFT JOIN EmulationActivityLogs t2 on t1.emulationactivitylogid=t2.id\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null\n",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -168,7 +168,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT t1.* FROM MemberActivityDynamicDescriptionValue t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
+						"sqlReaderQuery": "SELECT t1.*,t2.createddate FROM MemberActivityDynamicDescriptionValue t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -269,8 +269,6 @@
 			{
 				"name": "TransferMemberActivityLog_Copy",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -283,7 +281,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT t1.* FROM TransferMemberActivityLog t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
+						"sqlReaderQuery": "SELECT t1.*,t2.createddate FROM TransferMemberActivityLog t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -295,6 +293,80 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "ID",
+									"type": "Int32",
+									"physicalType": "int"
+								},
+								"sink": {
+									"name": "ID",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "MemberActivityLogID",
+									"type": "Int64",
+									"physicalType": "bigint"
+								},
+								"sink": {
+									"name": "MemberActivityLogID",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "PayeeOrDestination",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "PayeeOrDestination",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "TransactionAmount",
+									"type": "Double",
+									"physicalType": "float"
+								},
+								"sink": {
+									"name": "TransactionAmount",
+									"type": "Double",
+									"physicalType": "float"
+								}
+							},
+							{
+								"source": {
+									"name": "SourceAccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								},
+								"sink": {
+									"name": "SourceAccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "createddate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								},
+								"sink": {
+									"name": "CreatedDate",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -304,13 +376,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "TransferMemberActivityLog_Source",
+						"referenceName": "QA_TransferMemberActivityLog_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "TransferMemberActivityLog_Destination",
+						"referenceName": "QA_TransferMemberActivityLog_Destination",
 						"type": "DatasetReference"
 					}
 				]
@@ -318,8 +390,6 @@
 			{
 				"name": "TransferMemberActivityLog",
 				"type": "Script",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "TransferMemberActivityLog_Copy",
@@ -337,7 +407,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataDev",
+					"referenceName": "SCCU_BusinessDataQA",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -353,8 +423,6 @@
 			{
 				"name": "TransferMemberActivityLog_Purge",
 				"type": "Script",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "TransferMemberActivityLog",
@@ -372,7 +440,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_ArchiveDev",
+					"referenceName": "SCCUQA_ArchiveDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
