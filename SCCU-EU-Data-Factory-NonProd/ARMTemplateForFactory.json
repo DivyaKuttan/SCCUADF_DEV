@@ -19593,14 +19593,7 @@
 					{
 						"name": "Distinct DB",
 						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -19836,23 +19829,6 @@
 								}
 							]
 						}
-					},
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "SCCUQA_Static_BusinessData_DynamicRetention",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
 					}
 				],
 				"policy": {
@@ -19865,7 +19841,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SCCUQA_ArchiveSqlDataset')]",
-				"[concat(variables('factoryId'), '/pipelines/SCCUQA_Static_BusinessData_DynamicRetention')]",
 				"[concat(variables('factoryId'), '/pipelines/SCCUQA_MetaDB_DynamicRetention')]",
 				"[concat(variables('factoryId'), '/pipelines/SCCUQA_LogDB_DynamicRetention')]",
 				"[concat(variables('factoryId'), '/pipelines/SCCUQA_BusinessData_DynamicRetention')]",
@@ -29996,7 +29971,14 @@
 					{
 						"name": "BusinessData_Archive",
 						"type": "Lookup",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -30233,6 +30215,23 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUQA_Static_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -30245,6 +30244,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SCCUQA_ArchiveSqlDataset')]",
+				"[concat(variables('factoryId'), '/pipelines/SCCUQA_Static_BusinessData_DynamicRetention')]",
 				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]",
 				"[concat(variables('factoryId'), '/datasets/SCCUQA_BusinessData_Source')]",
 				"[concat(variables('factoryId'), '/datasets/QA_Archive_Destination')]",
@@ -30800,7 +30800,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT t1.* FROM EmulationActivityDynamicDescriptionValue t1 LEFT JOIN EmulationActivityLogs t2 on t1.emulationactivitylogid=t2.id\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null\n",
+								"sqlReaderQuery": "SELECT t1.*,t2.createddate FROM EmulationActivityDynamicDescriptionValue t1 LEFT JOIN EmulationActivityLogs t2 on t1.emulationactivitylogid=t2.id\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null\n",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -30847,6 +30847,18 @@
 											"name": "ActivityDynamicDescriptionValue",
 											"type": "String",
 											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "createddate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "CreatedDate",
+											"type": "DateTime",
+											"physicalType": "datetime"
 										}
 									}
 								],
@@ -30953,7 +30965,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT t1.* FROM MemberActivityDynamicDescriptionValue t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
+								"sqlReaderQuery": "SELECT t1.*,t2.createddate FROM MemberActivityDynamicDescriptionValue t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -30965,6 +30977,56 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "ID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "MemberActivityLogID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "MemberActivityLogID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "ActivityDynamicDescriptionValue",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "ActivityDynamicDescriptionValue",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "createddate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "CreatedDate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -30981,7 +31043,7 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "MemberActivityDynamicDescriptionValue_Destination",
+								"referenceName": "QA_MemberActivityDynamicDescriptionValue_Destination",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -31056,8 +31118,6 @@
 					{
 						"name": "TransferMemberActivityLog_Copy",
 						"type": "Copy",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -31070,7 +31130,7 @@
 						"typeProperties": {
 							"source": {
 								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT t1.* FROM TransferMemberActivityLog t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
+								"sqlReaderQuery": "SELECT t1.*,t2.createddate FROM TransferMemberActivityLog t1 LEFT JOIN memberactivitylog t2 on t1.MemberActivityLogID=t2.id\r\nWHERE CAST(t2.createddate AS DATE) < DATEADD(DAY,-10,CAST(GETDATE() AS DATE)) or t2.id is null",
 								"queryTimeout": "02:00:00",
 								"partitionOption": "None"
 							},
@@ -31082,6 +31142,80 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ID",
+											"type": "Int32",
+											"physicalType": "int"
+										},
+										"sink": {
+											"name": "ID",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "MemberActivityLogID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										},
+										"sink": {
+											"name": "MemberActivityLogID",
+											"type": "Int64",
+											"physicalType": "bigint"
+										}
+									},
+									{
+										"source": {
+											"name": "PayeeOrDestination",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "PayeeOrDestination",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "TransactionAmount",
+											"type": "Double",
+											"physicalType": "float"
+										},
+										"sink": {
+											"name": "TransactionAmount",
+											"type": "Double",
+											"physicalType": "float"
+										}
+									},
+									{
+										"source": {
+											"name": "SourceAccountNumber",
+											"type": "String",
+											"physicalType": "varchar"
+										},
+										"sink": {
+											"name": "SourceAccountNumber",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "createddate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										},
+										"sink": {
+											"name": "CreatedDate",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -31091,14 +31225,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "TransferMemberActivityLog_Source",
+								"referenceName": "QA_TransferMemberActivityLog_Source",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "TransferMemberActivityLog_Destination",
+								"referenceName": "QA_TransferMemberActivityLog_Destination",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -31107,8 +31241,6 @@
 					{
 						"name": "TransferMemberActivityLog",
 						"type": "Script",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "TransferMemberActivityLog_Copy",
@@ -31126,7 +31258,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataDev",
+							"referenceName": "SCCU_BusinessDataQA",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -31142,8 +31274,6 @@
 					{
 						"name": "TransferMemberActivityLog_Purge",
 						"type": "Script",
-						"state": "Inactive",
-						"onInactiveMarkAs": "Succeeded",
 						"dependsOn": [
 							{
 								"activity": "TransferMemberActivityLog",
@@ -31161,7 +31291,7 @@
 						},
 						"userProperties": [],
 						"linkedServiceName": {
-							"referenceName": "SCCU_ArchiveDev",
+							"referenceName": "SCCUQA_ArchiveDB",
 							"type": "LinkedServiceReference"
 						},
 						"typeProperties": {
@@ -31189,11 +31319,9 @@
 				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]",
 				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_ArchiveDB')]",
 				"[concat(variables('factoryId'), '/datasets/QA_MemberActivityDynamicDescriptionValue_Source')]",
-				"[concat(variables('factoryId'), '/datasets/MemberActivityDynamicDescriptionValue_Destination')]",
-				"[concat(variables('factoryId'), '/datasets/TransferMemberActivityLog_Source')]",
-				"[concat(variables('factoryId'), '/datasets/TransferMemberActivityLog_Destination')]",
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataDev')]",
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_ArchiveDev')]"
+				"[concat(variables('factoryId'), '/datasets/QA_MemberActivityDynamicDescriptionValue_Destination')]",
+				"[concat(variables('factoryId'), '/datasets/QA_TransferMemberActivityLog_Source')]",
+				"[concat(variables('factoryId'), '/datasets/QA_TransferMemberActivityLog_Destination')]"
 			]
 		},
 		{
@@ -52559,6 +52687,54 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_ArchiveDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_TransferMemberActivityLog_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_BusinessDataQA",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Static"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "MemberActivityLogID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "PayeeOrDestination",
+						"type": "varchar"
+					},
+					{
+						"name": "TransactionAmount",
+						"type": "float",
+						"precision": 15
+					},
+					{
+						"name": "SourceAccountNumber",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "TransferMemberActivityLog"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]"
 			]
 		},
 		{
