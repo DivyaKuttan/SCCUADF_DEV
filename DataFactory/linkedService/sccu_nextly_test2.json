@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "AzureBlobStorage",
 		"typeProperties": {
-			"serviceEndpoint": "https://sccudatafactorystorage.blob.core.windows.net/",
+			"serviceEndpoint": "https://sccudatafactorystorage01.blob.core.windows.net/",
 			"accountKind": "StorageV2",
 			"credential": {
 				"referenceName": "Credentials_Storage",
