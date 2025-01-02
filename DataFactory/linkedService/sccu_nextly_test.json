@@ -7,7 +7,7 @@
 			"serviceEndpoint": "https://sccudatafactorystorage01.blob.core.windows.net/",
 			"accountKind": "StorageV2",
 			"credential": {
-				"referenceName": "Credentials_Dev",
+				"referenceName": "Credentials_Storage",
 				"type": "CredentialReference"
 			}
 		},
