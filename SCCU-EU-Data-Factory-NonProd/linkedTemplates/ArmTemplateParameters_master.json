@@ -194,6 +194,12 @@
 		"SCCU_OfflineDev_properties_typeProperties_database": {
 			"value": "SCCU_Offline_Dev"
 		},
+		"sccu_nextly_test_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sccudatafactorystorage01.blob.core.windows.net/"
+		},
+		"sccu_nextly_test2_properties_typeProperties_serviceEndpoint": {
+			"value": "https://sccudatafactorystorage01.blob.core.windows.net/"
+		},
 		"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
 			"value": "https://sccunextlylogsnonprod.blob.core.windows.net/"
 		},
@@ -213,7 +219,7 @@
 			"value": "@triggerBody().folderPath"
 		},
 		"DEV_TransactionAlert_properties_typeProperties_scope": {
-			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage01"
 		},
 		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
 			"value": "@triggerBody().fileName"
@@ -267,6 +273,12 @@
 			"value": [
 				"sccudatafactorystorage.blob.core.windows.net"
 			]
+		},
+		"sccudatafactorystorage01_properties_privateLinkResourceId": {
+			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage01"
+		},
+		"sccudatafactorystorage01_properties_groupId": {
+			"value": "blob"
 		},
 		"sccudrsql01_properties_privateLinkResourceId": {
 			"value": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-CU-DR-SRV-RG/providers/Microsoft.Sql/managedInstances/sccudrsql01"

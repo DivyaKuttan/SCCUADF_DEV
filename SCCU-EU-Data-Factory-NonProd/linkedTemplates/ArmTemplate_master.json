@@ -259,6 +259,14 @@
 			"type": "string",
 			"defaultValue": "SCCU_Offline_Dev"
 		},
+		"sccu_nextly_test_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sccudatafactorystorage01.blob.core.windows.net/"
+		},
+		"sccu_nextly_test2_properties_typeProperties_serviceEndpoint": {
+			"type": "string",
+			"defaultValue": "https://sccudatafactorystorage01.blob.core.windows.net/"
+		},
 		"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
 			"type": "string",
 			"defaultValue": "https://sccunextlylogsnonprod.blob.core.windows.net/"
@@ -285,7 +293,7 @@
 		},
 		"DEV_TransactionAlert_properties_typeProperties_scope": {
 			"type": "string",
-			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage"
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage01"
 		},
 		"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
 			"type": "string",
@@ -357,6 +365,14 @@
 				"sccudatafactorystorage.blob.core.windows.net"
 			]
 		},
+		"sccudatafactorystorage01_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Storage/storageAccounts/sccudatafactorystorage01"
+		},
+		"sccudatafactorystorage01_properties_groupId": {
+			"type": "string",
+			"defaultValue": "blob"
+		},
 		"sccudrsql01_properties_privateLinkResourceId": {
 			"type": "string",
 			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-CU-DR-SRV-RG/providers/Microsoft.Sql/managedInstances/sccudrsql01"
@@ -423,6 +439,12 @@
 					"sccudatafactorystorage_properties_fqdns": {
 						"value": "[parameters('sccudatafactorystorage_properties_fqdns')]"
 					},
+					"sccudatafactorystorage01_properties_privateLinkResourceId": {
+						"value": "[parameters('sccudatafactorystorage01_properties_privateLinkResourceId')]"
+					},
+					"sccudatafactorystorage01_properties_groupId": {
+						"value": "[parameters('sccudatafactorystorage01_properties_groupId')]"
+					},
 					"sccudrsql01_properties_privateLinkResourceId": {
 						"value": "[parameters('sccudrsql01_properties_privateLinkResourceId')]"
 					},
@@ -476,12 +498,6 @@
 					},
 					"SCCUQA_Admin_MetaDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_database')]"
-					},
-					"SCCUQA_Anonymous_MetaDB_properties_typeProperties_server": {
-						"value": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_server')]"
-					},
-					"SCCUQA_Anonymous_MetaDB_properties_typeProperties_database": {
-						"value": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -500,6 +516,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SCCUQA_Anonymous_MetaDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_server')]"
+					},
+					"SCCUQA_Anonymous_MetaDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUQA_Anonymous_MetaDB_properties_typeProperties_database')]"
 					},
 					"SCCUQA_ArchiveDB_properties_typeProperties_server": {
 						"value": "[parameters('SCCUQA_ArchiveDB_properties_typeProperties_server')]"
@@ -614,12 +636,6 @@
 					},
 					"SCCU_BusinessDataQA_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_BusinessDataQA_properties_typeProperties_database')]"
-					},
-					"SCCU_BusinessDataUAT_properties_typeProperties_server": {
-						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_server')]"
-					},
-					"SCCU_BusinessDataUAT_properties_typeProperties_database": {
-						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -640,6 +656,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SCCU_BusinessDataUAT_properties_typeProperties_server": {
+						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_server')]"
+					},
+					"SCCU_BusinessDataUAT_properties_typeProperties_database": {
+						"value": "[parameters('SCCU_BusinessDataUAT_properties_typeProperties_database')]"
 					},
 					"SCCU_BusinessData_UAT_properties_typeProperties_server": {
 						"value": "[parameters('SCCU_BusinessData_UAT_properties_typeProperties_server')]"
@@ -667,6 +689,12 @@
 					},
 					"SCCU_OfflineDev_properties_typeProperties_database": {
 						"value": "[parameters('SCCU_OfflineDev_properties_typeProperties_database')]"
+					},
+					"sccu_nextly_test_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('sccu_nextly_test_properties_typeProperties_serviceEndpoint')]"
+					},
+					"sccu_nextly_test2_properties_typeProperties_serviceEndpoint": {
+						"value": "[parameters('sccu_nextly_test2_properties_typeProperties_serviceEndpoint')]"
 					},
 					"sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint": {
 						"value": "[parameters('sccu_nextlylogs_nonprod_properties_typeProperties_serviceEndpoint')]"
@@ -988,15 +1016,6 @@
 					},
 					"DEV_TransactionAlert_properties_typeProperties_scope": {
 						"value": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]"
-					},
-					"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
-						"value": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName')]"
-					},
-					"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath": {
-						"value": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath')]"
-					},
-					"Dev_LoanDueTrigger_properties_typeProperties_scope": {
-						"value": "[parameters('Dev_LoanDueTrigger_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -1017,6 +1036,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
+						"value": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName')]"
+					},
+					"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath": {
+						"value": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FilePath')]"
+					},
+					"Dev_LoanDueTrigger_properties_typeProperties_scope": {
+						"value": "[parameters('Dev_LoanDueTrigger_properties_typeProperties_scope')]"
 					},
 					"UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FileName": {
 						"value": "[parameters('UAT_LoanDueTrigger_properties_Nextly_LoanDueAlerts_UAT_parameters_FileName')]"
