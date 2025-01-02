@@ -2,7 +2,7 @@
 	"name": "Dev_LoanDueAlertsSourceDataset",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCU_DataFactory_Storage",
+			"referenceName": "sccu_nextly_test2",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
