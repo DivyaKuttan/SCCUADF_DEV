@@ -27,11 +27,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": " UAT / CK_SAV_Accounttransactions",
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -320,11 +315,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": " UAT / CK_SAV_Accounttransactions",
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
