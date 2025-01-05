@@ -18,6 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Nextly Loan Account Transactions Prior 15 Days 2024_12_18_134102.csv",
 				"folderPath": "UAT/NextlyLoanTransactions",
 				"container": "offline-services"
 			},
