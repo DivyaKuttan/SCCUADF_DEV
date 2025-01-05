@@ -339,7 +339,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/Dev_OfflineServices"
+			"name": "OfflineServices/UAT_OfflineServices"
 		},
 		"annotations": []
 	}
