@@ -13,7 +13,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": " UAT / CK_SAV_Accounttransactions",
+				"fileName": "Nextly CK SAV TD Transactions Prior 15 Days 2024_12_02_234528.csv",
+				"folderPath": "UAT/CK_SAV_Accounttransactions",
 				"container": "offline-services"
 			}
 		}
