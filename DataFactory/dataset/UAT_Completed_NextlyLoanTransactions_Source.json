@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Source"
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Completed"
 		},
 		"annotations": [],
 		"type": "Binary",
