@@ -18,7 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": " UAT / CCM_CreditCard_AccountDetails",
+				"folderPath": "UAT/CCM_CreditCard_AccountDetails",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
