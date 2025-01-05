@@ -295,7 +295,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/DebitCardDetails",
+							"wildcardFolderPath": "UAT/DebitCardDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -316,13 +316,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_DebitCardDetails_Source",
+						"referenceName": "UAT_Completed_DebitCardDetails_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_DebitCardDetails_Sink",
+						"referenceName": "UAT_Completed_DebitCardDetails_Sink",
 						"type": "DatasetReference"
 					}
 				]
