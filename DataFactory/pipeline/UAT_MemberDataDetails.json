@@ -551,7 +551,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/MemberDataDetails"
+				"defaultValue": "offline-services / UAT / CCM_CreditCard_AccountDetails"
 			}
 		},
 		"folder": {
