@@ -2,7 +2,7 @@
 	"name": "UAT_OfflineDestination_UserCreditCards",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "SCCUQA_OfflineModeDB",
+			"referenceName": "SCCUUAT_OfflineModeDB",
 			"type": "LinkedServiceReference"
 		},
 		"folder": {
