@@ -345,10 +345,12 @@
 		],
 		"parameters": {
 			"FileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_12_02_234528.csv"
 			},
 			"FilePath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "offline-services / UAT / CCM_CreditCard_AccountDetails"
 			}
 		},
 		"folder": {
