@@ -61,6 +61,14 @@
 			"type": "string",
 			"defaultValue": "managedInstance"
 		},
+		"sccustagesql02_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/sccu-eu-stage-srv-rg/providers/Microsoft.Sql/managedinstances/sccustagesql02"
+		},
+		"sccustagesql02_properties_groupId": {
+			"type": "string",
+			"defaultValue": "managedInstance"
+		},
 		"SCCUDev_Admin_LogDB_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccudevsql01.database.windows.net"
@@ -92,22 +100,6 @@
 		"SCCUDev_Anonymous_MetaDB_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCUDev_Anonymous_MetaDB"
-		},
-		"SCCUQA_Admin_LogDB_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccuqasql01.database.windows.net"
-		},
-		"SCCUQA_Admin_LogDB_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCUQA_Admin_LogDB"
-		},
-		"SCCUQA_Admin_MetaDB_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccuqasql01.database.windows.net"
-		},
-		"SCCUQA_Admin_MetaDB_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCUQA_Admin_MetaDB"
 		}
 	},
 	"variables": {
@@ -150,6 +142,18 @@
 						"startTime": "2024-08-03T01:00:00",
 						"timeZone": "India Standard Time"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Credentials_Database')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourcegroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SCCU-EU-ADF"
 				}
 			},
 			"dependsOn": []
@@ -308,6 +312,18 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/default/sccustagesql02')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('sccustagesql02_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('sccustagesql02_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUDev_Admin_LogDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -417,62 +433,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
 				"[concat(variables('factoryId'), '/credentials/Credentials_Dev')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_LogDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCUQA_Admin_LogDB_properties_typeProperties_server')]",
-					"database": "[parameters('SCCUQA_Admin_LogDB_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_QA",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_MetaDB')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_server')]",
-					"database": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_QA",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
-				"[concat(variables('factoryId'), '/credentials/Credentials_QA')]"
 			]
 		}
 	]

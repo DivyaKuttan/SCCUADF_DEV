@@ -103,6 +103,14 @@
 			"type": "string",
 			"defaultValue": "SCCUQa_Anonymous_LogDB"
 		},
+		"SCCUStage_OfflineModeDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccustagesql02.4f8fb33c01e7.database.windows.net"
+		},
+		"SCCUStage_OfflineModeDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_OfflineModeDB_Stage"
+		},
 		"SCCUUAT_Admin_LogDB_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccuuatsql01.database.windows.net"
@@ -394,6 +402,14 @@
 			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.Sql/managedInstances/sccuprodsql01"
 		},
 		"sccuprodsql01_properties_groupId": {
+			"type": "string",
+			"defaultValue": "managedInstance"
+		},
+		"sccustagesql02_properties_privateLinkResourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourceGroups/sccu-eu-stage-srv-rg/providers/Microsoft.Sql/managedinstances/sccustagesql02"
+		},
+		"sccustagesql02_properties_groupId": {
 			"type": "string",
 			"defaultValue": "managedInstance"
 		}
@@ -58584,6 +58600,38 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUStage_OfflineModeDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "for stage offline Database",
+				"annotations": [],
+				"type": "AzureSqlMI",
+				"typeProperties": {
+					"server": "[parameters('SCCUStage_OfflineModeDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUStage_OfflineModeDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_Database",
+						"type": "CredentialReference"
+					},
+					"alwaysEncryptedSettings": {
+						"alwaysEncryptedAkvAuthType": "ManagedIdentity"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]",
+				"[concat(variables('factoryId'), '/credentials/Credentials_Database')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUUAT_Admin_LogDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -59734,6 +59782,18 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Credentials_Database')]",
+			"type": "Microsoft.DataFactory/factories/credentials",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "ManagedIdentity",
+				"typeProperties": {
+					"resourceId": "/subscriptions/a8cd236d-26bd-46eb-81fc-dea8aac0fe3c/resourcegroups/SCCU-EU-PROD-SRV-RG/providers/Microsoft.ManagedIdentity/userAssignedIdentities/SCCU-EU-ADF"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Credentials_Dev')]",
 			"type": "Microsoft.DataFactory/factories/credentials",
 			"apiVersion": "2018-06-01",
@@ -59856,6 +59916,18 @@
 			"properties": {
 				"privateLinkResourceId": "[parameters('sccuprodsql01_properties_privateLinkResourceId')]",
 				"groupId": "[parameters('sccuprodsql01_properties_groupId')]"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default/sccustagesql02')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks/managedPrivateEndpoints",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"privateLinkResourceId": "[parameters('sccustagesql02_properties_privateLinkResourceId')]",
+				"groupId": "[parameters('sccustagesql02_properties_groupId')]"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"

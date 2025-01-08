@@ -7,6 +7,22 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "SCCU-EU-Data-Factory-NonProd"
 		},
+		"SCCUQA_Admin_LogDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Admin_LogDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUQA_Admin_LogDB"
+		},
+		"SCCUQA_Admin_MetaDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccuqasql01.database.windows.net"
+		},
+		"SCCUQA_Admin_MetaDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCUQA_Admin_MetaDB"
+		},
 		"SCCUQA_Anonymous_MetaDB_properties_typeProperties_server": {
 			"type": "string",
 			"defaultValue": "sccuqasql01.database.windows.net"
@@ -54,6 +70,14 @@
 		"SCCUQa_Anonymous_LogDB_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCUQa_Anonymous_LogDB"
+		},
+		"SCCUStage_OfflineModeDB_properties_typeProperties_server": {
+			"type": "string",
+			"defaultValue": "sccustagesql02.4f8fb33c01e7.database.windows.net"
+		},
+		"SCCUStage_OfflineModeDB_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "SCCU_OfflineModeDB_Stage"
 		},
 		"SCCUUAT_Admin_LogDB_properties_typeProperties_server": {
 			"type": "string",
@@ -142,36 +166,62 @@
 		"SCCU_BBAlertsDev_properties_typeProperties_database": {
 			"type": "string",
 			"defaultValue": "SCCUDEV_BBAlerts"
-		},
-		"SCCU_BBAlertsUAT_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccuuatsql01.database.windows.net"
-		},
-		"SCCU_BBAlertsUAT_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCUUAT_BBAlerts"
-		},
-		"SCCU_BusinessDataDev_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccudevsql01.database.windows.net"
-		},
-		"SCCU_BusinessDataDev_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCU_BusinessData_Dev"
-		},
-		"SCCU_BusinessDataQA_properties_typeProperties_server": {
-			"type": "string",
-			"defaultValue": "sccuqasql01.database.windows.net"
-		},
-		"SCCU_BusinessDataQA_properties_typeProperties_database": {
-			"type": "string",
-			"defaultValue": "SCCU_BusinessDataQA"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_LogDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUQA_Admin_LogDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUQA_Admin_LogDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_QA",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_MetaDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"server": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUQA_Admin_MetaDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_QA",
+						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/SCCUQA_Anonymous_MetaDB')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
@@ -313,6 +363,35 @@
 					"credential": {
 						"referenceName": "Credentials_QA",
 						"type": "CredentialReference"
+					}
+				},
+				"connectVia": {
+					"referenceName": "AutoResolveIntegrationRuntime",
+					"type": "IntegrationRuntimeReference"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUStage_OfflineModeDB')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "for stage offline Database",
+				"annotations": [],
+				"type": "AzureSqlMI",
+				"typeProperties": {
+					"server": "[parameters('SCCUStage_OfflineModeDB_properties_typeProperties_server')]",
+					"database": "[parameters('SCCUStage_OfflineModeDB_properties_typeProperties_database')]",
+					"encrypt": "mandatory",
+					"trustServerCertificate": false,
+					"authenticationType": "UserAssignedManagedIdentity",
+					"credential": {
+						"referenceName": "Credentials_Database",
+						"type": "CredentialReference"
+					},
+					"alwaysEncryptedSettings": {
+						"alwaysEncryptedAkvAuthType": "ManagedIdentity"
 					}
 				},
 				"connectVia": {
@@ -587,82 +666,6 @@
 					"authenticationType": "UserAssignedManagedIdentity",
 					"credential": {
 						"referenceName": "Credentials_Dev",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCU_BBAlertsUAT')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCU_BBAlertsUAT_properties_typeProperties_server')]",
-					"database": "[parameters('SCCU_BBAlertsUAT_properties_typeProperties_database')]",
-					"encrypt": "optional",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_UAT",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCU_BusinessDataDev')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "For DEV SQL Server",
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCU_BusinessDataDev_properties_typeProperties_server')]",
-					"database": "[parameters('SCCU_BusinessDataDev_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_Dev",
-						"type": "CredentialReference"
-					}
-				},
-				"connectVia": {
-					"referenceName": "AutoResolveIntegrationRuntime",
-					"type": "IntegrationRuntimeReference"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCU_BusinessDataQA')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureSqlDatabase",
-				"typeProperties": {
-					"server": "[parameters('SCCU_BusinessDataQA_properties_typeProperties_server')]",
-					"database": "[parameters('SCCU_BusinessDataQA_properties_typeProperties_database')]",
-					"encrypt": "mandatory",
-					"trustServerCertificate": false,
-					"authenticationType": "UserAssignedManagedIdentity",
-					"credential": {
-						"referenceName": "Credentials_QA",
 						"type": "CredentialReference"
 					}
 				},

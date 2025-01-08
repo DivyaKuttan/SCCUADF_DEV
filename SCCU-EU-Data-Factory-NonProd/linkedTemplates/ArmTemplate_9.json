@@ -13,6 +13,251 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveUserInvalidAttemptsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "WebServiceTxsID",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DataSourceID",
+						"type": "decimal",
+						"precision": 15,
+						"scale": 0
+					},
+					{
+						"name": "DatasourceName",
+						"type": "varchar"
+					},
+					{
+						"name": "FormName",
+						"type": "varchar"
+					},
+					{
+						"name": "CommandName",
+						"type": "varchar"
+					},
+					{
+						"name": "ContactId",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "UserID",
+						"type": "varchar"
+					},
+					{
+						"name": "RequestDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ResponseDateTime",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "RequestParameters",
+						"type": "text"
+					},
+					{
+						"name": "ResponseData",
+						"type": "text"
+					},
+					{
+						"name": "ErrorCode",
+						"type": "varchar"
+					},
+					{
+						"name": "ErrorData",
+						"type": "text"
+					},
+					{
+						"name": "TenantId",
+						"type": "varchar"
+					},
+					{
+						"name": "EnvCode",
+						"type": "varchar"
+					},
+					{
+						"name": "RequestType",
+						"type": "varchar"
+					},
+					{
+						"name": "CustomerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "InnerException",
+						"type": "text"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserInvalidAttempts_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveUserLoginAttemptsDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserLoginAttempts_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveUserMappingConfigurationDataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserMappingConfiguration_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_Archive_Destination')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -816,374 +1061,6 @@
 					"schema": "dbo",
 					"table": "MemberActivityDynamicDescriptionValue"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_NF_UserConnectionsSourceDataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUQA_MetaDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "DataRetentionDatasets/QA"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "Id",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "UserId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "ClientId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "CreatedDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "TenantId",
-						"type": "nvarchar"
-					},
-					{
-						"name": "IP_Address",
-						"type": "nvarchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "NF_UserConnections"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_OfflinSource_CCM_CreditCard_AccountDetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"CCM_CreditCard_AccountDetails": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/QA_Offline/QA_Source"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "QA/CCM_CreditCard_AccountDetails",
-						"container": "offline-services"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "AccountNumber",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalance",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeEscrow",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceEscrow",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "NextPaymentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "CurrentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "RegularPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "InterestRate",
-						"type": "String"
-					},
-					{
-						"name": "PriorYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "PayoffBalance",
-						"type": "String"
-					},
-					{
-						"name": "PayDownBalance",
-						"type": "String"
-					},
-					{
-						"name": "PrincipalBalance",
-						"type": "String"
-					},
-					{
-						"name": "AmountToPayCurrent",
-						"type": "String"
-					},
-					{
-						"name": "TotalPerDiem",
-						"type": "String"
-					},
-					{
-						"name": "TotalAmountCurrentlyDue",
-						"type": "String"
-					},
-					{
-						"name": "AmountPastDue",
-						"type": "String"
-					},
-					{
-						"name": "OriginalLoanAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingPayments",
-						"type": "String"
-					},
-					{
-						"name": "PaymentCalculationPeriod",
-						"type": "String"
-					},
-					{
-						"name": "CreditLimitAmount",
-						"type": "String"
-					},
-					{
-						"name": "AvailableCredit",
-						"type": "String"
-					},
-					{
-						"name": "OpenDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_OfflinSource_CD_Accountdetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"CD_Accountdetails": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/QA_Offline/QA_Source"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "QA/CD_Accountdetails",
-						"container": "offline-services"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "AccountNumber",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalance",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeEscrow",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceEscrow",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "NextPaymentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "CurrentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "RegularPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "InterestRate",
-						"type": "String"
-					},
-					{
-						"name": "PriorYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "PayoffBalance",
-						"type": "String"
-					},
-					{
-						"name": "PayDownBalance",
-						"type": "String"
-					},
-					{
-						"name": "PrincipalBalance",
-						"type": "String"
-					},
-					{
-						"name": "AmountToPayCurrent",
-						"type": "String"
-					},
-					{
-						"name": "TotalPerDiem",
-						"type": "String"
-					},
-					{
-						"name": "TotalAmountCurrentlyDue",
-						"type": "String"
-					},
-					{
-						"name": "AmountPastDue",
-						"type": "String"
-					},
-					{
-						"name": "OriginalLoanAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingPayments",
-						"type": "String"
-					},
-					{
-						"name": "PaymentCalculationPeriod",
-						"type": "String"
-					},
-					{
-						"name": "CreditLimitAmount",
-						"type": "String"
-					},
-					{
-						"name": "AvailableCredit",
-						"type": "String"
-					},
-					{
-						"name": "OpenDate",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": []
 		}
