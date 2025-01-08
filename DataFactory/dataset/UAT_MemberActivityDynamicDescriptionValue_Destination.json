@@ -1,0 +1,34 @@
+{
+	"name": "UAT_MemberActivityDynamicDescriptionValue_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUUAT_ArchiveDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/Static"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "MemberActivityLogID",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "ActivityDynamicDescriptionValue",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "BusinessData",
+			"table": "MemberActivityDynamicDescriptionValue"
+		}
+	}
+}

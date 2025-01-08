@@ -1,0 +1,19 @@
+{
+	"name": "UAT_emulation_Destination",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUUAT_ArchiveDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "DataRetentionDatasets/Static"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "BusinessData",
+			"table": "EmulationActivityDynamicDescriptionValue"
+		}
+	}
+}
