@@ -1,0 +1,26 @@
+{
+	"name": "SCCUStage_OfflineModeDB",
+	"properties": {
+		"description": "for stage offline Database",
+		"annotations": [],
+		"type": "AzureSqlMI",
+		"typeProperties": {
+			"server": "sccustagesql02.4f8fb33c01e7.database.windows.net",
+			"database": "SCCU_OfflineModeDB_Stage",
+			"encrypt": "mandatory",
+			"trustServerCertificate": false,
+			"authenticationType": "UserAssignedManagedIdentity",
+			"credential": {
+				"referenceName": "Credentials_Database",
+				"type": "CredentialReference"
+			},
+			"alwaysEncryptedSettings": {
+				"alwaysEncryptedAkvAuthType": "ManagedIdentity"
+			}
+		},
+		"connectVia": {
+			"referenceName": "AutoResolveIntegrationRuntime",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
