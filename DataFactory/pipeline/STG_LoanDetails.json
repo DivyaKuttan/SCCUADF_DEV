@@ -1,0 +1,553 @@
+{
+	"name": "STG_LoanDetails",
+	"properties": {
+		"activities": [
+			{
+				"name": "LoanDetails_CopyData",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "LoanDetails_StagingTruncate",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"wildcardFolderPath": "QA/LoanDetails",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "AccountNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AccountNumber",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentBalance",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentBalance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "BalanceCategoryCodeEscrow",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BalanceCategoryCodeEscrow",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentBalanceEscrow",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentBalanceEscrow",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "BalanceCategoryCodeUnapplied",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BalanceCategoryCodeUnapplied",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentBalanceUnapplied",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentBalanceUnapplied",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "BalanceCategoryCodeLoanInProcess",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "BalanceCategoryCodeLoanInProcess",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentBalanceLoanInProcess",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentBalanceLoanInProcess",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "NextPaymentDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "NextPaymentDueDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentDueDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentDueDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LastPaymentDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LastPaymentDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "LastPaymentAmount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "LastPaymentAmount",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentYearInterestPaid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentYearInterestPaid",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "RegularPaymentAmount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RegularPaymentAmount",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "InterestRate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "InterestRate",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 5
+								}
+							},
+							{
+								"source": {
+									"name": "PriorYearInterestPaid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PriorYearInterestPaid",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "PayoffBalance",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PayoffBalance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "PayDownBalance",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PayDownBalance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "PrincipalBalance",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PrincipalBalance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "AmountToPayCurrent",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AmountToPayCurrent",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "TotalPerDiem",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TotalPerDiem",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "TotalAmountCurrentlyDue",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TotalAmountCurrentlyDue",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "AmountPastDue",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AmountPastDue",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "OriginalLoanAmount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OriginalLoanAmount",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "CurrentTerm",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CurrentTerm",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "RemainingTerm",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RemainingTerm",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "RemainingPayments",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "RemainingPayments",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "PaymentCalculationPeriod",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "PaymentCalculationPeriod",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "CreditLimitAmount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CreditLimitAmount",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "AvailableCredit",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AvailableCredit",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "OpenDate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OpenDate",
+									"type": "DateTime",
+									"physicalType": "date"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "QA_OfflinSource_LoanDetails",
+						"type": "DatasetReference",
+						"parameters": {
+							"LoanDetailsFileName": "@pipeline().parameters.FileName"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "QA_OfflineDestination_LoanDetails",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "LoanDetails_StagingTruncate",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "TRUNCATE TABLE [dbo].[LoanDetails_Staging]"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "LoanDetails_CopyData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[Spi_InsertIntoLoanAccountsBalanceInfo]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"FileName": {
+				"type": "string",
+				"defaultValue": "NextlyLoanDetails 2024_11_12_112850.csv"
+			},
+			"FilePath": {
+				"type": "string",
+				"defaultValue": "offline-services/QA/LoanDetails"
+			}
+		},
+		"folder": {
+			"name": "OfflineServices/STG_OfflineServices"
+		},
+		"annotations": []
+	}
+}
