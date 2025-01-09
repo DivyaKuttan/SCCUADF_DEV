@@ -18,7 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "STG/DebitCardDetails",
+				"folderPath": "STAGE/DebitCardDetails",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
