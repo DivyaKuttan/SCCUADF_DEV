@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -426,7 +426,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_MemberDataDetails",
+						"referenceName": "STG_OfflineDestination_MemberDataDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -480,7 +480,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
