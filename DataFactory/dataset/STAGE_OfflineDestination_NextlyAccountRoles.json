@@ -1,0 +1,16 @@
+{
+	"name": "STAGE_OfflineDestination_NextlyAccountRoles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUStage_OfflineModeDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "NextlyAccountRoles_Staging"
+		}
+	}
+}
