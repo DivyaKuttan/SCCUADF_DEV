@@ -18,7 +18,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "STG/NextlyAccountlockout",
+				"folderPath": "STAGE/NextlyAccountlockout",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
