@@ -1,0 +1,16 @@
+{
+	"name": "STG_OfflineDestination_CK_SAV_Accounttransactions",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUStage_OfflineModeDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CK_SAV_Accounttransactions_Staging"
+		}
+	}
+}
