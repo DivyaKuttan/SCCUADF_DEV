@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "STAGE/CK_SAV_Accounttransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -228,7 +228,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_CK_SAV_Accounttransactions",
+						"referenceName": "STG_OfflinSource_CK_SAV_Accounttransactions",
 						"type": "DatasetReference",
 						"parameters": {
 							"CK_SAV_Accounttransactionsons_Staging": "@pipeline().parameters.FileName"
@@ -237,7 +237,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_CK_SAV_Accounttransactions",
+						"referenceName": "STG_OfflineDestination_CK_SAV_Accounttransactions",
 						"type": "DatasetReference"
 					}
 				]
@@ -291,7 +291,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToAccountTransactionsDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}

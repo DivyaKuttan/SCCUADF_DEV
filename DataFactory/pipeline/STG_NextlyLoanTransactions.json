@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyLoanTransactions",
+							"wildcardFolderPath": "STAGE/NextlyLoanTransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -241,7 +241,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_NExtlyLoanTransactions",
+						"referenceName": "STG_OfflinSource_NextlyLoanTransactions",
 						"type": "DatasetReference",
 						"parameters": {
 							"NextlyLoanTransactions": "@pipeline().parameters.FileName"
@@ -250,7 +250,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_NextlyLoanTransactions",
+						"referenceName": "STG_OfflineDestination_NextlyLoanTransactions",
 						"type": "DatasetReference"
 					}
 				]
@@ -268,7 +268,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -304,7 +304,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToLoanTransactionsDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},

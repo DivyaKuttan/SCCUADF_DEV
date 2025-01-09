@@ -11,7 +11,7 @@
 			}
 		},
 		"folder": {
-			"name": "OfflineServices_DataSets/QA_Offline/QA_Source"
+			"name": "OfflineServices_DataSets/STG_Offline/STG_Source"
 		},
 		"annotations": [],
 		"type": "DelimitedText",

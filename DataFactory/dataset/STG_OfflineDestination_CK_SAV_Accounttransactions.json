@@ -5,6 +5,9 @@
 			"referenceName": "SCCUStage_OfflineModeDB",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "OfflineServices_DataSets/STG_Offline/STG_Source"
+		},
 		"annotations": [],
 		"type": "AzureSqlMITable",
 		"schema": [],

@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyAccountlockout",
+							"wildcardFolderPath": "STAGE/NextlyAccountlockout",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -105,7 +105,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_NextlyAccountlockout",
+						"referenceName": "STG_OfflinSource_NextlyAccountlockout",
 						"type": "DatasetReference",
 						"parameters": {
 							"NextlyAccountlockout": "@pipeline().parameters.FileName"
@@ -114,7 +114,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_NextlyAccountlockout",
+						"referenceName": "STG_OfflineDestination_NextlyAccountlockout",
 						"type": "DatasetReference"
 					}
 				]
@@ -132,7 +132,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -168,7 +168,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToMemberLockOutFlagDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},

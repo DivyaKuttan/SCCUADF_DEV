@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CrossAccounts",
+							"wildcardFolderPath": "STAGE/CrossAccounts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -729,7 +729,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_NextlyCrossAccounts",
+						"referenceName": "STG_OfflinSource_NextlyCrossAccounts",
 						"type": "DatasetReference",
 						"parameters": {
 							"CrossAccounts": "@pipeline().parameters.FileName"
@@ -738,7 +738,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_NextlyCrossAccounts",
+						"referenceName": "STG_OfflineDestination_NextlyCrossAccounts",
 						"type": "DatasetReference"
 					}
 				]
@@ -756,7 +756,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -792,7 +792,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoMemberCrossAccounts]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}

@@ -27,11 +27,8 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyAccountRoles",
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
+							"wildcardFolderPath": "STAGE/NextlyAccountRoles",
+							"wildcardFileName": "@pipeline().parameters.FileName",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -39,7 +36,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -129,7 +126,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_NextlyAccountRoles",
+						"referenceName": "STAGE_OfflinSource_NextlyAccountRoles_copy1",
 						"type": "DatasetReference",
 						"parameters": {
 							"NextlyAccountRoles": "@pipeline().parameters.FileName"
@@ -138,7 +135,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_NextlyAccountRoles",
+						"referenceName": "STAGE_OfflineDestination_NextlyAccountRoles",
 						"type": "DatasetReference"
 					}
 				]
@@ -156,7 +153,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {

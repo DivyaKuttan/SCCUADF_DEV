@@ -27,11 +27,8 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/DebitCardDetails",
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.FileName",
-								"type": "Expression"
-							},
+							"wildcardFolderPath": "STAGE/DebitCardDetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -39,7 +36,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -201,7 +198,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_DebitCardDetails",
+						"referenceName": "STG_OfflinSource_DebitCardDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"DebitCardDetails": "@pipeline().parameters.FileName"
@@ -210,7 +207,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_DebitCardDetails",
+						"referenceName": "STG_OfflineDestination_DebitCardDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -228,7 +225,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -264,7 +261,7 @@
 					"storedProcedureName": "Spi_InsertInToMemberDebitCardDetails"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
