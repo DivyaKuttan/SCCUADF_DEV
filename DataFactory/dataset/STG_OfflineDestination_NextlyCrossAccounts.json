@@ -1,0 +1,16 @@
+{
+	"name": "STG_OfflineDestination_NextlyCrossAccounts",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUStage_OfflineModeDB",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "NextlyCrossAccounts_Staging"
+		}
+	}
+}
