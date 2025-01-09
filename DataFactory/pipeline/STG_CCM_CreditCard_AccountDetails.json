@@ -406,11 +406,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CCM Credit Card Account Details2024_12_02_234502.csv"
+				"defaultValue": "Nextly CCM Credit Card Account Details 2025_01_06_224505.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CCM_CreditCard_AccountDetails"
+				"defaultValue": "offline-services/STAGE/CCM_CreditCard_AccountDetails"
 			}
 		},
 		"folder": {

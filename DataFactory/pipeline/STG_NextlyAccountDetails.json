@@ -823,11 +823,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccounts 2024_12_05_001311.csv"
+				"defaultValue": "NextlyAccounts 2025_01_06_231643.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/NextlyAccountDetails"
+				"defaultValue": "offline-services/STAGE/NextlyAccountDetails"
 			}
 		},
 		"folder": {

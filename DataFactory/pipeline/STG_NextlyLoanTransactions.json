@@ -371,11 +371,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly Loan Account Transactions Prior 15 Days 2024_12_02_234832.csv"
+				"defaultValue": "Nextly Loan Account Transactions Prior 15 Days 2025_01_06_234441.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyLoanTransactions"
+				"defaultValue": "offline-services/STAGE/NextlyLoanTransactions"
 			}
 		},
 		"folder": {

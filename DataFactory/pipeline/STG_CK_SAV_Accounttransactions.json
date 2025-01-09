@@ -299,11 +299,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2024_12_02_234528.csv"
+				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2025_01_07_002713.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CK_SAV_Accounttransactions"
+				"defaultValue": "offline-services/STAGE/CK_SAV_Accounttransactions"
 			}
 		},
 		"folder": {

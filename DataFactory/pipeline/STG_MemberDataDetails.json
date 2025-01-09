@@ -488,11 +488,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_12_04_211410.csv"
+				"defaultValue": "NextlyMemberData 2025_01_06_224632.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/MemberDataDetails"
+				"defaultValue": "offline-services/STAGE/MemberDataDetails"
 			}
 		},
 		"folder": {

@@ -284,11 +284,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2024_12_02_234830.csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM 2025_01_06_224924.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/UserCreditCards"
+				"defaultValue": "offline-services/STAGE/UserCreditCards"
 			}
 		},
 		"folder": {

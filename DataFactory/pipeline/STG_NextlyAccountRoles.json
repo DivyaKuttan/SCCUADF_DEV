@@ -189,7 +189,7 @@
 					"storedProcedureName": "Spi_InsertToMemberRolesDetails"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},
@@ -256,7 +256,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountRoles 2024_12_04_212156.csv"
+				"defaultValue": "NextlyAccountRoles 2025_01_06_225633.csv"
 			},
 			"FilePath": {
 				"type": "string",
