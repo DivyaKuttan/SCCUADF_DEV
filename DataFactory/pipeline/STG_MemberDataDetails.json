@@ -417,7 +417,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_MemberDataDetails",
+						"referenceName": "STG_OfflinSource_MemberDataDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"MemberDataDetails": "@pipeline().parameters.FileName"
@@ -444,7 +444,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
