@@ -1,0 +1,19 @@
+{
+	"name": "STG_OfflineDestination_UserCreditCards",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUStage_OfflineModeDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/STG_Offline/STG_Destination"
+		},
+		"annotations": [],
+		"type": "AzureSqlMITable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "UserCreditCards_Staging"
+		}
+	}
+}

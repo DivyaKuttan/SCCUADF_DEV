@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyAccountDetails",
+							"wildcardFolderPath": "STAGE/NextlyAccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -693,7 +693,7 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_NextlyAccountDetails",
+						"referenceName": "STG_OfflinSource_NextlyAccountDetails",
 						"type": "DatasetReference",
 						"parameters": {
 							"NextlyAccountDetails": "@pipeline().parameters.FileName"
@@ -702,7 +702,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_NextlyAccountDetails",
+						"referenceName": "STG_OfflineDestination_NextlyAccountDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -720,7 +720,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -756,7 +756,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoAccountDetails]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},
@@ -823,11 +823,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccounts 2024_12_05_001311.csv"
+				"defaultValue": "NextlyAccounts 2025_01_06_231643.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/NextlyAccountDetails"
+				"defaultValue": "offline-services/STAGE/NextlyAccountDetails"
 			}
 		},
 		"folder": {

@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
+							"wildcardFolderPath": "STAGE/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -335,16 +335,16 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_OfflinSource_CCM_CreditCard_AccountDetails",
+						"referenceName": "STG_OfflinSource_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference",
 						"parameters": {
-							"CCM_CreditCard_AccountDetails": "@pipeline().parameters.FileName"
+							"CCM_CreditCard_AccountDetails": " @pipeline().parameters.FileName"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_CCM_CreditCard_AccountDetails",
+						"referenceName": "STG_OfflineDestination_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -362,7 +362,7 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
@@ -398,7 +398,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertToCreditCardAccountBalanceInfo]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -406,11 +406,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CCM Credit Card Account Details2024_12_02_234502.csv"
+				"defaultValue": "Nextly CCM Credit Card Account Details 2025_01_06_224505.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CCM_CreditCard_AccountDetails"
+				"defaultValue": "offline-services/STAGE/CCM_CreditCard_AccountDetails"
 			}
 		},
 		"folder": {

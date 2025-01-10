@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/MemberDataDetails",
+							"wildcardFolderPath": "STAGE/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -39,7 +39,7 @@
 						}
 					},
 					"sink": {
-						"type": "AzureSqlSink",
+						"type": "SqlMISink",
 						"writeBehavior": "insert",
 						"sqlWriterUseTableLock": false
 					},
@@ -426,7 +426,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_OfflineDestination_MemberDataDetails",
+						"referenceName": "STG_OfflineDestination_MemberDataDetails",
 						"type": "DatasetReference"
 					}
 				]
@@ -480,7 +480,7 @@
 					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCUQA_OfflineModeDB",
+					"referenceName": "SCCUStage_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			}
@@ -488,11 +488,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_12_04_211410.csv"
+				"defaultValue": "NextlyMemberData 2025_01_06_224632.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/MemberDataDetails"
+				"defaultValue": "offline-services/STAGE/MemberDataDetails"
 			}
 		},
 		"folder": {
