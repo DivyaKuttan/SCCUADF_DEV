@@ -332,7 +332,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_UserCreditCards_Source",
+						"referenceName": "DEV_Completed_UserCreditCards_Sink",
 						"type": "DatasetReference"
 					}
 				]
