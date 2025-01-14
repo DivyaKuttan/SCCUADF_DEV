@@ -1,0 +1,28 @@
+{
+	"name": "Dev_offlineMain",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pipeline1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"FileName": "@triggerBody().fileName",
+					"FilePath": "@triggerBody().folderPath"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 1,
+				"startTime": "2025-01-15T21:50:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
