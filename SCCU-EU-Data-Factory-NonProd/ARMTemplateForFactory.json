@@ -65984,10 +65984,11 @@
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
-						"frequency": "Minute",
+						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2025-01-16T22:55:00",
-						"timeZone": "India Standard Time"
+						"startTime": "2025-01-14T22:55:00",
+						"timeZone": "India Standard Time",
+						"schedule": {}
 					}
 				}
 			},
