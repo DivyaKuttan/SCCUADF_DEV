@@ -6592,14 +6592,6 @@
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
-				"parameters": {
-					"FileName": {
-						"type": "string"
-					},
-					"FilePath": {
-						"type": "string"
-					}
-				},
 				"folder": {
 					"name": "OfflineServices/Dev_OfflineServices"
 				},
