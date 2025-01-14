@@ -8664,12 +8664,10 @@
 				},
 				"parameters": {
 					"FileName": {
-						"type": "string",
-						"defaultValue": "NextlyMemberData 2025_01_08_123948.csv"
+						"type": "string"
 					},
 					"FilePath": {
-						"type": "string",
-						"defaultValue": "offline-services/DEV/MemberDataDetails"
+						"type": "string"
 					}
 				},
 				"folder": {
@@ -65988,7 +65986,7 @@
 					"recurrence": {
 						"frequency": "Minute",
 						"interval": 1,
-						"startTime": "2025-01-15T21:50:00",
+						"startTime": "2025-01-16T22:55:00",
 						"timeZone": "India Standard Time"
 					}
 				}
