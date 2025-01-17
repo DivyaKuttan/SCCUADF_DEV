@@ -271,7 +271,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "DELETE \n\tFROM \n\t\t[Offline].[AccountTransactionsDetails] \n\tWHERE \n\t\tCAST([PostingDate] AS DATE) < DATEADD(DAY,-30,GETUTCDATE());"
+							"text": "DELETE \n\tFROM \n\t\t[Offline].[AccountTransactionsDetails] \n\tWHERE \n\t\tCAST([PostingDate] AS DATE) < DATEADD(DAY,-47,GETUTCDATE());"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
