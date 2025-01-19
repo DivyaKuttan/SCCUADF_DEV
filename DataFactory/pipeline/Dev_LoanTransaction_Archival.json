@@ -17,7 +17,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT * \tFROM [dbo].[LoanTransactionsDetails] \n\tWHERE \n\t\tCAST([PostingDate] AS DATE) <DATEADD(DAY,-15,GETUTCDATE());",
+						"sqlReaderQuery": "SELECT * \tFROM [dbo].[LoanTransactionsDetails] \n\tWHERE \n\t\t[PostingDate]  <DATEADD(DAY,-15,CAST(GETUTCDATE() AS DATE));",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
