@@ -235,7 +235,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountLockout 2024_12_04_205557.csv"
+				"defaultValue": "NextlyAccountLockout*.csv"
 			},
 			"FilePath": {
 				"type": "string",

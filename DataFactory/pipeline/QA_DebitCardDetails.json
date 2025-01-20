@@ -145,12 +145,12 @@
 							},
 							{
 								"source": {
-									"name": "AgreementNumber1",
+									"name": "AgreementNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AgreementNumber1",
+									"name": "AgreementNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
@@ -272,7 +272,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyDebitCards 2024_12_03_030447.csv"
+				"defaultValue": "NextlyDebitCards*.csv"
 			},
 			"FilePath": {
 				"type": "string",

@@ -488,7 +488,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData 2024_12_04_211410.csv"
+				"defaultValue": "NextlyMemberData*.csv"
 			},
 			"FilePath": {
 				"type": "string",

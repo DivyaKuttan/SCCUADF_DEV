@@ -800,7 +800,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyCrossAccounts 2024_12_03_205553.csv"
+				"defaultValue": "NextlyCrossAccounts*.csv"
 			},
 			"FilePath": {
 				"type": "string",
