@@ -1,5 +1,5 @@
 {
-	"name": "Destination_Offline_AccountTransactions_Archive",
+	"name": "Dev_Destination_Offline_AccountTransactions_Archive",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_ArchiveDev",
