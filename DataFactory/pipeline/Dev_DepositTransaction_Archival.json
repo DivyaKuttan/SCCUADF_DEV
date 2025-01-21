@@ -203,13 +203,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Source_Offline_AccountTransactions_Archive",
+						"referenceName": "Dev_Source_Offline_AccountTransactions_Archive",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Destination_Offline_AccountTransactions_Archive",
+						"referenceName": "Dev_Destination_Offline_AccountTransactions_Archive",
 						"type": "DatasetReference"
 					}
 				]
