@@ -300,7 +300,7 @@
 			}
 		],
 		"folder": {
-			"name": "OfflineServices/Dev_OfflineServices/Dev_Offline_Archival"
+			"name": "OfflineServices/QA_OfflineServices/QA_Offline_Archival"
 		},
 		"annotations": []
 	}
