@@ -5,6 +5,9 @@
 			"referenceName": "SCCU_ArchiveDev",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Offline_Archival"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
