@@ -215,13 +215,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QASource_Offline_AccountTransactions_Archive",
+						"referenceName": "QA_Source_Offline_AccountTransactions_Archive",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QADestination_Offline_AccountTransactions_Archive",
+						"referenceName": "QA_Destination_Offline_AccountTransactions_Archive",
 						"type": "DatasetReference"
 					}
 				]

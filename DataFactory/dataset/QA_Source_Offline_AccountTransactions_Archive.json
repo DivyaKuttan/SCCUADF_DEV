@@ -1,9 +1,12 @@
 {
-	"name": "QASource_Offline_AccountTransactions_Archive",
+	"name": "QA_Source_Offline_AccountTransactions_Archive",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCUQA_OfflineModeDB",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/QA_Offline/QA_offline_Archival"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
