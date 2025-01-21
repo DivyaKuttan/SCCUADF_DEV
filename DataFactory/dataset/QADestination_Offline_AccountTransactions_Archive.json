@@ -5,6 +5,9 @@
 			"referenceName": "SCCUQA_ArchiveDB",
 			"type": "LinkedServiceReference"
 		},
+		"folder": {
+			"name": "OfflineServices_DataSets/QA_Offline/QA_offline_Archival"
+		},
 		"annotations": [],
 		"type": "AzureSqlTable",
 		"schema": [
