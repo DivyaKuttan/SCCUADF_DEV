@@ -1,9 +1,12 @@
 {
-	"name": "Source_Offline_LoanTransactions_Archive",
+	"name": "Dev_Source_Offline_LoanTransactions_Archive",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_OfflineDev",
 			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Offline_Archival"
 		},
 		"annotations": [],
 		"type": "AzureSqlTable",
