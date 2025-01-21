@@ -1,5 +1,5 @@
 {
-	"name": "QADestination_Offline_LoanTransactions_Archive",
+	"name": "QA_Destination_Offline_LoanTransactions_Archive",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCUQA_ArchiveDB",

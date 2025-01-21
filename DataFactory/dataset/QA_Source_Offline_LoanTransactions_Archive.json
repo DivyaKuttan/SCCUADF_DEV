@@ -1,5 +1,5 @@
 {
-	"name": "QASource_Offline_LoanTransactions_Archive",
+	"name": "QA_Source_Offline_LoanTransactions_Archive",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCUQA_OfflineModeDB",
