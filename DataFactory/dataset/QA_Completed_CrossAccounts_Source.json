@@ -1,0 +1,21 @@
+{
+	"name": "QA_Completed_CrossAccounts_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/Dev_Offline/Dev_Completed"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "QA/CrossAccounts",
+				"container": "offline-services"
+			}
+		}
+	}
+}
