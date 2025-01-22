@@ -822,8 +822,11 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "QA/CrossAccounts",
-							"wildcardFileName": "@pipeline().parameters.FileName",
-							"deleteFilesAfterCompletion": false
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
