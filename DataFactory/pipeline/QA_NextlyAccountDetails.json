@@ -763,8 +763,6 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -787,7 +785,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountDetails",
+							"wildcardFolderPath": "QA/NextlyAccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -808,13 +806,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_NextlyAccountDetails_Source",
+						"referenceName": "QA_Completed_NextlyAccountDetails_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_NextlyAccountDetails_Sink",
+						"referenceName": "QA_Completed_NextlyAccountDetails_Sink",
 						"type": "DatasetReference"
 					}
 				]

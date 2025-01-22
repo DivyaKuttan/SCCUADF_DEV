@@ -509,6 +509,8 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
+							"wildcardFolderPath": "QA/MemberDataDetails",
+							"wildcardFileName": "@pipeline().parameters.FileName",
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
