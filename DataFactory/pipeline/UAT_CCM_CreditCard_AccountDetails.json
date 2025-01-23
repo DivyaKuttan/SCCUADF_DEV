@@ -1,13 +1,13 @@
 {
-	"name": "UAT_MemberDataDetails",
+	"name": "UAT_CCM_CreditCard_AccountDetails",
 	"properties": {
 		"activities": [
 			{
-				"name": "MemberDataDetails_CopyData",
+				"name": "CCM_CreditCard_AccountDetails_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "MemberDataDetails_StagingTruncate",
+						"activity": "CCM_CreditCard_AccountDetails_StagingTruncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/MemberDataDetails",
+							"wildcardFolderPath": "UAT/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -49,362 +49,280 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "MemberNumber",
+									"name": "DNA_Member_Number",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MemberNumber",
+									"name": "DNA_Member_Number",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "CCM_Account_Number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "CCM_Account_Number",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "OwnerPersonNumber",
+									"name": "Open_Date",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "OwnerPersonNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OwnerOrganizationNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OwnerOrganizationNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AgreementNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AgreementNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AgreementType",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AgreementType",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OrgName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OrgName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OrgTypeDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OrgTypeDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "FirstName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "FirstName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "LastName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "LastName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AddressUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AddressUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "AddressLineText",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "AddressLineText",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CityName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CityName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ZipCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ZipCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "StateCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "StateCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CountryCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CountryCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CountryName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CountryName",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "Email",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "Email",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "EmailTypeCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "EmailTypeCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "EmailTypeDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "EmailTypeDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "HomePhone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "HomePhone",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "HomePhoneUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "HomePhoneUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CellPhone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CellPhone",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "CellPhoneUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "CellPhoneUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "BusinessPhone",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "BusinessPhone",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "BusinessPhoneUseCode",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "BusinessPhoneUseCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "OrgTaxIds",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "OrgTaxIds",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "PersonTaxId",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "PersonTaxId",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "ShareAccountNumber",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "ShareAccountNumber",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "DateOfBirth",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "DateOfBirth",
+									"name": "Open_Date",
 									"type": "DateTime",
 									"physicalType": "date"
 								}
 							},
 							{
 								"source": {
-									"name": "MemberDateLastContact",
+									"name": "Current_Account_Balance",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "MemeberDateLastContact",
+									"name": "Current_Account_Balance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Next_Payment_Due_Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Next_Payment_Due_Date",
 									"type": "DateTime",
 									"physicalType": "date"
+								}
+							},
+							{
+								"source": {
+									"name": "Next_Payment_Amt_Due",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Next_Payment_Amt_Due",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Current_Year_Interest_Paid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Current_Year_Interest_Paid",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Prior_Year_Interest_Paid",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Prior_Year_Interest_Paid",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Interest_Rate",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Interest_Rate",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 5
+								}
+							},
+							{
+								"source": {
+									"name": "APR_Interest_Class",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "APR_Interest_Class",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Account_Payoff_Balance",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Payoff_Balance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Account_Principal_Balance",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Principal_Balance",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Amount_To_Pay_Current",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Amount_To_Pay_Current",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Amount_Currently_Due",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Total_Amount_Currently_Due",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Account_Credit_Limit",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Account_Credit_Limit",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Total_Per_Diem",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Total_Per_Diem",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Current_Term",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Current_Term",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Remaining_Payments",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Remaining_Payments",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "Payment_Calculation_Period",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Payment_Calculation_Period",
+									"type": "String",
+									"physicalType": "varchar"
+								}
+							},
+							{
+								"source": {
+									"name": "Available_Credit",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Available_Credit",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
+								}
+							},
+							{
+								"source": {
+									"name": "Amount_Past_Due",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Amount_Past_Due",
+									"type": "Decimal",
+									"physicalType": "decimal",
+									"scale": 2,
+									"precision": 18
 								}
 							}
 						],
@@ -417,22 +335,22 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "UAT_OfflinSource_MemberDataDetails",
+						"referenceName": "UAT_OfflinSource_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference",
 						"parameters": {
-							"MemberDataDetails": "@pipeline().parameters.FileName"
+							"CCM_CreditCard_AccountDetails": "@pipeline().parameters.FileName"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "UAT_OfflineDestination_MemberDataDetails",
+						"referenceName": "UAT_OfflineDestination_CCM_CreditCard_AccountDetails",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "MemberDataDetails_StagingTruncate",
+				"name": "CCM_CreditCard_AccountDetails_StagingTruncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -451,7 +369,7 @@
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE [dbo].[MemberDataDetails_Staging]"
+							"text": "TRUNCATE TABLE CCM_CreditCard_AccountDetails_Staging"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -462,7 +380,7 @@
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "MemberDataDetails_CopyData",
+						"activity": "CCM_CreditCard_AccountDetails_CopyData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -477,7 +395,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[Spi_InsertIntoMembersOffline]"
+					"storedProcedureName": "[dbo].[Spi_InsertToCreditCardAccountBalanceInfo]"
 				},
 				"linkedServiceName": {
 					"referenceName": "SCCUUAT_OfflineModeDB",
@@ -485,7 +403,7 @@
 				}
 			},
 			{
-				"name": "completed copy",
+				"name": "Copy data2",
 				"type": "Copy",
 				"state": "Inactive",
 				"onInactiveMarkAs": "Succeeded",
@@ -511,7 +429,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/MemberDataDetails",
+							"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -532,13 +450,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_MemberDataDetails_Source",
+						"referenceName": "QA_Completed_CCM_CreditCard_AccountDetails_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_MemberDataDetails_Sink",
+						"referenceName": "QA_Completed_CCM_CreditCard_AccountDetails_Sink",
 						"type": "DatasetReference"
 					}
 				]
@@ -547,11 +465,11 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyMemberData*.csv"
+				"defaultValue": "Nextly CCM Credit Card Account Details*.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/MemberDataDetails"
+				"defaultValue": "offline-services/UAT/CCM_CreditCard_AccountDetails"
 			}
 		},
 		"folder": {
