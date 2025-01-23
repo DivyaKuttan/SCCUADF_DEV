@@ -145,12 +145,12 @@
 							},
 							{
 								"source": {
-									"name": "AgreementNumber1",
+									"name": "AgreementNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AgreementNumber1",
+									"name": "AgreementNumber",
 									"type": "String",
 									"physicalType": "varchar"
 								}
