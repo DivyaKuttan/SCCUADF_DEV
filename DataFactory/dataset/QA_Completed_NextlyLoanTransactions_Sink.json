@@ -1,5 +1,5 @@
 {
-	"name": "QA_Completed_CK_SAV_Accountdetails_Sink",
+	"name": "QA_Completed_NextlyLoanTransactions_Sink",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "QA/COMPLETED/Completed_CK_SAV_Accountdetails",
+				"folderPath": "QA/COMPLETED/Completed_NextlyLoanTransactions",
 				"container": "offline-services"
 			}
 		}
