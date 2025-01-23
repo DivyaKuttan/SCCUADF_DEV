@@ -298,6 +298,8 @@
 			{
 				"name": "completed copy",
 				"type": "Copy",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
