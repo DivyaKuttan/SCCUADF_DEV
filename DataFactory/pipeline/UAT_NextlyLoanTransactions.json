@@ -373,7 +373,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyLoanTransactions"
+				"defaultValue": "offline-services/UAT/NextlyLoanTransactions"
 			}
 		},
 		"folder": {
