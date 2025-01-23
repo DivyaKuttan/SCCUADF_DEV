@@ -1,0 +1,51 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Web1",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Authorization": "Bearer @pipeline().globalParameters.EmailKey",
+						"Content-Type": "application/json"
+					},
+					"url": "https://api.sendgrid.com/v3/mail/send",
+					"connectVia": {
+						"referenceName": "AutoResolveIntegrationRuntime",
+						"type": "IntegrationRuntimeReference"
+					},
+					"body": {
+						"value": "{\n  \"personalizations\": [\n    {\n      \"to\": [\n        {\n          \"email\": \"@{pipeline().parameters.recipientEmail}\"\n        }\n      ],\n      \"subject\":  \"@{pipeline().parameters.EmailSubject}\"\n    }\n  ],\n  \"from\": {\n    \"email\": \"divya.kuttan@claysys.co\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/plain\",\n      \"value\": \"@{pipeline().parameters.EmailBody}\"\n    }\n  ]\n}\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"recipientEmail": {
+				"type": "string",
+				"defaultValue": "divya.kuttan@claysys.co"
+			},
+			"EmailSubject": {
+				"type": "string",
+				"defaultValue": "Test Email from ADF"
+			},
+			"EmailBody": {
+				"type": "string",
+				"defaultValue": "Test Mail"
+			}
+		},
+		"annotations": []
+	}
+}
