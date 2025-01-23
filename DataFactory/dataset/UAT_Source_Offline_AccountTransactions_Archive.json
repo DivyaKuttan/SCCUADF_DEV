@@ -1,0 +1,79 @@
+{
+	"name": "UAT_Source_Offline_AccountTransactions_Archive",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUUAT_OfflineModeDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Offline_Archival"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "AccountNumber",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "RTXNNumber",
+				"type": "bigint",
+				"precision": 19
+			},
+			{
+				"name": "PostingDate",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "ActivityDate",
+				"type": "date"
+			},
+			{
+				"name": "DebitCreditFlag",
+				"type": "varchar"
+			},
+			{
+				"name": "Statuscode",
+				"type": "varchar"
+			},
+			{
+				"name": "StatusDescription",
+				"type": "varchar"
+			},
+			{
+				"name": "RTXNTypecode",
+				"type": "varchar"
+			},
+			{
+				"name": "RTXNTypeDescription",
+				"type": "varchar"
+			},
+			{
+				"name": "Amount",
+				"type": "decimal",
+				"precision": 18,
+				"scale": 2
+			},
+			{
+				"name": "ExternalRTXNDescText",
+				"type": "varchar"
+			},
+			{
+				"name": "InternalRTXNDescText",
+				"type": "varchar"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "AccountTransactionsDetails"
+		}
+	}
+}
