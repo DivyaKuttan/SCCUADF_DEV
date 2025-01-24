@@ -1,0 +1,21 @@
+{
+	"name": "UAT_Completed_DebitCardDetails_Sink",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Completed"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "UAT/COMPLETED/Completed_DebitCardDetails",
+				"container": "offline-services"
+			}
+		}
+	}
+}
