@@ -1,0 +1,21 @@
+{
+	"name": "UAT_Completed_NextlyAccountRoles_Source",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/UAT_Offline/UAT_Completed"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "UAT/NextlyAccountRoles",
+				"container": "offline-services"
+			}
+		}
+	}
+}
