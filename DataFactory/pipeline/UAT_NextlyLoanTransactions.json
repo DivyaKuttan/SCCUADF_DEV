@@ -309,10 +309,31 @@
 				}
 			},
 			{
+				"name": "Execute Loan Transaction Archive",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Copy data2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_LoanTransaction_Archival",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -335,7 +356,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyLoanTransactions",
+							"wildcardFolderPath": "UAT/NextlyLoanTransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -356,39 +377,16 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_Completed_NextlyLoanTransactions_Source",
+						"referenceName": "UAT_Completed_NextlyLoanTransactions_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_Completed_NextlyLoanTransactions_Sink",
+						"referenceName": "UAT_Completed_NextlyLoanTransactions_Sink",
 						"type": "DatasetReference"
 					}
 				]
-			},
-			{
-				"name": "Execute Loan Transaction Archive",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Copy data2",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "UAT_LoanTransaction_Archival",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
 			}
 		],
 		"parameters": {
