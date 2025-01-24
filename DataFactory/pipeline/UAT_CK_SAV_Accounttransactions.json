@@ -296,10 +296,24 @@
 				}
 			},
 			{
+				"name": "Execute Deposit Transaction Archive",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_DepositTransaction_Archival",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
 				"name": "completed copy",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -322,7 +336,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "UAT/CK_SAV_Accounttransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -343,39 +357,16 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_Completed_CK_SAV_Accounttransactions_Source",
+						"referenceName": "UAT_Completed_CK_SAV_Accounttransactions_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_Completed_CK_SAV_Accounttransactions_Sink",
+						"referenceName": "UAT_Completed_CK_SAV_Accounttransactions_Sink",
 						"type": "DatasetReference"
 					}
 				]
-			},
-			{
-				"name": "Execute Deposit Transaction Archive",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "completed copy",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "UAT_DepositTransaction_Archival",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
 			}
 		],
 		"parameters": {
