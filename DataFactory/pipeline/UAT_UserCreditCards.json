@@ -283,8 +283,6 @@
 			{
 				"name": "completed copy",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -307,7 +305,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/UserCreditCards",
+							"wildcardFolderPath": "UAT/UserCreditCards",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -328,13 +326,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_Completed_UserCreditCards_Source",
+						"referenceName": "UAT_Completed_UserCreditCards_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_Completed_UserCreditCards_Sink",
+						"referenceName": "UAT_Completed_UserCreditCards_Sink",
 						"type": "DatasetReference"
 					}
 				]
