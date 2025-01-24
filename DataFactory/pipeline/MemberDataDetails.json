@@ -547,10 +547,12 @@
 		],
 		"parameters": {
 			"FileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "NextlyMemberData*.csv"
 			},
 			"FilePath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "offline-services/DEV/MemberDataDetails"
 			}
 		},
 		"folder": {

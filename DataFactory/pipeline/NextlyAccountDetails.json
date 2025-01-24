@@ -821,7 +821,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccounts 2025_01_08_125253.csv"
+				"defaultValue": "NextlyAccounts*.csv"
 			},
 			"FilePath": {
 				"type": "string",

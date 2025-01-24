@@ -379,7 +379,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days 2025_01_08_162835.csv"
+				"defaultValue": "Nextly CK SAV TD Transactions Prior 15 Days*.csv"
 			},
 			"FilePath": {
 				"type": "string",
