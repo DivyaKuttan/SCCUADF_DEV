@@ -198,7 +198,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "DEV/NextlyAccountlockout",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
@@ -230,7 +233,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountLockout 2025_01_08_120943.csv"
+				"defaultValue": "NextlyAccountLockout*.csv"
 			},
 			"FilePath": {
 				"type": "string",

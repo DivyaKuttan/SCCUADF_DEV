@@ -405,8 +405,6 @@
 			{
 				"name": "Copy data2",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -429,7 +427,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
+							"wildcardFolderPath": "UAT/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -450,13 +448,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "QA_Completed_CCM_CreditCard_AccountDetails_Source",
+						"referenceName": "UAT_Completed_CCM_CreditCard_AccountDetails_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_Completed_CCM_CreditCard_AccountDetails_Sink",
+						"referenceName": "UAT_Completed_CCM_CreditCard_AccountDetails_Sink",
 						"type": "DatasetReference"
 					}
 				]

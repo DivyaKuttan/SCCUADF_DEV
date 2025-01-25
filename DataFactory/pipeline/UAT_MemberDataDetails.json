@@ -485,10 +485,8 @@
 				}
 			},
 			{
-				"name": "completed copy",
+				"name": "Copy data1",
 				"type": "Copy",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -532,13 +530,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_MemberDataDetails_Source",
+						"referenceName": "UAT_Completed_MemberDataDetails_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_MemberDataDetails_Sink",
+						"referenceName": "QA_Completed_MemberDataDetails_Sink",
 						"type": "DatasetReference"
 					}
 				]

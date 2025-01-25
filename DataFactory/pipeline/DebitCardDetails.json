@@ -329,7 +329,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyDebitCards 2025_01_08_141644.csv"
+				"defaultValue": "NextlyDebitCards*.csv"
 			},
 			"FilePath": {
 				"type": "string",

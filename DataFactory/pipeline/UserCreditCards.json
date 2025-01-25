@@ -341,7 +341,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "Nextly User Credit Cards DNA_CCM 2025_01_08_121838.csv"
+				"defaultValue": "Nextly User Credit Cards DNA_CCM*.csv"
 			},
 			"FilePath": {
 				"type": "string",

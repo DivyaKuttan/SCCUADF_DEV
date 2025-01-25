@@ -822,7 +822,10 @@
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
 							"wildcardFolderPath": "PROD/CrossAccounts",
-							"wildcardFileName": "@pipeline().parameters.FileName",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
 							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
@@ -854,7 +857,7 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyCrossAccounts 2025_01_08_123004.csv"
+				"defaultValue": "NextlyCrossAccounts*.csv"
 			},
 			"FilePath": {
 				"type": "string",
