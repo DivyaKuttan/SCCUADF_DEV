@@ -8,7 +8,7 @@
 		"parameters": {
 			"folderName": {
 				"type": "string",
-				"defaultValue": "@item()"
+				"defaultValue": "@item().name"
 			}
 		},
 		"annotations": [],
