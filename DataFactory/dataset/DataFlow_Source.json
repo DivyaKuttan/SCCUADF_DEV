@@ -7,10 +7,12 @@
 		},
 		"parameters": {
 			"folderName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@concat('offlineservice/uat/', $folderName, '/')"
 			},
 			"fileName": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "$fileName"
 			}
 		},
 		"annotations": [],
