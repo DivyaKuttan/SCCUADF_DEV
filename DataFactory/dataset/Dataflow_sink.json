@@ -19,7 +19,9 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "DEV",
+				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
