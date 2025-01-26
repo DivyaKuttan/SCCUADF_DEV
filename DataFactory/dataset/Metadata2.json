@@ -10,10 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "item().name",
-					"type": "Expression"
-				},
+				"fileName": "item().name",
+				"folderPath": "UAT",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
