@@ -10,11 +10,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "*",
-				"container": {
-					"value": "@concat('offline-services/UAT/', item().name)",
+				"folderPath": {
+					"value": "item().name",
 					"type": "Expression"
-				}
+				},
+				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
