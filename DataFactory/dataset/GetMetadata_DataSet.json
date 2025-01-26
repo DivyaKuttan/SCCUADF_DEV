@@ -16,7 +16,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*.csv",
 				"folderPath": {
 					"value": "@concat('UAT/', dataset().SubFolder)",
 					"type": "Expression"
