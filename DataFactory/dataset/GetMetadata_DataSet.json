@@ -8,7 +8,7 @@
 		"parameters": {
 			"SubFolder": {
 				"type": "string",
-				"defaultValue": "@item().Value"
+				"defaultValue": "@item()"
 			}
 		},
 		"annotations": [],
