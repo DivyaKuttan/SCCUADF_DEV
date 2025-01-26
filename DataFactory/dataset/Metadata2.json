@@ -11,7 +11,10 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"folderPath": "*",
-				"container": "offline-services"
+				"container": {
+					"value": "@concat('offline-services/UAT/', item().name)",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
