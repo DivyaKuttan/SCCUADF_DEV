@@ -10,10 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": {
-					"value": "@concat('UAT/', item().name)",
-					"type": "Expression"
-				},
+				"fileName": "Nextly CCM Credit Card Account Details 2025_01_26_000841.csv",
+				"folderPath": "UAT/CCM_CreditCard_AccountDetails",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
