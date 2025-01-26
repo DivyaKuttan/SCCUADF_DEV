@@ -7,7 +7,8 @@
 		},
 		"parameters": {
 			"FolderPath": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "@concat('/offline-services/UAT/', item().name, '/')"
 			}
 		},
 		"annotations": [],
