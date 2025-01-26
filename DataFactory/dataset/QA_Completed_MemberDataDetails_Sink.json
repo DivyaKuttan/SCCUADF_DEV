@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "QA/COMPLETED/Completed_MemberDataDetails",
+				"folderPath": "UAT/COMPLETED/Completed_MemberDataDetails",
 				"container": "offline-services"
 			}
 		}
