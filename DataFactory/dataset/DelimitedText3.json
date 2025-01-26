@@ -1,0 +1,113 @@
+{
+	"name": "DelimitedText3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCU_DataFactory_Storage",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"FolderPath": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "UAT",
+				"container": "offline-services"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "DNA_Member_Number",
+				"type": "String"
+			},
+			{
+				"name": "CCM_Account_Number",
+				"type": "String"
+			},
+			{
+				"name": "Open_Date",
+				"type": "String"
+			},
+			{
+				"name": "Current_Account_Balance",
+				"type": "String"
+			},
+			{
+				"name": "Next_Payment_Due_Date",
+				"type": "String"
+			},
+			{
+				"name": "Next_Payment_Amt_Due",
+				"type": "String"
+			},
+			{
+				"name": "Current_Year_Interest_Paid",
+				"type": "String"
+			},
+			{
+				"name": "Prior_Year_Interest_Paid",
+				"type": "String"
+			},
+			{
+				"name": "Interest_Rate",
+				"type": "String"
+			},
+			{
+				"name": "APR_Interest_Class",
+				"type": "String"
+			},
+			{
+				"name": "Account_Payoff_Balance",
+				"type": "String"
+			},
+			{
+				"name": "Account_Principal_Balance",
+				"type": "String"
+			},
+			{
+				"name": "Amount_To_Pay_Current",
+				"type": "String"
+			},
+			{
+				"name": "Total_Amount_Currently_Due",
+				"type": "String"
+			},
+			{
+				"name": "Account_Credit_Limit",
+				"type": "String"
+			},
+			{
+				"name": "Total_Per_Diem",
+				"type": "String"
+			},
+			{
+				"name": "Current_Term",
+				"type": "String"
+			},
+			{
+				"name": "Remaining_Payments",
+				"type": "String"
+			},
+			{
+				"name": "Payment_Calculation_Period",
+				"type": "String"
+			},
+			{
+				"name": "Available_Credit",
+				"type": "String"
+			},
+			{
+				"name": "Amount_Past_Due",
+				"type": "String"
+			}
+		]
+	}
+}
