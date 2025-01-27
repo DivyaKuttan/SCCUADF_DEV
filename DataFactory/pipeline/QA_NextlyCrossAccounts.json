@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CrossAccounts",
+							"wildcardFolderPath": "UAT/CrossAccounts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -821,12 +821,12 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CrossAccounts",
+							"wildcardFolderPath": "UAT/CrossAccounts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
-							"deleteFilesAfterCompletion": true
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -861,7 +861,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CrossAccounts"
+				"defaultValue": "offline-services/UAT/CrossAccounts"
 			}
 		},
 		"folder": {

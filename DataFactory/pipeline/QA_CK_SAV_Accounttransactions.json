@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "UAT/CK_SAV_Accounttransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -320,12 +320,12 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CK_SAV_Accounttransactions",
+							"wildcardFolderPath": "UAT/CK_SAV_Accounttransactions",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
-							"deleteFilesAfterCompletion": true
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -360,7 +360,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CK_SAV_Accounttransactions"
+				"defaultValue": "offline-services/UAT/CK_SAV_Accounttransactions"
 			}
 		},
 		"folder": {

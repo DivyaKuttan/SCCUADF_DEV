@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
+							"wildcardFolderPath": "UAT/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -427,12 +427,12 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/CCM_CreditCard_AccountDetails",
+							"wildcardFolderPath": "UAT/CCM_CreditCard_AccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
-							"deleteFilesAfterCompletion": true
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -467,7 +467,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/CCM_CreditCard_AccountDetails"
+				"defaultValue": "offline-services/UAT/CCM_CreditCard_AccountDetails"
 			}
 		},
 		"folder": {

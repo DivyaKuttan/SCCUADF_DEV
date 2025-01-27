@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyAccountRoles",
+							"wildcardFolderPath": "UAT/NextlyAccountRoles",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -221,12 +221,12 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/NextlyAccountRoles",
+							"wildcardFolderPath": "UAT/NextlyAccountRoles",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
-							"deleteFilesAfterCompletion": true
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -261,7 +261,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyAccountRoles"
+				"defaultValue": "offline-services/UAT/NextlyAccountRoles"
 			}
 		},
 		"folder": {
