@@ -1,0 +1,234 @@
+{
+	"name": "00_UAT_OfflineMain",
+	"properties": {
+		"activities": [
+			{
+				"name": "MemberData",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_MemberDataDetails",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Accounts",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "MemberData",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_NextlyAccountDetails",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "UserCreditCard",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Accounts",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_UserCreditCards",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "CCM_CreditCard",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_CCM_CreditCard_AccountDetails",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Savings Account",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_CK_SAV_Accounttransactions",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "DebitCard",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_DebitCardDetails",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "AccountLockout",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_NextlyAccountlockout",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "AccountRoles",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_NextlyAccountRoles",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "CrossAccounts",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_NextlyCrossAccounts",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "LoanTransaction",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "UAT_NextlyLoanTransactions",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "OfflineServices/UAT_OfflineServices"
+		},
+		"annotations": []
+	}
+}
