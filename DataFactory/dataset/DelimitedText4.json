@@ -1,25 +1,16 @@
 {
-	"name": "DelimitedText3",
+	"name": "DelimitedText4",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"FolderPath": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*.csv",
-				"folderPath": {
-					"value": "@{dataset().FolderPath}",
-					"type": "Expression"
-				},
+				"folderPath": "DEV",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",

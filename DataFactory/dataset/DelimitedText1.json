@@ -1,25 +1,17 @@
 {
-	"name": "DelimitedText3",
+	"name": "DelimitedText1",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
-		},
-		"parameters": {
-			"FolderPath": {
-				"type": "string"
-			}
 		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "*.csv",
-				"folderPath": {
-					"value": "@{dataset().FolderPath}",
-					"type": "Expression"
-				},
+				"fileName": "Nextly CCM Credit Card Account Details 2025_01_26_000841.csv",
+				"folderPath": "UAT/CCM_CreditCard_AccountDetails",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",

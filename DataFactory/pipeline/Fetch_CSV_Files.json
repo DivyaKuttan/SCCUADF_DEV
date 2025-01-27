@@ -1,0 +1,159 @@
+{
+	"name": "Fetch_CSV_Files",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get Metadata Root",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"fieldList": []
+				}
+			},
+			{
+				"name": "Filter UAT Folder",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata Root",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata Root').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@equals(item().name, 'UAT')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "ForEach Subfolder",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Filter UAT Folder",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Filter UAT Folder').output.Value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Get Metadata Subfolders",
+							"type": "GetMetadata",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"fieldList": []
+							}
+						},
+						{
+							"name": "Filter CSV Files",
+							"type": "Filter",
+							"dependsOn": [
+								{
+									"activity": "Get Metadata Subfolders",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('Get Metadata Subfolders').output.childItems",
+									"type": "Expression"
+								},
+								"condition": {
+									"value": "@endsWith(item().name, '.csv')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "ForEach CSV File",
+							"type": "ForEach",
+							"dependsOn": [
+								{
+									"activity": "Filter CSV Files",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"items": {
+									"value": "@activity('Filter CSV Files').output.Value",
+									"type": "Expression"
+								},
+								"activities": [
+									{
+										"name": "Copy CSV File",
+										"type": "Copy",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"source": {
+												"type": "DelimitedTextSource"
+											},
+											"sink": {
+												"type": "BlobSink"
+											},
+											"enableStaging": false,
+											"dataset": {
+												"referenceName": "CSVFileDataset",
+												"type": "DatasetReference"
+											}
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"foldername": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
