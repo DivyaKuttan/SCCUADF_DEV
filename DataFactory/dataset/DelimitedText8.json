@@ -19,7 +19,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "UAT",
+				"folderPath": "UAT/**",
 				"container": "offline-services"
 			},
 			"columnDelimiter": ",",
