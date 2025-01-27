@@ -536,7 +536,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "QA_Completed_MemberDataDetails_Sink",
+						"referenceName": "UAT_Completed_MemberDataDetails_Sink",
 						"type": "DatasetReference"
 					}
 				]
