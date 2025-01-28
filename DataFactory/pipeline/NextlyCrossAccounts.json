@@ -821,7 +821,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "PROD/CrossAccounts",
+							"wildcardFolderPath": "DEV/CrossAccounts",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
