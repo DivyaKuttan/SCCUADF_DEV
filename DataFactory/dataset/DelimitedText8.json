@@ -21,7 +21,7 @@
 				"type": "AzureBlobStorageLocation",
 				"fileName": "*.csv",
 				"container": {
-					"value": "@if(equals(substring(dataset().FolderName, add(length(dataset().FolderName), -1), 1), '/'), substring(dataset().FolderName, 0, add(length(dataset().FolderName), -1)), dataset().FolderName)\n",
+					"value": "@dataset().FolderName\n",
 					"type": "Expression"
 				}
 			},
