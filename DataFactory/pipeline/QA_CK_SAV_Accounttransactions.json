@@ -351,6 +351,29 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Archival",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "completed copy",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "QA_DepositTransaction_Archival",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"parameters": {
