@@ -2,7 +2,7 @@
 	"name": "UAT_Offline_Scheduled",
 	"properties": {
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
