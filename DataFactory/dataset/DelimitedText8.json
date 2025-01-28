@@ -6,7 +6,7 @@
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
-			"Folder": {
+			"FolderName": {
 				"type": "string"
 			},
 			"File": {
@@ -19,8 +19,10 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "UAT/**",
-				"container": "offline-services"
+				"container": {
+					"value": "@if(equals(substring(dataset().FolderName, add(length(dataset().FolderName), -1), 1), '/'), substring(dataset().FolderName, 0, add(length(dataset().FolderName), -1)), dataset().FolderName)\n",
+					"type": "Expression"
+				}
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",
