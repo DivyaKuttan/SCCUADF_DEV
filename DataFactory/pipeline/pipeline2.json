@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "GetMetadata_DataSet",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"SubFolder": "@item()"
+						}
 					},
 					"fieldList": [
 						"childItems"
@@ -100,10 +103,13 @@
 										"FolderName": {
 											"value": "@concat('offline-services/UAT/', item().name)",
 											"type": "Expression"
-										}
+										},
+										"File": "*.csv"
 									}
 								},
-								"fieldList": [],
+								"fieldList": [
+									"childItems"
+								],
 								"folderPath": "@concat('offline-services/UAT/', item().name)",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
