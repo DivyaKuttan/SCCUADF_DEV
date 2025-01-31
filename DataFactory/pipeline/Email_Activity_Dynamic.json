@@ -1,0 +1,72 @@
+{
+	"name": "Email_Activity_Dynamic",
+	"properties": {
+		"activities": [
+			{
+				"name": "GetSendGridAPIKey",
+				"type": "WebActivity",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "GET",
+					"headers": {
+						"Content-Type": "application/json"
+					},
+					"url": "@concat('https://sccu-keyvault.vault.azure.net/secrets/SCCUSendGridAPI-NONPROD?api-version=7.0')",
+					"connectVia": {
+						"referenceName": "AutoResolveIntegrationRuntime",
+						"type": "IntegrationRuntimeReference"
+					},
+					"authentication": {
+						"type": "MSI",
+						"resource": "https://vault.azure.net"
+					}
+				}
+			},
+			{
+				"name": "SendEmailNotification",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "GetSendGridAPIKey",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"headers": {
+						"Authorization": "@concat('Bearer ', activity('GetSendGridAPIKey').output.value)\n",
+						"Content-Type": "application/json"
+					},
+					"url": "https://api.sendgrid.com/v3/mail/send",
+					"connectVia": {
+						"referenceName": "AutoResolveIntegrationRuntime",
+						"type": "IntegrationRuntimeReference"
+					},
+					"body": {
+						"value": "{\n  \"personalizations\": [\n    {\n      \"to\": [\n        {\n          \"email\": \"SCCUADFNotifications@claysys.com\"\n        }\n      ],\n      \"subject\": \"ADF Pipeline Notification\"\n    }\n  ],\n  \"from\": {\n    \"email\": \"sccuadf@mail.cunextgen.org\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/plain\",\n      \"value\": \"The ADF pipeline has started/completed/encountered an error.\"\n    }\n  ]\n}\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
