@@ -67,7 +67,7 @@
 						"type": "IntegrationRuntimeReference"
 					},
 					"body": {
-						"value": "{\r\n  \"personalizations\": [\r\n    {\r\n      \"to\": [{ \"email\": \"SCCUADFNotifications@claysys.com\" }]\r\n    }\r\n  ],\r\n  \"from\": {\r\n    \"email\": \"@{pipeline().globalParameters.FromEmail}\"\r\n  },\r\n  \"subject\": \"@{pipeline().parameters.subject}\",\r\n  \"content\": [\r\n    {\r\n      \"type\": \"text/plain\",\r\n      \"value\": \"@{pipeline().parameters.content}\"\r\n    }\r\n  ],\r\n  \"custom_args\": {\r\n    \"pipelineName\": \"@{pipeline().parameters.pipelineName}\",\r\n    \"importance\": \"@{pipeline().parameters.importance}\"\r\n  }\r\n}\r\n",
+						"value": "{\n  \"personalizations\": [\n    {\n      \"to\": [{ \"email\": \"SCCUADFNotifications@claysys.com\" }]\n    }\n  ],\n  \"from\": {\n    \"email\": \"@{pipeline().globalParameters.FromEmail}\"\n  },\n  \"subject\": \"@{pipeline().parameters.subject}\",\n  \"content\": [\n    {\n      \"type\": \"text/plain\",\n      \"value\": \"Subject: @{pipeline().parameters.subject}\\nImportance: @{pipeline().parameters.importance}\\nContent: @{pipeline().parameters.content}\\nPipeline Name: @{pipeline().parameters.pipelineName}\"\n    }\n  ],\n  \"custom_args\": {\n    \"pipelineName\": \"@{pipeline().parameters.pipelineName}\",\n    \"importance\": \"@{pipeline().parameters.importance}\"\n  }\n}\n",
 						"type": "Expression"
 					}
 				}
