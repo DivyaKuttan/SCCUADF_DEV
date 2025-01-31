@@ -50,7 +50,7 @@
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@and(not(equals(item().name, 'COMPLETED ')), equals(item().type, 'Folder'))",
+						"value": "@and(not(equals(item().name, 'COMPLETED')), equals(item().type, 'Folder'))",
 						"type": "Expression"
 					}
 				}
@@ -76,7 +76,14 @@
 						{
 							"name": "Get Metadata2",
 							"type": "GetMetadata",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Set variable1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -87,12 +94,16 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "Metadata2",
-									"type": "DatasetReference"
+									"referenceName": "DelimitedText8",
+									"type": "DatasetReference",
+									"parameters": {
+										"FolderName": {
+											"value": "@concat('offline-services/UAT/', item().name)",
+											"type": "Expression"
+										}
+									}
 								},
-								"fieldList": [
-									"childItems"
-								],
+								"fieldList": [],
 								"folderPath": "@concat('offline-services/UAT/', item().name)",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
@@ -103,23 +114,33 @@
 									"type": "DelimitedTextReadSettings"
 								}
 							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "sample",
+								"value": {
+									"value": "@item().name",
+									"type": "Expression"
+								}
+							}
 						}
 					]
 				}
 			}
 		],
-		"parameters": {
-			"folderNames": {
-				"type": "array",
-				"defaultValue": [
-					"CCM_CreditCard_AccountDetails",
-					"CK_SAV_Accounttransactions",
-					"CrossAccounts"
-				]
-			}
-		},
 		"variables": {
 			"foldername": {
+				"type": "String"
+			},
+			"sample": {
 				"type": "String"
 			}
 		},
