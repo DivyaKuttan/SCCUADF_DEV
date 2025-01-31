@@ -19,7 +19,10 @@
 					"headers": {
 						"Content-Type": "application/json"
 					},
-					"url": "@concat('https://sccu-keyvault.vault.azure.net/secrets/SCCUSendGridAPI-NONPROD?api-version=7.0')",
+					"url": {
+						"value": "@concat('https://sccu-keyvault.vault.azure.net/secrets/SCCUSendGridAPI-NONPROD?api-version=7.0')",
+						"type": "Expression"
+					},
 					"connectVia": {
 						"referenceName": "AutoResolveIntegrationRuntime",
 						"type": "IntegrationRuntimeReference"
@@ -52,7 +55,10 @@
 				"typeProperties": {
 					"method": "POST",
 					"headers": {
-						"Authorization": "@concat('Bearer ', activity('GetSendGridAPIKey').output.value)\n",
+						"Authorization": {
+							"value": "@concat('Bearer ', activity('GetSendGridAPIKey').output.value)\n",
+							"type": "Expression"
+						},
 						"Content-Type": "application/json"
 					},
 					"url": "https://api.sendgrid.com/v3/mail/send",
@@ -61,12 +67,26 @@
 						"type": "IntegrationRuntimeReference"
 					},
 					"body": {
-						"value": "{\n  \"personalizations\": [\n    {\n      \"to\": [\n        {\n          \"email\": \"SCCUADFNotifications@claysys.com\"\n        }\n      ],\n      \"subject\": \"ADF Pipeline Notification\"\n    }\n  ],\n  \"from\": {\n    \"email\": \"sccuadf@mail.cunextgen.org\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/plain\",\n      \"value\": \"The ADF pipeline has started/completed/encountered an error.\"\n    }\n  ]\n}\n",
+						"value": "{\r\n  \"personalizations\": [\r\n    {\r\n      \"to\": [{ \"email\": \"SCCUADFNotifications@claysys.com\" }]\r\n    }\r\n  ],\r\n  \"from\": {\r\n    \"email\": \"@{pipeline().globalParameters.FromEmail}\"\r\n  },\r\n  \"subject\": \"@{pipeline().parameters.subject}\",\r\n  \"content\": [\r\n    {\r\n      \"type\": \"text/plain\",\r\n      \"value\": \"@{pipeline().parameters.content}\"\r\n    }\r\n  ],\r\n  \"custom_args\": {\r\n    \"pipelineName\": \"@{pipeline().parameters.pipelineName}\",\r\n    \"importance\": \"@{pipeline().parameters.importance}\"\r\n  }\r\n}\r\n",
 						"type": "Expression"
 					}
 				}
 			}
 		],
+		"parameters": {
+			"subject": {
+				"type": "string"
+			},
+			"importance": {
+				"type": "string"
+			},
+			"content": {
+				"type": "string"
+			},
+			"pipelineName": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
