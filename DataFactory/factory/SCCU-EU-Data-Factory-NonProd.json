@@ -1,5 +1,13 @@
 {
 	"name": "SCCU-EU-Data-Factory-NonProd",
+	"properties": {
+		"globalParameters": {
+			"FromEmail": {
+				"type": "string",
+				"value": "SCCUADFNotifications@claysys.com"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned,UserAssigned",
