@@ -1,5 +1,5 @@
 {
-	"name": "Email_Activity",
+	"name": "Email_Activity_1stVersion",
 	"properties": {
 		"activities": [
 			{
@@ -19,7 +19,10 @@
 					"headers": {
 						"Content-Type": "application/json"
 					},
-					"url": "@concat('https://sccu-keyvault.vault.azure.net/secrets/SCCUSendGridAPI-NONPROD?api-version=7.0')",
+					"url": {
+						"value": "@concat('https://sccu-keyvault.vault.azure.net/secrets/SCCUSendGridAPI-NONPROD?api-version=7.0')",
+						"type": "Expression"
+					},
 					"connectVia": {
 						"referenceName": "AutoResolveIntegrationRuntime",
 						"type": "IntegrationRuntimeReference"
@@ -52,7 +55,10 @@
 				"typeProperties": {
 					"method": "POST",
 					"headers": {
-						"Authorization": "@concat('Bearer ', activity('GetSendGridAPIKey').output.value)\n",
+						"Authorization": {
+							"value": "@concat('Bearer ', activity('GetSendGridAPIKey').output.value)\n",
+							"type": "Expression"
+						},
 						"Content-Type": "application/json"
 					},
 					"url": "https://api.sendgrid.com/v3/mail/send",
