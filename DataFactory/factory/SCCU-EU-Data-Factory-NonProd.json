@@ -4,7 +4,7 @@
 		"globalParameters": {
 			"FromEmail": {
 				"type": "string",
-				"value": "SCCUADFNotifications@claysys.com"
+				"value": "sccuadf@mail.cunextgen.org"
 			}
 		}
 	},
