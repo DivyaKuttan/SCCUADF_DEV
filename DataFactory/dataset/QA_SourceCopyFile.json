@@ -23,10 +23,6 @@
 					"value": "*.csv",
 					"type": "Expression"
 				},
-				"folderPath": {
-					"value": "@dataset().Foldername",
-					"type": "Expression"
-				},
 				"container": {
 					"value": "@dataset().Foldername",
 					"type": "Expression"
