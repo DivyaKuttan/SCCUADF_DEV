@@ -10,8 +10,7 @@
 				"type": "string"
 			},
 			"file": {
-				"type": "string",
-				"defaultValue": "*.csv"
+				"type": "string"
 			}
 		},
 		"annotations": [],
