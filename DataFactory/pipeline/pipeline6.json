@@ -225,6 +225,95 @@
 									"type": "Expression"
 								}
 							}
+						},
+						{
+							"name": "Copy data3",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"wildcardFolderPath": {
+											"value": "@concat('/UAT/', item().name)",
+											"type": "Expression"
+										},
+										"wildcardFileName": {
+											"value": "@if(\n    greater(length(activity('Get Metadata2').output.childItems), 0),\n    activity('Get Metadata2').output.childItems[0].name,\n    '*.csv'\n)\n",
+											"type": "Expression"
+										},
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "QA_SourceCopyFile",
+									"type": "DatasetReference",
+									"parameters": {
+										"Foldername": {
+											"value": "offline-services",
+											"type": "Expression"
+										},
+										"file": {
+											"value": "@if(\n    greater(length(activity('Get Metadata2').output.childItems), 0),\n    activity('Get Metadata2').output.childItems[0].name,\n    '*.csv'\n)\n",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "QA_SinkFileCopy",
+									"type": "DatasetReference",
+									"parameters": {
+										"FolderName": {
+											"value": "@concat('offline-services/DEV/', item().name)",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
 				}
