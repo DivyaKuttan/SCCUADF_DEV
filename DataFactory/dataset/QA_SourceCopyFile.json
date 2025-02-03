@@ -28,7 +28,7 @@
 					"type": "Expression"
 				},
 				"container": {
-					"value": "offline-services",
+					"value": "@dataset().Foldername",
 					"type": "Expression"
 				}
 			},
