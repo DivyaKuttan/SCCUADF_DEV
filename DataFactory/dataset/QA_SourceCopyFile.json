@@ -20,7 +20,7 @@
 			"location": {
 				"type": "AzureBlobStorageLocation",
 				"fileName": {
-					"value": "*.csv",
+					"value": "*.txt",
 					"type": "Expression"
 				},
 				"container": {
