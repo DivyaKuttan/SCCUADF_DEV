@@ -23,8 +23,12 @@
 					"value": "*.csv",
 					"type": "Expression"
 				},
-				"container": {
+				"folderPath": {
 					"value": "@dataset().Foldername",
+					"type": "Expression"
+				},
+				"container": {
+					"value": "offline-services",
 					"type": "Expression"
 				}
 			},
