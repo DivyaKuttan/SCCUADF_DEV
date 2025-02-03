@@ -162,6 +162,14 @@
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true,
+										"wildcardFolderPath": {
+											"value": "@concat('offline-services/UAT/', item().name)",
+											"type": "Expression"
+										},
+										"wildcardFileName": {
+											"value": "NextlyAccountRoles*.csv",
+											"type": "Expression"
+										},
 										"enablePartitionDiscovery": false
 									},
 									"formatSettings": {
@@ -198,7 +206,10 @@
 											"value": "@concat('offline-services/UAT/', item().name)",
 											"type": "Expression"
 										},
-										"file": "*.csv"
+										"file": {
+											"value": "*.csv",
+											"type": "Expression"
+										}
 									}
 								}
 							],
