@@ -1,5 +1,13 @@
 {
 	"name": "SCCU-EU-Data-Factory-NonProd",
+	"properties": {
+		"globalParameters": {
+			"FromEmail": {
+				"type": "string",
+				"value": "sccuadf@mail.cunextgen.org"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned,UserAssigned",

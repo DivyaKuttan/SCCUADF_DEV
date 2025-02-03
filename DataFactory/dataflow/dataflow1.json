@@ -1,0 +1,47 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          DNA_Member_Number as string,",
+				"          CCM_Account_Number as string,",
+				"          Open_Date as string,",
+				"          Current_Account_Balance as string,",
+				"          Next_Payment_Due_Date as string,",
+				"          Next_Payment_Amt_Due as string,",
+				"          Current_Year_Interest_Paid as string,",
+				"          Prior_Year_Interest_Paid as string,",
+				"          Interest_Rate as string,",
+				"          APR_Interest_Class as string,",
+				"          Account_Payoff_Balance as string,",
+				"          Account_Principal_Balance as string,",
+				"          Amount_To_Pay_Current as string,",
+				"          Total_Amount_Currently_Due as string,",
+				"          Account_Credit_Limit as string,",
+				"          Total_Per_Diem as string,",
+				"          Current_Term as string,",
+				"          Remaining_Payments as string,",
+				"          Payment_Calculation_Period as string,",
+				"          Available_Credit as string,",
+				"          Amount_Past_Due as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1"
+			]
+		}
+	}
+}
