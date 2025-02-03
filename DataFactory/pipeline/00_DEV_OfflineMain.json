@@ -1,5 +1,5 @@
 {
-	"name": "00_QA_OfflineMain",
+	"name": "00_DEV_OfflineMain",
 	"properties": {
 		"activities": [
 			{
@@ -12,7 +12,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_MemberDataDetails",
+						"referenceName": "MemberDataDetails",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -35,7 +35,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_NextlyAccountDetails",
+						"referenceName": "NextlyAccountDetails",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -58,7 +58,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_UserCreditCards",
+						"referenceName": "UserCreditCards",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -81,7 +81,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_CCM_CreditCard_AccountDetails",
+						"referenceName": "CCM_CreditCard_AccountDetails",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -104,7 +104,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_CK_SAV_Accounttransactions",
+						"referenceName": "CK_SAV_Accounttransactions",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -127,7 +127,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_DebitCardDetails",
+						"referenceName": "DebitCardDetails",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -150,7 +150,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_NextlyAccountlockout",
+						"referenceName": "NextlyAccountlockout",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -173,7 +173,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_NextlyAccountRoles",
+						"referenceName": "NextlyAccountRoles",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -196,7 +196,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_NextlyCrossAccounts",
+						"referenceName": "NextlyCrossAccounts",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -219,30 +219,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "QA_NextlyLoanTransactions",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "UAT",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "AccountRoles",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "00_UAT_OfflineMain",
+						"referenceName": "NextlyLoanTransactions",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -250,7 +227,7 @@
 			}
 		],
 		"folder": {
-			"name": "OfflineServices/QA_OfflineServices"
+			"name": "OfflineServices/Dev_OfflineServices"
 		},
 		"annotations": []
 	}

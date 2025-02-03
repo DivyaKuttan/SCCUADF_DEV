@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/MemberDataDetails",
+							"wildcardFolderPath": "UAT/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -509,9 +509,12 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "QA/MemberDataDetails",
-							"wildcardFileName": "@pipeline().parameters.FileName",
-							"deleteFilesAfterCompletion": true
+							"wildcardFolderPath": "UAT/MemberDataDetails",
+							"wildcardFileName": {
+								"value": "@pipeline().parameters.FileName",
+								"type": "Expression"
+							},
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -537,6 +540,33 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Stored procedure2",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[SPU_UpdateContactDetails]"
+				},
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {
@@ -546,7 +576,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/QA/MemberDataDetails"
+				"defaultValue": "offline-services/UAT/MemberDataDetails"
 			}
 		},
 		"folder": {

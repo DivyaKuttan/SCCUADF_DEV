@@ -13,7 +13,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"folderPath": "PROD/CrossAccounts",
+				"folderPath": "DEV/CrossAccounts",
 				"container": "offline-services"
 			}
 		}

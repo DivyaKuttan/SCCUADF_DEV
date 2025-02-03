@@ -1,0 +1,17 @@
+{
+	"name": "UAT_Offline_Scheduled",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Stopped",
+		"pipelines": [],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2025-01-28T02:30:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
