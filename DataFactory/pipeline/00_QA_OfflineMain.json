@@ -224,29 +224,6 @@
 					},
 					"waitOnCompletion": true
 				}
-			},
-			{
-				"name": "UAT",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "AccountRoles",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "00_UAT_OfflineMain",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
 			}
 		],
 		"folder": {
