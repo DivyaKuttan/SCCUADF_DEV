@@ -1,1 +1,6 @@
-{}
+{
+	"FromEmail": {
+		"type": "string",
+		"value": "sccuadf@mail.cunextgen.org"
+	}
+}
