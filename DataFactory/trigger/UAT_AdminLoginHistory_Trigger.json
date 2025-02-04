@@ -1,0 +1,24 @@
+{
+	"name": "UAT_AdminLoginHistory_Trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "UAT_AdminLoginHistory",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2025-02-04T00:00:00",
+				"timeZone": "Eastern Standard Time"
+			}
+		}
+	}
+}
