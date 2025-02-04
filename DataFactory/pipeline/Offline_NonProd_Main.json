@@ -1,0 +1,73 @@
+{
+	"name": "Offline_NonProd_Main",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy From UAT",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Offline_UAT_to_QA",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "QA",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Copy From UAT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "00_QA_OfflineMain",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "UAT",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Copy From UAT",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "00_UAT_OfflineMain",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			}
+		],
+		"folder": {
+			"name": "OfflineServices"
+		},
+		"annotations": []
+	}
+}
