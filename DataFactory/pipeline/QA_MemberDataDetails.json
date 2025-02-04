@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/MemberDataDetails",
+							"wildcardFolderPath": "QA/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -509,7 +509,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/MemberDataDetails",
+							"wildcardFolderPath": "QA/MemberDataDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -576,7 +576,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/MemberDataDetails"
+				"defaultValue": "offline-services/QA/MemberDataDetails"
 			}
 		},
 		"folder": {

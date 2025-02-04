@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/NextlyAccountlockout",
+							"wildcardFolderPath": "QA/NextlyAccountlockout",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -197,7 +197,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/NextlyAccountlockout",
+							"wildcardFolderPath": "QA/NextlyAccountlockout",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -237,7 +237,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/NextlyAccountlockout"
+				"defaultValue": "offline-services/QA/NextlyAccountlockout"
 			}
 		},
 		"folder": {

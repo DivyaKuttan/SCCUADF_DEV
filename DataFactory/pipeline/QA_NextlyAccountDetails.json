@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/NextlyAccountDetails",
+							"wildcardFolderPath": "QA/NextlyAccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -785,7 +785,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/NextlyAccountDetails",
+							"wildcardFolderPath": "QA/NextlyAccountDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -825,7 +825,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/NextlyAccountDetails"
+				"defaultValue": "offline-services/QA/NextlyAccountDetails"
 			}
 		},
 		"folder": {
