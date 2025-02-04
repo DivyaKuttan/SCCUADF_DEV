@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/DebitCardDetails",
+							"wildcardFolderPath": "QA/DebitCardDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -293,7 +293,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/DebitCardDetails",
+							"wildcardFolderPath": "QA/DebitCardDetails",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -333,7 +333,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/DebitCardDetails"
+				"defaultValue": "offline-services/QA/DebitCardDetails"
 			}
 		},
 		"folder": {

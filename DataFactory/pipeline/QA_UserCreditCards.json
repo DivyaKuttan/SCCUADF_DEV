@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/UserCreditCards",
+							"wildcardFolderPath": "QA/UserCreditCards",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -305,7 +305,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "UAT/UserCreditCards",
+							"wildcardFolderPath": "QA/UserCreditCards",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -345,7 +345,7 @@
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/UAT/UserCreditCards"
+				"defaultValue": "offline-services/QA/UserCreditCards"
 			}
 		},
 		"folder": {
