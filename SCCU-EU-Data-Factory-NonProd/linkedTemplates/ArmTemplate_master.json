@@ -610,12 +610,6 @@
 					},
 					"SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database": {
 						"value": "[parameters('SCCUUAT_Anonymous_MetaDB_properties_typeProperties_database')]"
-					},
-					"SCCUUAT_ArchiveDB_properties_typeProperties_server": {
-						"value": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_server')]"
-					},
-					"SCCUUAT_ArchiveDB_properties_typeProperties_database": {
-						"value": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -636,6 +630,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"SCCUUAT_ArchiveDB_properties_typeProperties_server": {
+						"value": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_server')]"
+					},
+					"SCCUUAT_ArchiveDB_properties_typeProperties_database": {
+						"value": "[parameters('SCCUUAT_ArchiveDB_properties_typeProperties_database')]"
 					},
 					"SCCUUAT_LogDB_properties_typeProperties_server": {
 						"value": "[parameters('SCCUUAT_LogDB_properties_typeProperties_server')]"
@@ -1155,15 +1155,6 @@
 					},
 					"DEV_ThresholdAlert_properties_typeProperties_scope": {
 						"value": "[parameters('DEV_ThresholdAlert_properties_typeProperties_scope')]"
-					},
-					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
-						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]"
-					},
-					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
-						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
-					},
-					"DEV_TransactionAlert_properties_typeProperties_scope": {
-						"value": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -1184,6 +1175,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName": {
+						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FileName')]"
+					},
+					"DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath": {
+						"value": "[parameters('DEV_TransactionAlert_properties_Nextly_TransactionAlert_DEV_parameters_FilePath')]"
+					},
+					"DEV_TransactionAlert_properties_typeProperties_scope": {
+						"value": "[parameters('DEV_TransactionAlert_properties_typeProperties_scope')]"
 					},
 					"Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName": {
 						"value": "[parameters('Dev_LoanDueTrigger_properties_Nextly_LoanDueAlerts_DEV_parameters_FileName')]"

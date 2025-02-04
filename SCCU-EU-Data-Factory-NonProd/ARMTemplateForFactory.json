@@ -917,30 +917,6 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
-					},
-					{
-						"name": "UAT",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "AccountRoles",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "00_UAT_OfflineMain",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
 					}
 				],
 				"policy": {
@@ -961,8 +937,7 @@
 				"[concat(variables('factoryId'), '/pipelines/QA_NextlyAccountlockout')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_NextlyAccountRoles')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_NextlyCrossAccounts')]",
-				"[concat(variables('factoryId'), '/pipelines/QA_NextlyLoanTransactions')]",
-				"[concat(variables('factoryId'), '/pipelines/00_UAT_OfflineMain')]"
+				"[concat(variables('factoryId'), '/pipelines/QA_NextlyLoanTransactions')]"
 			]
 		},
 		{
@@ -76060,29 +76035,20 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "00_QA_OfflineMain",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2025-01-28T01:10:00",
-						"timeZone": "India Standard Time"
+						"timeZone": "India Standard Time",
+						"schedule": {}
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/00_QA_OfflineMain')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/RetentionLogTrigger')]",

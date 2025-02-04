@@ -13,6 +13,108 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_ArchiveTraceData')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/QA"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "Message",
+						"type": "varchar"
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormName",
+						"type": "varchar"
+					},
+					{
+						"name": "UserHostAddress",
+						"type": "varchar"
+					},
+					{
+						"name": "UserHostName",
+						"type": "varchar"
+					},
+					{
+						"name": "IP",
+						"type": "varchar"
+					},
+					{
+						"name": "URL",
+						"type": "varchar"
+					},
+					{
+						"name": "Browser",
+						"type": "varchar"
+					},
+					{
+						"name": "HasCookies",
+						"type": "bit"
+					},
+					{
+						"name": "InputType",
+						"type": "varchar"
+					},
+					{
+						"name": "IsMobileDevice",
+						"type": "bit"
+					},
+					{
+						"name": "BowserVersion",
+						"type": "varchar"
+					},
+					{
+						"name": "MobileDeviceManufacturer",
+						"type": "varchar"
+					},
+					{
+						"name": "MobileDeviceModel",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "LogonUser",
+						"type": "varchar"
+					},
+					{
+						"name": "UserObjectGUID",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "TraceData_Archive"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_ArchiveTransactionLog_JsonDataSet')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -872,30 +974,6 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"folderPath": "QA/COMPLETED/Completed_NextlyAccountDetails",
-						"container": "offline-services"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_Completed_NextlyAccountDetails_Source')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/QA_Offline/QA_Completed"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "QA/NextlyAccountDetails",
 						"container": "offline-services"
 					}
 				}

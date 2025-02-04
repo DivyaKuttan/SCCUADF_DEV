@@ -13,6 +13,30 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_Completed_NextlyAccountDetails_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/QA_Offline/QA_Completed"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "QA/NextlyAccountDetails",
+						"container": "offline-services"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_Completed_NextlyAccountRoles_Sink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -991,165 +1015,6 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"folderPath": "QA/CD_Accountdetails",
-						"container": "offline-services"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "AccountNumber",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalance",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeEscrow",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceEscrow",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "NextPaymentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "CurrentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "RegularPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "InterestRate",
-						"type": "String"
-					},
-					{
-						"name": "PriorYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "PayoffBalance",
-						"type": "String"
-					},
-					{
-						"name": "PayDownBalance",
-						"type": "String"
-					},
-					{
-						"name": "PrincipalBalance",
-						"type": "String"
-					},
-					{
-						"name": "AmountToPayCurrent",
-						"type": "String"
-					},
-					{
-						"name": "TotalPerDiem",
-						"type": "String"
-					},
-					{
-						"name": "TotalAmountCurrentlyDue",
-						"type": "String"
-					},
-					{
-						"name": "AmountPastDue",
-						"type": "String"
-					},
-					{
-						"name": "OriginalLoanAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingPayments",
-						"type": "String"
-					},
-					{
-						"name": "PaymentCalculationPeriod",
-						"type": "String"
-					},
-					{
-						"name": "CreditLimitAmount",
-						"type": "String"
-					},
-					{
-						"name": "AvailableCredit",
-						"type": "String"
-					},
-					{
-						"name": "OpenDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_OfflinSource_CK_SAV_Accountdetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"CK_SAV_Accountdetails": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/QA_Offline/QA_Source"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "QA/CK_SAV_Accountdetails",
 						"container": "offline-services"
 					},
 					"columnDelimiter": ",",
