@@ -790,7 +790,7 @@
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
 							},
-							"deleteFilesAfterCompletion": false
+							"deleteFilesAfterCompletion": true
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
