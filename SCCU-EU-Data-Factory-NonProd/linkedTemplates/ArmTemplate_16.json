@@ -13,6 +13,72 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_MemberDataDetails')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUStage_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/STG_Offline/STG_Destination"
+				},
+				"annotations": [],
+				"type": "AzureSqlMITable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MemberDataDetails_Staging"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_NextlyAccountDetails')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUStage_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/STG_Offline/STG_Destination"
+				},
+				"annotations": [],
+				"type": "AzureSqlMITable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "StagingTable_AccountDetails"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_NextlyAccountlockout')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUStage_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/STG_Offline/STG_Destination"
+				},
+				"annotations": [],
+				"type": "AzureSqlMITable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "NextlyAccountlockout_Staging"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_NextlyCrossAccounts')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -494,78 +560,6 @@
 					"location": {
 						"type": "AzureBlobStorageLocation",
 						"folderPath": "UAT/COMPLETED/Completed_CrossAccounts",
-						"container": "offline-services"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_Completed_CrossAccounts_Source')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Completed"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/CrossAccounts",
-						"container": "offline-services"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_Completed_DebitCardDetails_Sink')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Completed"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/COMPLETED/Completed_DebitCardDetails",
-						"container": "offline-services"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_Completed_DebitCardDetails_Source')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Completed"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "UAT/DebitCardDetails",
 						"container": "offline-services"
 					}
 				}

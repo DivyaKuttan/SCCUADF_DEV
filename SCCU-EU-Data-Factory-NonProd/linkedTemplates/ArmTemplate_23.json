@@ -13,6 +13,381 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/TD_Accountdetails')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "TD_Accountdetails_CopyData",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "TD_Accountdetails_StagingTruncate",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/TD_Accountdetails",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink",
+								"writeBehavior": "insert",
+								"sqlWriterUseTableLock": false
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "ACCOUNT_NUMBER",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_NUMBER",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_BALANCE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CURRENT_BALANCE",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_INT_RATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_INT_RATE",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 4,
+											"precision": 5
+										}
+									},
+									{
+										"source": {
+											"name": "PRIOR_YTD_INTEREST_AMT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "PRIOR_YTD_INTEREST_AMT",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_YTD_INTEREST_AMT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CURRENT_YTD_INTEREST_AMT",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "LAST_INTEREST_CREDIT_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LAST_INTEREST_CREDIT_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "DATE_LAST_CONTACT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "DATE_LAST_CONTACT",
+											"type": "DateTime",
+											"physicalType": "datetime"
+										}
+									},
+									{
+										"source": {
+											"name": "LAST_INTEREST_CREDIT_AMOUNT",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LAST_INTEREST_CREDIT_AMOUNT",
+											"type": "Decimal",
+											"physicalType": "decimal",
+											"scale": 2,
+											"precision": 18
+										}
+									},
+									{
+										"source": {
+											"name": "TERM_DAYS",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "TERM_DAYS",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "CURRENT_TERM",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "CURRENT_TERM",
+											"type": "Int32",
+											"physicalType": "int"
+										}
+									},
+									{
+										"source": {
+											"name": "ORIGINAL_CONTRACT_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ORIGINAL_CONTRACT_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "LAST_CONTRACT_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "LAST_CONTRACT_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									},
+									{
+										"source": {
+											"name": "ACCOUNT_MATURITY_DATE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "ACCOUNT_MATURITY_DATE",
+											"type": "DateTime",
+											"physicalType": "date"
+										}
+									}
+								],
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Dev_OfflinSource_CD_Accountdetails",
+								"type": "DatasetReference",
+								"parameters": {
+									"CD_Accountdetails": "@pipeline().parameters.FileName"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Dev_OfflineDestination_CD_Accountdetails",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "TD_Accountdetails_StagingTruncate",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCU_OfflineDev",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "TRUNCATE TABLE [dbo].[TD_Accountdetails_Staging]"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					},
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "TD_Accountdetails_CopyData",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[Spi_InsertIntoTDAccountsBalanceInfo]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_OfflineDev",
+							"type": "LinkedServiceReference"
+						}
+					},
+					{
+						"name": "completed copy",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Stored procedure1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"wildcardFolderPath": "DEV/TD_Accountdetails",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
+									"deleteFilesAfterCompletion": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "DEV_Completed_TD_Accountdetails_Source",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "DEV_Completed_TD_Accountdetails_Sink",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string",
+						"defaultValue": "Nextly TD Account Details 2024_11_16_120124.csv"
+					},
+					"FilePath": {
+						"type": "string",
+						"defaultValue": "offline-services/DEV/CD_Accountdetails"
+					}
+				},
+				"folder": {
+					"name": "OfflineServices/Dev_OfflineServices/OLD"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/UAT_CCM_CreditCard_AccountDetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -5094,8 +5469,7 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2025-02-05T00:00:00",
-						"timeZone": "Eastern Standard Time",
-						"schedule": {}
+						"timeZone": "Eastern Standard Time"
 					}
 				}
 			},
@@ -5123,8 +5497,7 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2025-02-04T00:00:00",
-						"timeZone": "Eastern Standard Time",
-						"schedule": {}
+						"timeZone": "Eastern Standard Time"
 					}
 				}
 			},
@@ -6281,7 +6654,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -6698,7 +7071,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -7319,288 +7692,6 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "SCCUQA_Static_BusinessData_DynamicRetention",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "DataRetention"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SCCUUAT_BusinessData_DynamicRetention')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "BusinessData_Archive",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SCCUUAT_ArchiveSqlDataset",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Archive_ForEach",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "BusinessData_Archive",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('BusinessData_Archive').output.value",
-								"type": "Expression"
-							},
-							"batchCount": 1,
-							"activities": [
-								{
-									"name": "BusinessData_Script",
-									"type": "Script",
-									"dependsOn": [
-										{
-											"activity": "BusinessData_Copy data",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"linkedServiceName": {
-										"referenceName": "SCCU_BusinessDataUAT",
-										"type": "LinkedServiceReference"
-									},
-									"typeProperties": {
-										"scripts": [
-											{
-												"type": "Query",
-												"text": {
-													"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName}  WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n\n",
-													"type": "Expression"
-												}
-											}
-										],
-										"scriptBlockExecutionTimeout": "02:00:00"
-									}
-								},
-								{
-									"name": "BusinessData_Copy data",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "AzureSqlSource",
-											"sqlReaderQuery": {
-												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
-												"type": "Expression"
-											},
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"sink": {
-											"type": "AzureSqlSink",
-											"writeBehavior": "insert",
-											"sqlWriterUseTableLock": false
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "SCCUUAT_BusinessData_Source",
-											"type": "DatasetReference",
-											"parameters": {
-												"SourceDB": "@item().SourceDBName",
-												"SourceTable": "@item().DestinationTableName",
-												"SourceSchema": "@item().DestinationSchemaName"
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "UAT_Archive_Destination",
-											"type": "DatasetReference",
-											"parameters": {
-												"DestinationTable": {
-													"value": "@item().DestinationTableName",
-													"type": "Expression"
-												},
-												"DestinationSchema": {
-													"value": "@item().DestinationSchemaName",
-													"type": "Expression"
-												}
-											}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "BusinessData_Purge",
-						"type": "Lookup",
-						"dependsOn": [
-							{
-								"activity": "Archive_ForEach",
-								"dependencyConditions": [
-									"Completed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsPurgeEnabled=1 AND PurgeDays > 0",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SCCUUAT_ArchiveSqlDataset",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Purge_ForEach",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "BusinessData_Purge",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('BusinessData_Purge').output.value",
-								"type": "Expression"
-							},
-							"batchCount": 1,
-							"activities": [
-								{
-									"name": "BusinessData_Purge_Script",
-									"type": "Script",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"linkedServiceName": {
-										"referenceName": "SCCUUAT_ArchiveDB",
-										"type": "LinkedServiceReference"
-									},
-									"typeProperties": {
-										"scripts": [
-											{
-												"type": "Query",
-												"text": {
-													"value": "DECLARE @BatchSize INT = 10000;  -- Define the batch size for deletion\nDECLARE @RowsAffected INT = 1;    -- Initialize with a non-zero value\nDECLARE @TotalRowsDeleted INT = 0; -- Variable to accumulate total rows deleted\nDECLARE @LoopCount INT = 0;       -- Variable to count the number of loop executions\n \n-- Start the batch-wise deletion process\nWHILE @RowsAffected > 0\nBEGIN\n    -- Increment the loop execution count\n    SET @LoopCount = @LoopCount + 1;\n \n    -- Delete top (@BatchSize) rows based on the purge condition\n    DELETE TOP (@BatchSize)\n    FROM @{item().DestinationSchemaName}.@{item().DestinationTableName}\n    WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().PurgeDays}, CAST(GETDATE() AS DATE));\n \n    -- Get the number of rows deleted in the last batch\n    SET @RowsAffected = @@ROWCOUNT;\n \n    -- Accumulate the total number of rows deleted\n    SET @TotalRowsDeleted = @TotalRowsDeleted + @RowsAffected;\nEND\n \n-- Optionally, you can output the total rows deleted and loop execution count for logging purposes\nSELECT @TotalRowsDeleted AS TotalRowsDeleted, @LoopCount AS LoopExecutionCount;",
-													"type": "Expression"
-												}
-											}
-										],
-										"scriptBlockExecutionTimeout": "02:00:00"
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "SCCUUAT_Static_BusinessData_DynamicRetention",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,

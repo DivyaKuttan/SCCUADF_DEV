@@ -13,6 +13,361 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/UAT_MemberActivityDynamicDescriptionValue_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_BusinessDataUAT",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Static"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "MemberActivityLogID",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "ActivityDynamicDescriptionValue",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MemberActivityDynamicDescriptionValue"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_OfflinSource_CCM_CreditCard_AccountDetails')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"CCM_CreditCard_AccountDetails": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Source"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "UAT/CCM_CreditCard_AccountDetails",
+						"container": "offline-services"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "AccountNumber",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalance",
+						"type": "String"
+					},
+					{
+						"name": "BalanceCategoryCodeEscrow",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalanceEscrow",
+						"type": "String"
+					},
+					{
+						"name": "BalanceCategoryCodeUnapplied",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalanceUnapplied",
+						"type": "String"
+					},
+					{
+						"name": "BalanceCategoryCodeLoanInProcess",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalanceLoanInProcess",
+						"type": "String"
+					},
+					{
+						"name": "NextPaymentDueDate",
+						"type": "String"
+					},
+					{
+						"name": "CurrentDueDate",
+						"type": "String"
+					},
+					{
+						"name": "LastPaymentDate",
+						"type": "String"
+					},
+					{
+						"name": "LastPaymentAmount",
+						"type": "String"
+					},
+					{
+						"name": "CurrentYearInterestPaid",
+						"type": "String"
+					},
+					{
+						"name": "RegularPaymentAmount",
+						"type": "String"
+					},
+					{
+						"name": "InterestRate",
+						"type": "String"
+					},
+					{
+						"name": "PriorYearInterestPaid",
+						"type": "String"
+					},
+					{
+						"name": "PayoffBalance",
+						"type": "String"
+					},
+					{
+						"name": "PayDownBalance",
+						"type": "String"
+					},
+					{
+						"name": "PrincipalBalance",
+						"type": "String"
+					},
+					{
+						"name": "AmountToPayCurrent",
+						"type": "String"
+					},
+					{
+						"name": "TotalPerDiem",
+						"type": "String"
+					},
+					{
+						"name": "TotalAmountCurrentlyDue",
+						"type": "String"
+					},
+					{
+						"name": "AmountPastDue",
+						"type": "String"
+					},
+					{
+						"name": "OriginalLoanAmount",
+						"type": "String"
+					},
+					{
+						"name": "CurrentTerm",
+						"type": "String"
+					},
+					{
+						"name": "RemainingTerm",
+						"type": "String"
+					},
+					{
+						"name": "RemainingPayments",
+						"type": "String"
+					},
+					{
+						"name": "PaymentCalculationPeriod",
+						"type": "String"
+					},
+					{
+						"name": "CreditLimitAmount",
+						"type": "String"
+					},
+					{
+						"name": "AvailableCredit",
+						"type": "String"
+					},
+					{
+						"name": "OpenDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_OfflinSource_CK_SAV_Accounttransactions')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"CK_SAV_Accounttransactionsons_Staging": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Source"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "UAT/CK_SAV_Accounttransactions",
+						"container": "offline-services"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "AccountNumber",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalance",
+						"type": "String"
+					},
+					{
+						"name": "BalanceCategoryCodeEscrow",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalanceEscrow",
+						"type": "String"
+					},
+					{
+						"name": "BalanceCategoryCodeUnapplied",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalanceUnapplied",
+						"type": "String"
+					},
+					{
+						"name": "BalanceCategoryCodeLoanInProcess",
+						"type": "String"
+					},
+					{
+						"name": "CurrentBalanceLoanInProcess",
+						"type": "String"
+					},
+					{
+						"name": "NextPaymentDueDate",
+						"type": "String"
+					},
+					{
+						"name": "CurrentDueDate",
+						"type": "String"
+					},
+					{
+						"name": "LastPaymentDate",
+						"type": "String"
+					},
+					{
+						"name": "LastPaymentAmount",
+						"type": "String"
+					},
+					{
+						"name": "CurrentYearInterestPaid",
+						"type": "String"
+					},
+					{
+						"name": "RegularPaymentAmount",
+						"type": "String"
+					},
+					{
+						"name": "InterestRate",
+						"type": "String"
+					},
+					{
+						"name": "PriorYearInterestPaid",
+						"type": "String"
+					},
+					{
+						"name": "PayoffBalance",
+						"type": "String"
+					},
+					{
+						"name": "PayDownBalance",
+						"type": "String"
+					},
+					{
+						"name": "PrincipalBalance",
+						"type": "String"
+					},
+					{
+						"name": "AmountToPayCurrent",
+						"type": "String"
+					},
+					{
+						"name": "TotalPerDiem",
+						"type": "String"
+					},
+					{
+						"name": "TotalAmountCurrentlyDue",
+						"type": "String"
+					},
+					{
+						"name": "AmountPastDue",
+						"type": "String"
+					},
+					{
+						"name": "OriginalLoanAmount",
+						"type": "String"
+					},
+					{
+						"name": "CurrentTerm",
+						"type": "String"
+					},
+					{
+						"name": "RemainingTerm",
+						"type": "String"
+					},
+					{
+						"name": "RemainingPayments",
+						"type": "String"
+					},
+					{
+						"name": "PaymentCalculationPeriod",
+						"type": "String"
+					},
+					{
+						"name": "CreditLimitAmount",
+						"type": "String"
+					},
+					{
+						"name": "AvailableCredit",
+						"type": "String"
+					},
+					{
+						"name": "OpenDate",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/UAT_OfflinSource_DebitCardDetails')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -3017,326 +3372,6 @@
 				"typeProperties": {
 					"schema": "dbo",
 					"table": "NExtlyLoanTransactions_Staging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_OfflineDestination_UserCreditCards')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUUAT_OfflineModeDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Destination"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "AccountNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "CurrentBalance",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "BalanceCategoryCodeEscrow",
-						"type": "varchar"
-					},
-					{
-						"name": "CurrentBalanceEscrow",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "BalanceCategoryCodeUnapplied",
-						"type": "varchar"
-					},
-					{
-						"name": "CurrentBalanceUnapplied",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "BalanceCategoryCodeLoanInProcess",
-						"type": "varchar"
-					},
-					{
-						"name": "CurrentBalanceLoanInProcess",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "NextPaymentDueDate",
-						"type": "date"
-					},
-					{
-						"name": "CurrentDueDate",
-						"type": "date"
-					},
-					{
-						"name": "LastPaymentDate",
-						"type": "date"
-					},
-					{
-						"name": "LastPaymentAmount",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "CurrentYearInterestPaid",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "RegularPaymentAmount",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "InterestRate",
-						"type": "decimal",
-						"precision": 5,
-						"scale": 2
-					},
-					{
-						"name": "PriorYearInterestPaid",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "PayoffBalance",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "PayDownBalance",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "PrincipalBalance",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "AmountToPayCurrent",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "TotalPerDiem",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "TotalAmountCurrentlyDue",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "AmountPastDue",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "OriginalLoanAmount",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "CurrentTerm",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "RemainingTerm",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "RemainingPayments",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "PaymentCalculationPeriod",
-						"type": "varchar"
-					},
-					{
-						"name": "CreditLimitAmount",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "AvailableCredit",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "OpenDate",
-						"type": "date"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "UserCreditCards_Staging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_SQL_DataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataUAT",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Username",
-						"type": "varchar"
-					},
-					{
-						"name": "MemberNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "PersonNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "EAgreementNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "Status",
-						"type": "bit"
-					}
-				],
-				"typeProperties": {
-					"schema": "Adaptive",
-					"table": "ActivityLog"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_Source_Offline_AccountTransactions_Archive')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUUAT_OfflineModeDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Offline_Archival"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "AccountNumber",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "RTXNNumber",
-						"type": "bigint",
-						"precision": 19
-					},
-					{
-						"name": "PostingDate",
-						"type": "datetime",
-						"precision": 23,
-						"scale": 3
-					},
-					{
-						"name": "ActivityDate",
-						"type": "date"
-					},
-					{
-						"name": "DebitCreditFlag",
-						"type": "varchar"
-					},
-					{
-						"name": "Statuscode",
-						"type": "varchar"
-					},
-					{
-						"name": "StatusDescription",
-						"type": "varchar"
-					},
-					{
-						"name": "RTXNTypecode",
-						"type": "varchar"
-					},
-					{
-						"name": "RTXNTypeDescription",
-						"type": "varchar"
-					},
-					{
-						"name": "Amount",
-						"type": "decimal",
-						"precision": 18,
-						"scale": 2
-					},
-					{
-						"name": "ExternalRTXNDescText",
-						"type": "varchar"
-					},
-					{
-						"name": "InternalRTXNDescText",
-						"type": "varchar"
-					}
-				],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "AccountTransactionsDetails"
 				}
 			},
 			"dependsOn": []

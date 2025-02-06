@@ -15163,6 +15163,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_AdminLoginHistory')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataQA",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_Archive')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -20868,7 +20904,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -21558,7 +21594,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -21942,7 +21978,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -23989,7 +24025,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -24867,7 +24903,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -25154,7 +25190,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -25417,7 +25453,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -26304,7 +26340,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -26703,7 +26739,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -27480,7 +27516,7 @@
 										"value": "@pipeline().parameters.FileName",
 										"type": "Expression"
 									},
-									"deleteFilesAfterCompletion": false
+									"deleteFilesAfterCompletion": true
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -40841,6 +40877,42 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/UAT_AdminLoginHistory')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Stored procedure1",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
+						},
+						"linkedServiceName": {
+							"referenceName": "SCCU_BusinessDataUAT",
+							"type": "LinkedServiceReference"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataUAT')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/UAT_CCM_CreditCard_AccountDetails')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -46859,6 +46931,52 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/MemberDataDetails')]",
 				"[concat(variables('factoryId'), '/pipelines/NextlyAccountDetails')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlTable1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_BusinessDataDev",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "SubscriptionID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "FirstName",
+						"type": "varchar"
+					},
+					{
+						"name": "Description",
+						"type": "varchar"
+					},
+					{
+						"name": "Amount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "ExternalTxnAlertNewFormatTest"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataDev')]"
 			]
 		},
 		{
@@ -75999,6 +76117,36 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/QA_AdminLoginHistory_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "QA_AdminLoginHistory",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2025-02-05T00:00:00",
+						"timeZone": "Eastern Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/QA_AdminLoginHistory')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/QA_DataRetention')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
@@ -76076,6 +76224,36 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/QA_Archive')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_AdminLoginHistory_Trigger')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "UAT_AdminLoginHistory",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2025-02-04T00:00:00",
+						"timeZone": "Eastern Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/UAT_AdminLoginHistory')]"
 			]
 		},
 		{
@@ -76457,140 +76635,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_AdminLoginHistory')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataQA",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_AdminLoginHistory_Trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "QA_AdminLoginHistory",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2025-02-05T00:00:00",
-						"timeZone": "Eastern Standard Time",
-						"schedule": {}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/QA_AdminLoginHistory')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_AdminLoginHistory')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataUAT",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataUAT')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_AdminLoginHistory_Trigger')]",
-			"type": "Microsoft.DataFactory/factories/triggers",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "UAT_AdminLoginHistory",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
-				"type": "ScheduleTrigger",
-				"typeProperties": {
-					"recurrence": {
-						"frequency": "Day",
-						"interval": 1,
-						"startTime": "2025-02-04T00:00:00",
-						"timeZone": "Eastern Standard Time",
-						"schedule": {}
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/UAT_AdminLoginHistory')]"
 			]
 		}
 	]

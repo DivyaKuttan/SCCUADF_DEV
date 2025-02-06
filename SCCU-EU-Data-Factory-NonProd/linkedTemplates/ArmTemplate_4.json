@@ -13,6 +13,78 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/DEV_Completed_LoanDetails_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/Dev_Offline/Dev_Completed"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/LoanDetails",
+						"container": "offline-services"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_Completed_MemberDataDetails_Sink')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/Dev_Offline/Dev_Completed"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/COMPLETED/Completed_MemberDataDetails",
+						"container": "offline-services"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/DEV_Completed_MemberDataDetails_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_DataFactory_Storage",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/Dev_Offline/Dev_Completed"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"folderPath": "DEV/MemberDataDetails",
+						"container": "offline-services"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/DEV_Completed_NextlyAccountDetails_Sink')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -535,193 +607,6 @@
 					"quoteChar": ""
 				},
 				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DEV_LoanDue_DataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": {
-							"value": "LoanDueAlerts@{formatDateTime(addHours(utcnow(), -4), 'MMddyyyyHHmm')}.txt",
-							"type": "Expression"
-						},
-						"folderPath": "DEV/LoanDueAlerts",
-						"container": "from-nextly"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": ""
-				},
-				"schema": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DEV_SQL_DataSet')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_BusinessDataDev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "AzureSqlTable",
-				"schema": [
-					{
-						"name": "ID",
-						"type": "int",
-						"precision": 10
-					},
-					{
-						"name": "Username",
-						"type": "varchar"
-					},
-					{
-						"name": "MemberNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "PersonNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "EAgreementNumber",
-						"type": "varchar"
-					},
-					{
-						"name": "Status",
-						"type": "bit"
-					}
-				],
-				"typeProperties": {
-					"schema": "Adaptive",
-					"table": "AllowedUserOnly"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DelimitedText1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Nextly CCM Credit Card Account Details 2025_01_26_000841.csv",
-						"folderPath": "UAT/CCM_CreditCard_AccountDetails",
-						"container": "offline-services"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "DNA_Member_Number",
-						"type": "String"
-					},
-					{
-						"name": "CCM_Account_Number",
-						"type": "String"
-					},
-					{
-						"name": "Open_Date",
-						"type": "String"
-					},
-					{
-						"name": "Current_Account_Balance",
-						"type": "String"
-					},
-					{
-						"name": "Next_Payment_Due_Date",
-						"type": "String"
-					},
-					{
-						"name": "Next_Payment_Amt_Due",
-						"type": "String"
-					},
-					{
-						"name": "Current_Year_Interest_Paid",
-						"type": "String"
-					},
-					{
-						"name": "Prior_Year_Interest_Paid",
-						"type": "String"
-					},
-					{
-						"name": "Interest_Rate",
-						"type": "String"
-					},
-					{
-						"name": "APR_Interest_Class",
-						"type": "String"
-					},
-					{
-						"name": "Account_Payoff_Balance",
-						"type": "String"
-					},
-					{
-						"name": "Account_Principal_Balance",
-						"type": "String"
-					},
-					{
-						"name": "Amount_To_Pay_Current",
-						"type": "String"
-					},
-					{
-						"name": "Total_Amount_Currently_Due",
-						"type": "String"
-					},
-					{
-						"name": "Account_Credit_Limit",
-						"type": "String"
-					},
-					{
-						"name": "Total_Per_Diem",
-						"type": "String"
-					},
-					{
-						"name": "Current_Term",
-						"type": "String"
-					},
-					{
-						"name": "Remaining_Payments",
-						"type": "String"
-					},
-					{
-						"name": "Payment_Calculation_Period",
-						"type": "String"
-					},
-					{
-						"name": "Available_Credit",
-						"type": "String"
-					},
-					{
-						"name": "Amount_Past_Due",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": []
 		}

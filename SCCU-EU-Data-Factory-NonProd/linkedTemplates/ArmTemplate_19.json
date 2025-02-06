@@ -13,6 +13,326 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/UAT_OfflineDestination_UserCreditCards')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUUAT_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Destination"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AccountNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "CurrentBalance",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "BalanceCategoryCodeEscrow",
+						"type": "varchar"
+					},
+					{
+						"name": "CurrentBalanceEscrow",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "BalanceCategoryCodeUnapplied",
+						"type": "varchar"
+					},
+					{
+						"name": "CurrentBalanceUnapplied",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "BalanceCategoryCodeLoanInProcess",
+						"type": "varchar"
+					},
+					{
+						"name": "CurrentBalanceLoanInProcess",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "NextPaymentDueDate",
+						"type": "date"
+					},
+					{
+						"name": "CurrentDueDate",
+						"type": "date"
+					},
+					{
+						"name": "LastPaymentDate",
+						"type": "date"
+					},
+					{
+						"name": "LastPaymentAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "CurrentYearInterestPaid",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "RegularPaymentAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "InterestRate",
+						"type": "decimal",
+						"precision": 5,
+						"scale": 2
+					},
+					{
+						"name": "PriorYearInterestPaid",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "PayoffBalance",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "PayDownBalance",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "PrincipalBalance",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "AmountToPayCurrent",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "TotalPerDiem",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "TotalAmountCurrentlyDue",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "AmountPastDue",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "OriginalLoanAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "CurrentTerm",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "RemainingTerm",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "RemainingPayments",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "PaymentCalculationPeriod",
+						"type": "varchar"
+					},
+					{
+						"name": "CreditLimitAmount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "AvailableCredit",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "OpenDate",
+						"type": "date"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "UserCreditCards_Staging"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_SQL_DataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCU_BusinessDataUAT",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "Username",
+						"type": "varchar"
+					},
+					{
+						"name": "MemberNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "PersonNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "EAgreementNumber",
+						"type": "varchar"
+					},
+					{
+						"name": "Status",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "Adaptive",
+					"table": "ActivityLog"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/UAT_Source_Offline_AccountTransactions_Archive')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUUAT_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/UAT_Offline/UAT_Offline_Archival"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "AccountNumber",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "RTXNNumber",
+						"type": "bigint",
+						"precision": 19
+					},
+					{
+						"name": "PostingDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "ActivityDate",
+						"type": "date"
+					},
+					{
+						"name": "DebitCreditFlag",
+						"type": "varchar"
+					},
+					{
+						"name": "Statuscode",
+						"type": "varchar"
+					},
+					{
+						"name": "StatusDescription",
+						"type": "varchar"
+					},
+					{
+						"name": "RTXNTypecode",
+						"type": "varchar"
+					},
+					{
+						"name": "RTXNTypeDescription",
+						"type": "varchar"
+					},
+					{
+						"name": "Amount",
+						"type": "decimal",
+						"precision": 18,
+						"scale": 2
+					},
+					{
+						"name": "ExternalRTXNDescText",
+						"type": "varchar"
+					},
+					{
+						"name": "InternalRTXNDescText",
+						"type": "varchar"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "AccountTransactionsDetails"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/UAT_Source_Offline_LoanTransactions_Archive')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -503,74 +823,6 @@
 					"schema": "BusinessData",
 					"table": "EmulationActivityDynamicDescriptionValue"
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_AdminLoginHistory')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataQA",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/UAT_AdminLoginHistory')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
-						},
-						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataUAT",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
@@ -7217,309 +7469,6 @@
 									"type": "Query",
 									"text": {
 										"value": "DECLARE @BatchSize INT = 10000; \nDECLARE @RowsAffected INT = 1; \nDECLARE @TotalDeletedRows INT = 0; \n\nWHILE (@RowsAffected > 0)\nBEGIN\n    DELETE TOP (@BatchSize)\n   FROM \n\t\t[Offline].[AccountTransactionsDetails] \n\tWHERE \n\t\t[PostingDate] < DATEADD(DAY,-47,CAST(GETUTCDATE() AS DATE));\n\n    SET @RowsAffected = @@ROWCOUNT; \n    SET @TotalDeletedRows = @TotalDeletedRows + @RowsAffected;\nEND\n\n\nSELECT @TotalDeletedRows AS TotalDeletedRows;\n",
-										"type": "Expression"
-									}
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "OfflineServices/Dev_OfflineServices/Dev_Offline_Archival"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Dev_LoanTransaction_Archival')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "LoanTransactions_Copy",
-						"type": "Copy",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": {
-									"value": "SELECT * \tFROM [dbo].[LoanTransactionsDetails] \n\tWHERE \n\t\t[PostingDate]  <DATEADD(DAY,-15,CAST(GETUTCDATE() AS DATE));",
-									"type": "Expression"
-								},
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"sink": {
-								"type": "AzureSqlSink",
-								"writeBehavior": "insert",
-								"sqlWriterUseTableLock": false
-							},
-							"enableStaging": false,
-							"translator": {
-								"type": "TabularTranslator",
-								"mappings": [
-									{
-										"source": {
-											"name": "ID",
-											"type": "Int32",
-											"physicalType": "int"
-										},
-										"sink": {
-											"name": "ID",
-											"type": "Int32",
-											"physicalType": "int"
-										}
-									},
-									{
-										"source": {
-											"name": "AccountNumber",
-											"type": "Int64",
-											"physicalType": "bigint"
-										},
-										"sink": {
-											"name": "AccountNumber",
-											"type": "Int64",
-											"physicalType": "bigint"
-										}
-									},
-									{
-										"source": {
-											"name": "RTXNNumber",
-											"type": "Int64",
-											"physicalType": "bigint"
-										},
-										"sink": {
-											"name": "RTXNNumber",
-											"type": "Int64",
-											"physicalType": "bigint"
-										}
-									},
-									{
-										"source": {
-											"name": "PostingDate",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										},
-										"sink": {
-											"name": "PostingDate",
-											"type": "DateTime",
-											"physicalType": "datetime"
-										}
-									},
-									{
-										"source": {
-											"name": "ActivityDate",
-											"type": "DateTime",
-											"physicalType": "date"
-										},
-										"sink": {
-											"name": "ActivityDate",
-											"type": "DateTime",
-											"physicalType": "date"
-										}
-									},
-									{
-										"source": {
-											"name": "DebitCreditFlag",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "DebitCreditFlag",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Statuscode",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "Statuscode",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "StatusDescription",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "StatusDescription",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "RTXNTypecode",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "RTXNTypecode",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "RTXNTypeDescription",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "RTXNTypeDescription",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "Amount",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 2,
-											"precision": 18
-										},
-										"sink": {
-											"name": "Amount",
-											"type": "Decimal",
-											"physicalType": "decimal",
-											"scale": 2,
-											"precision": 18
-										}
-									},
-									{
-										"source": {
-											"name": "ExternalRTXNDescText",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "ExternalRTXNDescText",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									},
-									{
-										"source": {
-											"name": "InternalRTXNDescText",
-											"type": "String",
-											"physicalType": "varchar"
-										},
-										"sink": {
-											"name": "InternalRTXNDescText",
-											"type": "String",
-											"physicalType": "varchar"
-										}
-									}
-								],
-								"typeConversion": true,
-								"typeConversionSettings": {
-									"allowDataTruncation": true,
-									"treatBooleanAsNumber": false
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Dev_Source_Offline_LoanTransactions_Archive",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "Dev_Destination_Offline_LoanTransactions_Archive",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "AccountTransactionsDelete_Script",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "LoanTransactions_Copy",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "SCCU_OfflineDev",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": {
-										"value": "DECLARE @BatchSize INT = 10000; \nDECLARE @RowsAffected INT = 1; \nDECLARE @TotalDeletedRows INT = 0; \n\nWHILE (@RowsAffected > 0)\nBEGIN\n    DELETE \n\tFROM \n\t\t[dbo].[LoanTransactionsDetails]\n\tWHERE \n\t\t[PostingDate]  < DATEADD(DAY,-15,CAST(GETUTCDATE() AS DATE));\n\n    SET @RowsAffected = @@ROWCOUNT; \n    SET @TotalDeletedRows = @TotalDeletedRows + @RowsAffected;\nEND\n\n\nSELECT @TotalDeletedRows AS TotalDeletedRows;\n",
-										"type": "Expression"
-									}
-								}
-							],
-							"scriptBlockExecutionTimeout": "02:00:00"
-						}
-					},
-					{
-						"name": "Purge_Script",
-						"type": "Script",
-						"dependsOn": [
-							{
-								"activity": "AccountTransactionsDelete_Script",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"linkedServiceName": {
-							"referenceName": "SCCU_ArchiveDev",
-							"type": "LinkedServiceReference"
-						},
-						"typeProperties": {
-							"scripts": [
-								{
-									"type": "Query",
-									"text": {
-										"value": "DECLARE @BatchSize INT = 10000; \nDECLARE @RowsAffected INT = 1; \nDECLARE @TotalDeletedRows INT = 0; \n\nWHILE (@RowsAffected > 0)\nBEGIN\n    DELETE \n\tFROM \n\t\t[Offline].[LoanTransactionsDetails]\n\tWHERE \n\t\t[PostingDate] < DATEADD(DAY,-47,CAST(GETUTCDATE() AS DATE));\n\n    SET @RowsAffected = @@ROWCOUNT; \n    SET @TotalDeletedRows = @TotalDeletedRows + @RowsAffected;\nEND\n\n\nSELECT @TotalDeletedRows AS TotalDeletedRows;\n",
 										"type": "Expression"
 									}
 								}
