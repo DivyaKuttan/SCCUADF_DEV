@@ -67,7 +67,7 @@
 						"type": "IntegrationRuntimeReference"
 					},
 					"body": {
-						"value": "\n{\n  \"personalizations\": [\n    {\n      \"to\": [\n        {\n          \"email\": \"SCCUADFNotifications@claysys.com\"\n        }\n      ],\n      \"subject\": \"@{pipeline().parameters.subject}\"\n    }\n  ],\n  \"from\": {\n    \"email\": \"@{pipeline().globalParameters.FromEmail}\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/plain\",\n      \"value\": \"@{pipeline().parameters.content}\"\n    }\n  ],\n  \"custom_args\": {\n    \"importance\": \"@{pipeline().parameters.importance}\"\n  }\n}\n",
+						"value": "{\n  \"personalizations\": [\n    {\n      \"to\": [\n        {\n          \"email\": \"SCCUADFNotifications@claysys.com\"\n        }\n      ],\n      \"subject\": \"@{pipeline().parameters.subject}\"\n    }\n  ],\n  \"from\": {\n    \"email\": \"@{pipeline().globalParameters.FromEmail}\"\n  },\n  \"content\": [\n    {\n      \"type\": \"text/html\",\n      \"value\": \"@{pipeline().parameters.content}\"\n    }\n  ],\n  \"headers\": {\n    \"Priority\": \"@{pipeline().parameters.importance}\",\n    \"Importance\": \"@{pipeline().parameters.importance}\",\n    \"X-Priority\": \"@{if(equals(pipeline().parameters.importance, 'High'), '1', '3')}\"\n  }\n}",
 						"type": "Expression"
 					}
 				}

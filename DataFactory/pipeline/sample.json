@@ -1,0 +1,97 @@
+{
+	"name": "sample",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline1",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Stored procedure1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Email_Activity_Dynamic_copy1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"subject": {
+							"value": "@concat('Pipeline ', pipeline().Pipeline, ' is ', activity('Stored procedure1').status)\n",
+							"type": "Expression"
+						},
+						"importance": {
+							"value": "@if(equals(activity('Stored procedure1').status, 'Failed'), 'High', 'Normal')\n",
+							"type": "Expression"
+						},
+						"content": {
+							"value": "@concat('<h1>Pipeline ', pipeline().Pipeline, ' is ', activity('Stored procedure1').status,'</h1><table><tr><td><b>Pipeline Name:</b></td><td> ', pipeline().Pipeline, '</td></tr><tr><td><b>Error:</b> </td><td>', activity('Stored procedure1').output.errors[0].message,'</td></tr></table>')\n\n",
+							"type": "Expression"
+						}
+					}
+				}
+			},
+			{
+				"name": "Stored procedure1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DelimitedText10",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "AzureSqlTable2",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
