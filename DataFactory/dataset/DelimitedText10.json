@@ -10,11 +10,11 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "newalertsformat 1.txt",
+				"fileName": "Latestnewalertsformat 1.txt",
 				"folderPath": "Test",
 				"container": "offline-services"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "|",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
