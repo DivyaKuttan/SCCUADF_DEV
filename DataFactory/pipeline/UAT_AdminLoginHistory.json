@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Stored procedure1",
+				"name": "spi_AdminLoginHistoryActiveMember",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [],
 				"policy": {
