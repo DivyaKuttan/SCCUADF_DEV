@@ -5,8 +5,6 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Stored procedure1",
@@ -21,7 +19,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Email_Activity_Dynamic_copy1",
+						"referenceName": "Failure_Email_Activity_Dynamic",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true,
@@ -76,7 +74,7 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "SubscriptionID",
+									"name": "FirstName",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -88,7 +86,7 @@
 							},
 							{
 								"source": {
-									"name": "FirstName",
+									"name": "SubscriptionID",
 									"type": "String",
 									"physicalType": "String"
 								},
@@ -167,10 +165,16 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"subject": "@concat(pipeline().Pipeline, ' - ', 'Success')",
-						"importance": "\"normal\"",
-						"content": "@concat('Subject: ', pipeline().Pipeline, ' - Success', '<br>Pipeline Name: ', pipeline().Pipeline, '<br>Status: Success')",
-						"ToEmail": "\"SCCUADFNotifications@claysys.com\""
+						"subject": {
+							"value": "@concat('Pipeline ', pipeline().Pipeline, ' is ', activity('Stored procedure1').status)\n",
+							"type": "Expression"
+						},
+						"importance": "@if(equals(activity('Stored procedure1').status, 'Failed'), 'High', 'Normal')",
+						"content": {
+							"value": "@concat('<h1>Pipeline ', pipeline().Pipeline, ' is ', activity('Stored procedure1').status,'</h1><table><tr><td><b>Pipeline Name:</b></td><td> ', pipeline().Pipeline, '</td></tr><tr><td><b>Error:</b> </td><td>', activity('Stored procedure1').output)\n\n",
+							"type": "Expression"
+						},
+						"ToEmail": "  "
 					}
 				}
 			}
