@@ -1,0 +1,36 @@
+{
+	"name": "pipeline2",
+	"properties": {
+		"activities": [
+			{
+				"name": "Execute Pipeline2",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Completed_Email_Activity_Dynamic",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"subject": {
+							"value": "@concat(pipeline().Pipeline, ' - ', 'Success')",
+							"type": "Expression"
+						},
+						"importance": "\"normal\"",
+						"content": {
+							"value": "@concat('Subject: ', pipeline().Pipeline, ' - Success', '<br>Pipeline Name: ', pipeline().Pipeline, '<br>Status: Success')",
+							"type": "Expression"
+						},
+						"ToEmail": "\"SCCUADFNotifications@claysys.com\""
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
