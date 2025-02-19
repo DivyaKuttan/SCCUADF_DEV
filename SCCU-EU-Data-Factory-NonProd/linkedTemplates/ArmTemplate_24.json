@@ -85,6 +85,618 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUDEV_BusinessData_DynamicRetention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BusinessData_Archive",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUDEV_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Archive_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BusinessData_Archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BusinessData_Archive').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BusinessData_Script",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "BusinessData_Copy data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCU_BusinessDataDev",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName}  WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n\n",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "BusinessData_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SCCUDev_BusinessData_Source",
+											"type": "DatasetReference",
+											"parameters": {
+												"SourceDB": "@item().SourceDBName",
+												"SourceTable": "@item().SourceTableName",
+												"SourceSchema": "@item().SourceSchemaName"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_Archive_Destination",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "BusinessData_Purge",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Archive_ForEach",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUDEV_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Purge_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BusinessData_Purge",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BusinessData_Purge').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BusinessData_Purge_Script",
+									"type": "Script",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCU_ArchiveDev",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DECLARE @BatchSize INT = 10000;  -- Define the batch size for deletion\nDECLARE @RowsAffected INT = 1;    -- Initialize with a non-zero value\nDECLARE @TotalRowsDeleted INT = 0; -- Variable to accumulate total rows deleted\nDECLARE @LoopCount INT = 0;       -- Variable to count the number of loop executions\n \n-- Start the batch-wise deletion process\nWHILE @RowsAffected > 0\nBEGIN\n    -- Increment the loop execution count\n    SET @LoopCount = @LoopCount + 1;\n \n    -- Delete top (@BatchSize) rows based on the purge condition\n    DELETE TOP (@BatchSize)\n    FROM @{item().DestinationSchemaName}.@{item().DestinationTableName}\n    WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().PurgeDays}, CAST(GETDATE() AS DATE));\n \n    -- Get the number of rows deleted in the last batch\n    SET @RowsAffected = @@ROWCOUNT;\n \n    -- Accumulate the total number of rows deleted\n    SET @TotalRowsDeleted = @TotalRowsDeleted + @RowsAffected;\nEND\n \n-- Optionally, you can output the total rows deleted and loop execution count for logging purposes\nSELECT @TotalRowsDeleted AS TotalRowsDeleted, @LoopCount AS LoopExecutionCount;",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "ActivityLog",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUDEV_Static_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "ActivityLog",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUDEV_ActivityLog_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_BusinessData_DynamicRetention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BusinessData_Archive",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsArchiveEnabled=1 AND ArchiveDays > 0",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUQA_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Archive_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BusinessData_Archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BusinessData_Archive').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BusinessData_Script",
+									"type": "Script",
+									"dependsOn": [
+										{
+											"activity": "BusinessData_Copy data",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCU_BusinessDataQA",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DELETE  FROM @{item().SourceSchemaName}.@{item().SourceTableName}  WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))\n\n",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								},
+								{
+									"name": "BusinessData_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "insert",
+											"sqlWriterUseTableLock": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SCCUQA_BusinessData_Source",
+											"type": "DatasetReference",
+											"parameters": {
+												"SourceDB": "@item().SourceDBName",
+												"SourceTable": "@item().SourceTableName",
+												"SourceSchema": "@item().SourceSchemaName"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "QA_Archive_Destination",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": {
+													"value": "@item().DestinationTableName",
+													"type": "Expression"
+												},
+												"DestinationSchema": {
+													"value": "@item().DestinationSchemaName",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					},
+					{
+						"name": "BusinessData_Purge",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Archive_ForEach",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='BusinessData' AND IsPurgeEnabled=1 AND PurgeDays > 0",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUQA_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Purge_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BusinessData_Purge",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BusinessData_Purge').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BusinessData_Purge_Script",
+									"type": "Script",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"linkedServiceName": {
+										"referenceName": "SCCUQA_ArchiveDB",
+										"type": "LinkedServiceReference"
+									},
+									"typeProperties": {
+										"scripts": [
+											{
+												"type": "Query",
+												"text": {
+													"value": "DECLARE @BatchSize INT = 10000;  -- Define the batch size for deletion\nDECLARE @RowsAffected INT = 1;    -- Initialize with a non-zero value\nDECLARE @TotalRowsDeleted INT = 0; -- Variable to accumulate total rows deleted\nDECLARE @LoopCount INT = 0;       -- Variable to count the number of loop executions\n \n-- Start the batch-wise deletion process\nWHILE @RowsAffected > 0\nBEGIN\n    -- Increment the loop execution count\n    SET @LoopCount = @LoopCount + 1;\n \n    -- Delete top (@BatchSize) rows based on the purge condition\n    DELETE TOP (@BatchSize)\n    FROM @{item().DestinationSchemaName}.@{item().DestinationTableName}\n    WHERE CAST(@{item().KeyColumn} AS DATE) < DATEADD(DAY, -@{item().PurgeDays}, CAST(GETDATE() AS DATE));\n \n    -- Get the number of rows deleted in the last batch\n    SET @RowsAffected = @@ROWCOUNT;\n \n    -- Accumulate the total number of rows deleted\n    SET @TotalRowsDeleted = @TotalRowsDeleted + @RowsAffected;\nEND\n \n-- Optionally, you can output the total rows deleted and loop execution count for logging purposes\nSELECT @TotalRowsDeleted AS TotalRowsDeleted, @LoopCount AS LoopExecutionCount;",
+													"type": "Expression"
+												}
+											}
+										],
+										"scriptBlockExecutionTimeout": "02:00:00"
+									}
+								}
+							]
+						}
+					},
+					{
+						"name": "Execute Pipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "ActivityLog",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUQA_Static_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "ActivityLog",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUQA_ActivityLog_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUUAT_BusinessData_DynamicRetention')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -2329,522 +2941,6 @@
 				"[concat(variables('factoryId'), '/pipelines/UAT_CK_SAV_Accounttransactions')]",
 				"[concat(variables('factoryId'), '/pipelines/UAT_NextlyLoanTransactions')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DEV_DynamicRetention_Main')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "This pipeline has activities which archive/purge data from souce DB's to Archive DB ",
-				"activities": [
-					{
-						"name": "Distinct DB",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT DISTINCT DestinationSchemaName FROM MasterConfig WHERE IsArchiveEnabled=1 OR IsPurgeEnabled=1 ",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SCCUDEV_ArchiveSqlDataset",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Schemas",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Distinct DB",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Distinct DB').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"batchCount": 1,
-							"activities": [
-								{
-									"name": "DbNameSwitch",
-									"type": "Switch",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"on": {
-											"value": "@item().DestinationSchemaName",
-											"type": "Expression"
-										},
-										"cases": [
-											{
-												"value": "MetaDb",
-												"activities": [
-													{
-														"name": "Meta DB",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDev_MetaDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "LogDb",
-												"activities": [
-													{
-														"name": "Log DB",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDEV_LogDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "BusinessData",
-												"activities": [
-													{
-														"name": "BusinessData",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDEV_BusinessData_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "BBAlerts",
-												"activities": [
-													{
-														"name": "BBAlerts",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDEV_BBAlerts_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AdminLogDb",
-												"activities": [
-													{
-														"name": "AdminLogDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDev_Admin_LogDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AdminMetaDb",
-												"activities": [
-													{
-														"name": "AdminMetaDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDev_Admin_MetaDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AnonymousLogDb",
-												"activities": [
-													{
-														"name": "AnonymousLogDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDev_Anonymous_LogDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AnonymousMetaDb",
-												"activities": [
-													{
-														"name": "AnonymousMetaDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUDev_Anonymous_MetaDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": true,
-															"parameters": {}
-														}
-													}
-												]
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "DataRetention"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/QA_DynamicRetention_Main')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "This pipeline has activities which archive/purge data from souce DB's to Archive DB ",
-				"activities": [
-					{
-						"name": "Distinct DB",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "SELECT DISTINCT DestinationSchemaName FROM MasterConfig WHERE IsArchiveEnabled=1 OR IsPurgeEnabled=1 ",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "SCCUQA_ArchiveSqlDataset",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": false
-						}
-					},
-					{
-						"name": "Schemas",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Distinct DB",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Distinct DB').output.value",
-								"type": "Expression"
-							},
-							"isSequential": false,
-							"batchCount": 1,
-							"activities": [
-								{
-									"name": "DbNameSwitch",
-									"type": "Switch",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"on": {
-											"value": "@item().DestinationSchemaName",
-											"type": "Expression"
-										},
-										"cases": [
-											{
-												"value": "MetaDb",
-												"activities": [
-													{
-														"name": "Meta DB",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_MetaDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "LogDb",
-												"activities": [
-													{
-														"name": "Log DB",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_LogDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "BusinessData",
-												"activities": [
-													{
-														"name": "BusinessData",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_BusinessData_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "BBAlerts",
-												"activities": [
-													{
-														"name": "BBAlerts",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_BBAlerts_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AdminLogDb",
-												"activities": [
-													{
-														"name": "AdminLogDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_Admin_LogDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AdminMetaDb",
-												"activities": [
-													{
-														"name": "AdminMetaDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_Admin_MetaDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AnonymousLogDb",
-												"activities": [
-													{
-														"name": "AnonymousLogDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_Anonymous_LogDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											},
-											{
-												"value": "AnonymousMetaDb",
-												"activities": [
-													{
-														"name": "AnonymousMetaDb",
-														"type": "ExecutePipeline",
-														"dependsOn": [],
-														"policy": {
-															"secureInput": false
-														},
-														"userProperties": [],
-														"typeProperties": {
-															"pipeline": {
-																"referenceName": "SCCUQA_Anonymous_MetaDB_DynamicRetention",
-																"type": "PipelineReference"
-															},
-															"waitOnCompletion": false,
-															"parameters": {}
-														}
-													}
-												]
-											}
-										]
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"folder": {
-					"name": "DataRetention"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
 		}
 	]
 }

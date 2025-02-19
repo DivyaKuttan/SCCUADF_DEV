@@ -28657,6 +28657,148 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUDEV_ActivityLog_BusinessData_DynamicRetention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BusinessData_Archive",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='ActivityLog'",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUDEV_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Archive_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BusinessData_Archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BusinessData_Archive').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BusinessData_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} with (NOLOCK) WHERE CAST(@{item().KeyColumn} AS DATE) >= DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE)) OR CAST(@{item().KeyColumn2} AS DATE) >= DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "upsert",
+											"upsertSettings": {
+												"useTempDB": true,
+												"keys": [
+													"ID"
+												]
+											},
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SCCUDev_BusinessData_Source",
+											"type": "DatasetReference",
+											"parameters": {
+												"SourceDB": "@item().SourceDBName",
+												"SourceTable": "@item().DestinationTableName",
+												"SourceSchema": "@item().DestinationSchemaName"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "DEV_Archive_Destination",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": "@item().DestinationTableName",
+												"DestinationSchema": {
+													"value": "dbo",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SCCUDEV_ArchiveSqlDataset')]",
+				"[concat(variables('factoryId'), '/datasets/SCCUDev_BusinessData_Source')]",
+				"[concat(variables('factoryId'), '/datasets/DEV_Archive_Destination')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUDEV_BBAlerts_DynamicRetention')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -29186,7 +29328,14 @@
 					{
 						"name": "Execute Pipeline1",
 						"type": "ExecutePipeline",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "ActivityLog",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"secureInput": false
 						},
@@ -29194,6 +29343,23 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "SCCUDEV_Static_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "ActivityLog",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUDEV_ActivityLog_BusinessData_DynamicRetention",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -29212,6 +29378,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SCCUDEV_ArchiveSqlDataset')]",
 				"[concat(variables('factoryId'), '/pipelines/SCCUDEV_Static_BusinessData_DynamicRetention')]",
+				"[concat(variables('factoryId'), '/pipelines/SCCUDEV_ActivityLog_BusinessData_DynamicRetention')]",
 				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataDev')]",
 				"[concat(variables('factoryId'), '/datasets/SCCUDev_BusinessData_Source')]",
 				"[concat(variables('factoryId'), '/datasets/DEV_Archive_Destination')]",
@@ -31961,6 +32128,148 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_ActivityLog_BusinessData_DynamicRetention')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "BusinessData_Archive",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": {
+									"value": "SELECT * FROM MasterConfig WHERE DestinationSchemaName='ActivityLog'",
+									"type": "Expression"
+								},
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SCCUQA_ArchiveSqlDataset",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": false
+						}
+					},
+					{
+						"name": "Archive_ForEach",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "BusinessData_Archive",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('BusinessData_Archive').output.value",
+								"type": "Expression"
+							},
+							"batchCount": 1,
+							"activities": [
+								{
+									"name": "BusinessData_Copy data",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"sqlReaderQuery": {
+												"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} with (NOLOCK) WHERE CAST(@{item().KeyColumn} AS DATE) >= DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE)) OR CAST(@{item().KeyColumn2} AS DATE) >= DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
+												"type": "Expression"
+											},
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "AzureSqlSink",
+											"writeBehavior": "upsert",
+											"upsertSettings": {
+												"useTempDB": true,
+												"keys": [
+													"ID"
+												]
+											},
+											"sqlWriterUseTableLock": false,
+											"disableMetricsCollection": false
+										},
+										"enableStaging": false,
+										"translator": {
+											"type": "TabularTranslator",
+											"typeConversion": true,
+											"typeConversionSettings": {
+												"allowDataTruncation": true,
+												"treatBooleanAsNumber": false
+											}
+										}
+									},
+									"inputs": [
+										{
+											"referenceName": "SCCUQA_BusinessData_Source",
+											"type": "DatasetReference",
+											"parameters": {
+												"SourceDB": "@item().SourceDBName",
+												"SourceTable": "@item().DestinationTableName",
+												"SourceSchema": "@item().DestinationSchemaName"
+											}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "QA_Archive_Destination",
+											"type": "DatasetReference",
+											"parameters": {
+												"DestinationTable": "@item().DestinationTableName",
+												"DestinationSchema": {
+													"value": "dbo",
+													"type": "Expression"
+												}
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "DataRetention"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SCCUQA_ArchiveSqlDataset')]",
+				"[concat(variables('factoryId'), '/datasets/SCCUQA_BusinessData_Source')]",
+				"[concat(variables('factoryId'), '/datasets/QA_Archive_Destination')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_LogDB_DynamicRetention')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -33537,7 +33846,14 @@
 					{
 						"name": "Execute Pipeline1",
 						"type": "ExecutePipeline",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "ActivityLog",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"secureInput": false
 						},
@@ -33545,6 +33861,23 @@
 						"typeProperties": {
 							"pipeline": {
 								"referenceName": "SCCUQA_Static_BusinessData_DynamicRetention",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "ActivityLog",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SCCUQA_ActivityLog_BusinessData_DynamicRetention",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -33563,6 +33896,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SCCUQA_ArchiveSqlDataset')]",
 				"[concat(variables('factoryId'), '/pipelines/SCCUQA_Static_BusinessData_DynamicRetention')]",
+				"[concat(variables('factoryId'), '/pipelines/SCCUQA_ActivityLog_BusinessData_DynamicRetention')]",
 				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]",
 				"[concat(variables('factoryId'), '/datasets/SCCUQA_BusinessData_Source')]",
 				"[concat(variables('factoryId'), '/datasets/QA_Archive_Destination')]",
