@@ -66,7 +66,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} WHERE CAST(@{item().KeyColumn} AS DATE) > DATEADD(DAY, -1, CAST(GETDATE() AS DATE)) OR CAST(@{item().KeyColumn2} AS DATE) > DATEADD(DAY, -1, CAST(GETDATE() AS DATE))",
+										"value": "SELECT * FROM @{item().SourceSchemaName}.@{item().SourceTableName} with (NOLOCK) WHERE CAST(@{item().KeyColumn} AS DATE) >= DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE)) OR CAST(@{item().KeyColumn2} AS DATE) >= DATEADD(DAY, -@{item().ArchiveDays}, CAST(GETDATE() AS DATE))",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
