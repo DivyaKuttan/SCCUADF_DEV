@@ -251,7 +251,14 @@
 			{
 				"name": "Execute Pipeline1",
 				"type": "ExecutePipeline",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "ActivityLog",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"secureInput": false
 				},
@@ -259,6 +266,22 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "SCCUQA_Static_BusinessData_DynamicRetention",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "ActivityLog",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SCCUQA_ActivityLog_BusinessData_DynamicRetention",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
