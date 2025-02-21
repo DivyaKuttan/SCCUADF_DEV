@@ -66,7 +66,7 @@
 								"source": {
 									"type": "AzureSqlSource",
 									"sqlReaderQuery": {
-										"value": "SELECT COUNT(*) AS RowCount FROM @{item().SourceTableName}",
+										"value": "SELECT COUNT(*) AS [RowCount] FROM @{item().SourceTableName}",
 										"type": "Expression"
 									},
 									"queryTimeout": "02:00:00",
