@@ -13,6 +13,316 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Admin_MetaDB_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_Admin_MetaDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SourceDB": {
+						"type": "string"
+					},
+					"SourceTable": {
+						"type": "string"
+					},
+					"SourceSchema": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SourceSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().SourceTable",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Anonymous_LogDB_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQa_Anonymous_LogDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SourceDB": {
+						"type": "string"
+					},
+					"SourceTable": {
+						"type": "string"
+					},
+					"SourceSchema": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SourceSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().SourceTable",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_Anonymous_MetaDB_Source')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_Anonymous_MetaDB",
+					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"SourceDB": {
+						"type": "string"
+					},
+					"SourceTable": {
+						"type": "string"
+					},
+					"SourceSchema": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ErrorID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "TenantID",
+						"type": "varchar"
+					},
+					{
+						"name": "FormID",
+						"type": "varchar"
+					},
+					{
+						"name": "SystemIP",
+						"type": "varchar"
+					},
+					{
+						"name": "SiteURL",
+						"type": "nvarchar"
+					},
+					{
+						"name": "Type",
+						"type": "varchar"
+					},
+					{
+						"name": "Message",
+						"type": "nvarchar"
+					},
+					{
+						"name": "InnerException",
+						"type": "nvarchar"
+					},
+					{
+						"name": "CreatedBy",
+						"type": "varchar"
+					},
+					{
+						"name": "CreatedDate",
+						"type": "datetime",
+						"precision": 23,
+						"scale": 3
+					},
+					{
+						"name": "Comments",
+						"type": "nvarchar"
+					}
+				],
+				"typeProperties": {
+					"schema": {
+						"value": "@dataset().SourceSchema",
+						"type": "Expression"
+					},
+					"table": {
+						"value": "@dataset().SourceTable",
+						"type": "Expression"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SCCUQA_ArchiveSqlDataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_ArchiveDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "DataRetentionDatasets/Dynamic"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "DBName",
+						"type": "varchar"
+					},
+					{
+						"name": "SchemaName",
+						"type": "varchar"
+					},
+					{
+						"name": "TableName",
+						"type": "varchar"
+					},
+					{
+						"name": "KeyColumn",
+						"type": "varchar"
+					},
+					{
+						"name": "PurgeDays",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "ArchiveDays",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "MasterConfig"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/SCCUQA_BBAlerts_Source')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1943,231 +2253,6 @@
 						"type": "String"
 					}
 				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/STG_OfflinSource_UserCreditCards')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCU_DataFactory_Storage",
-					"type": "LinkedServiceReference"
-				},
-				"parameters": {
-					"UserCreditCards": {
-						"type": "string"
-					}
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/STG_Offline/STG_Source"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"folderPath": "STAGE/UserCreditCards",
-						"container": "offline-services"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "AccountNumber",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalance",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeEscrow",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceEscrow",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceUnapplied",
-						"type": "String"
-					},
-					{
-						"name": "BalanceCategoryCodeLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "CurrentBalanceLoanInProcess",
-						"type": "String"
-					},
-					{
-						"name": "NextPaymentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "CurrentDueDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentDate",
-						"type": "String"
-					},
-					{
-						"name": "LastPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "RegularPaymentAmount",
-						"type": "String"
-					},
-					{
-						"name": "InterestRate",
-						"type": "String"
-					},
-					{
-						"name": "PriorYearInterestPaid",
-						"type": "String"
-					},
-					{
-						"name": "PayoffBalance",
-						"type": "String"
-					},
-					{
-						"name": "PayDownBalance",
-						"type": "String"
-					},
-					{
-						"name": "PrincipalBalance",
-						"type": "String"
-					},
-					{
-						"name": "AmountToPayCurrent",
-						"type": "String"
-					},
-					{
-						"name": "TotalPerDiem",
-						"type": "String"
-					},
-					{
-						"name": "TotalAmountCurrentlyDue",
-						"type": "String"
-					},
-					{
-						"name": "AmountPastDue",
-						"type": "String"
-					},
-					{
-						"name": "OriginalLoanAmount",
-						"type": "String"
-					},
-					{
-						"name": "CurrentTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingTerm",
-						"type": "String"
-					},
-					{
-						"name": "RemainingPayments",
-						"type": "String"
-					},
-					{
-						"name": "PaymentCalculationPeriod",
-						"type": "String"
-					},
-					{
-						"name": "CreditLimitAmount",
-						"type": "String"
-					},
-					{
-						"name": "AvailableCredit",
-						"type": "String"
-					},
-					{
-						"name": "OpenDate",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_CCM_CreditCard_AccountDetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUStage_OfflineModeDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/STG_Offline/STG_Destination"
-				},
-				"annotations": [],
-				"type": "AzureSqlMITable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "CCM_CreditCard_AccountDetails_Staging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_CK_SAV_Accounttransactions')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUStage_OfflineModeDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/STG_Offline/STG_Source"
-				},
-				"annotations": [],
-				"type": "AzureSqlMITable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "CK_SAV_Accounttransactions_Staging"
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/STG_OfflineDestination_DebitCardDetails')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "SCCUStage_OfflineModeDB",
-					"type": "LinkedServiceReference"
-				},
-				"folder": {
-					"name": "OfflineServices_DataSets/STG_Offline/STG_Destination"
-				},
-				"annotations": [],
-				"type": "AzureSqlMITable",
-				"schema": [],
-				"typeProperties": {
-					"schema": "dbo",
-					"table": "DebitCardDetails_Staging"
-				}
 			},
 			"dependsOn": []
 		}

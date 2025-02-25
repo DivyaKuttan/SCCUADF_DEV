@@ -1211,15 +1211,6 @@
 					},
 					"UAT_TransactionAlert_properties_typeProperties_scope": {
 						"value": "[parameters('UAT_TransactionAlert_properties_typeProperties_scope')]"
-					},
-					"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName": {
-						"value": "[parameters('UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName')]"
-					},
-					"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath": {
-						"value": "[parameters('UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath')]"
-					},
-					"UAT_thresholdAlert_properties_typeProperties_scope": {
-						"value": "[parameters('UAT_thresholdAlert_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -1240,6 +1231,15 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName": {
+						"value": "[parameters('UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FileName')]"
+					},
+					"UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath": {
+						"value": "[parameters('UAT_thresholdAlert_properties_Nextly_ThresholdAlert_UAT_parameters_FilePath')]"
+					},
+					"UAT_thresholdAlert_properties_typeProperties_scope": {
+						"value": "[parameters('UAT_thresholdAlert_properties_typeProperties_scope')]"
 					}
 				}
 			},
