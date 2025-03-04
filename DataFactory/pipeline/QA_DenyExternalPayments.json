@@ -1,13 +1,13 @@
 {
-	"name": "NextlyAccountRoles",
+	"name": "QA_DenyExternalPayments",
 	"properties": {
 		"activities": [
 			{
-				"name": "NextlyAccountRoles_CopyData",
+				"name": "DenyExternalPayments_CopyData",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "NextlyAccountRoles_StagingTruncate",
+						"activity": "DenyExternalPayments_StagingTruncate",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -27,7 +27,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountRoles",
+							"wildcardFolderPath": "QA/DenyExternalPayments",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -49,74 +49,98 @@
 						"mappings": [
 							{
 								"source": {
-									"name": "AccountNumber",
+									"name": "PersonNumber",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "AccountNumber",
+									"name": "PersonNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "OrganizationNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrganizationNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "MemberNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "MemberNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "AgreementNumber",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "AgreementNumber",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "UserFieldCode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "UserFieldCode",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RoleEntityNumber",
+									"name": "UserFieldDescription",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RoleEntityNumber",
+									"name": "UserFieldDescription",
 									"type": "String",
 									"physicalType": "varchar"
 								}
 							},
 							{
 								"source": {
-									"name": "RoleEntityTypeCode",
+									"name": "UserFieldValue",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RoleEntityTypeCode",
-									"type": "String",
-									"physicalType": "varchar"
+									"name": "UserFieldValue",
+									"type": "Boolean",
+									"physicalType": "bit"
 								}
 							},
 							{
 								"source": {
-									"name": "RoleCode",
+									"name": "DateLastMaint",
 									"type": "String",
 									"physicalType": "String"
 								},
 								"sink": {
-									"name": "RoleCode",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "RoleDescription",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "RoleDescription",
-									"type": "String",
-									"physicalType": "varchar"
-								}
-							},
-							{
-								"source": {
-									"name": "MemberName",
-									"type": "String",
-									"physicalType": "String"
-								},
-								"sink": {
-									"name": "MemberName",
-									"type": "String",
-									"physicalType": "varchar"
+									"name": "DateLastMaint",
+									"type": "DateTime",
+									"physicalType": "date"
 								}
 							}
 						],
@@ -129,22 +153,22 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Dev_OfflinSource_NextlyAccountRoles",
+						"referenceName": "QA_OfflinSource_DenyExternalPayments",
 						"type": "DatasetReference",
 						"parameters": {
-							"NextlyAccountRoles": "@pipeline().parameters.FileName"
+							"DenyExternalPayments": "@pipeline().parameters.FileName"
 						}
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "Dev_OfflineDestination_NextlyAccountRoles",
+						"referenceName": "QA_OfflineDestination_DenyExternalPayments",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "NextlyAccountRoles_StagingTruncate",
+				"name": "DenyExternalPayments_StagingTruncate",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
@@ -156,14 +180,14 @@
 				},
 				"userProperties": [],
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				},
 				"typeProperties": {
 					"scripts": [
 						{
 							"type": "Query",
-							"text": "TRUNCATE TABLE NextlyAccountRoles_Staging"
+							"text": "TRUNCATE TABLE [dbo].[DenyExternalPayments_Staging]"
 						}
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
@@ -172,11 +196,9 @@
 			{
 				"name": "Stored procedure1",
 				"type": "SqlServerStoredProcedure",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
-						"activity": "NextlyAccountRoles_CopyData",
+						"activity": "DenyExternalPayments_CopyData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -191,15 +213,15 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "Spi_InsertToMemberRolesDetails"
+					"storedProcedureName": "Spi_InsertInToMemberUserFieldDetails"
 				},
 				"linkedServiceName": {
-					"referenceName": "SCCU_OfflineDev",
+					"referenceName": "SCCUQA_OfflineModeDB",
 					"type": "LinkedServiceReference"
 				}
 			},
 			{
-				"name": "Copy data2",
+				"name": "completed copy",
 				"type": "Copy",
 				"dependsOn": [
 					{
@@ -223,7 +245,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": "DEV/NextlyAccountRoles",
+							"wildcardFolderPath": "QA/DenyExternalPayments",
 							"wildcardFileName": {
 								"value": "@pipeline().parameters.FileName",
 								"type": "Expression"
@@ -244,13 +266,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "DEV_Completed_NextlyAccountRoles_Source",
+						"referenceName": "QA_Completed_DenyExternalPayments_Source",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "DEV_Completed_NextlyAccountRoles_Sink",
+						"referenceName": "QA_Completed_DenyExternalPayments_Destination",
 						"type": "DatasetReference"
 					}
 				]
@@ -259,15 +281,15 @@
 		"parameters": {
 			"FileName": {
 				"type": "string",
-				"defaultValue": "NextlyAccountRoles*.csv"
+				"defaultValue": "*.csv"
 			},
 			"FilePath": {
 				"type": "string",
-				"defaultValue": "offline-services/DEV/NextlyAccountRoles"
+				"defaultValue": "offline-services/QA/DenyExternalPayments"
 			}
 		},
 		"folder": {
-			"name": "OfflineServices/Dev_OfflineServices"
+			"name": "OfflineServices/QA_OfflineServices"
 		},
 		"annotations": []
 	}
