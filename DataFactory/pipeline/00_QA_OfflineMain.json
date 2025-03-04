@@ -23,7 +23,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "MemberData",
+						"activity": "CrossAccounts",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -157,11 +157,34 @@
 				}
 			},
 			{
-				"name": "AccountRoles",
+				"name": "LoanTransaction",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
 						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "QA_NextlyLoanTransactions",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "AccountRoles",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "MemberData",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -184,7 +207,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "UserCreditCard",
+						"activity": "AccountRoles",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -197,29 +220,6 @@
 				"typeProperties": {
 					"pipeline": {
 						"referenceName": "QA_NextlyCrossAccounts",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "LoanTransaction",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "UserCreditCard",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "QA_NextlyLoanTransactions",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
