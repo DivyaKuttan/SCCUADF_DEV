@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Script1",
+				"name": "OfflineServices_Disable",
 				"type": "Script",
 				"dependsOn": [],
 				"policy": {
