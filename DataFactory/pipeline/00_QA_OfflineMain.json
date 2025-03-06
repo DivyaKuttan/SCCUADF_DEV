@@ -224,6 +224,29 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "DenyExternalPayments",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "UserCreditCard",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "QA_DenyExternalPayments",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {
