@@ -21,8 +21,6 @@
 			{
 				"name": "UAT",
 				"type": "ExecutePipeline",
-				"state": "Inactive",
-				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "Copy From UAT",
