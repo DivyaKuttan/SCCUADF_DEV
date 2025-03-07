@@ -1,0 +1,29 @@
+{
+	"name": "QA_SQL_DataSet",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "SCCUQA_OfflineModeDB",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "OfflineServices_DataSets/QA_Offline"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "PipelineRun",
+				"type": "bit"
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "PipelineConfig"
+		}
+	}
+}
