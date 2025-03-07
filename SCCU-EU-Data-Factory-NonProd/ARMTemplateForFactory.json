@@ -707,7 +707,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "MemberData",
+								"activity": "CrossAccounts",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -847,11 +847,35 @@
 						}
 					},
 					{
-						"name": "AccountRoles",
+						"name": "LoanTransaction",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
 								"activity": "UserCreditCard",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "QA_NextlyLoanTransactions",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "AccountRoles",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "MemberData",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -875,7 +899,7 @@
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
-								"activity": "UserCreditCard",
+								"activity": "AccountRoles",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -895,7 +919,7 @@
 						}
 					},
 					{
-						"name": "LoanTransaction",
+						"name": "DenyExternalPayments",
 						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
@@ -911,7 +935,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"pipeline": {
-								"referenceName": "QA_NextlyLoanTransactions",
+								"referenceName": "QA_DenyExternalPayments",
 								"type": "PipelineReference"
 							},
 							"waitOnCompletion": true,
@@ -935,9 +959,10 @@
 				"[concat(variables('factoryId'), '/pipelines/QA_CK_SAV_Accounttransactions')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_DebitCardDetails')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_NextlyAccountlockout')]",
+				"[concat(variables('factoryId'), '/pipelines/QA_NextlyLoanTransactions')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_NextlyAccountRoles')]",
 				"[concat(variables('factoryId'), '/pipelines/QA_NextlyCrossAccounts')]",
-				"[concat(variables('factoryId'), '/pipelines/QA_NextlyLoanTransactions')]"
+				"[concat(variables('factoryId'), '/pipelines/QA_DenyExternalPayments')]"
 			]
 		},
 		{
@@ -15092,30 +15117,6 @@
 						}
 					},
 					{
-						"name": "QA",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Copy From UAT",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "00_QA_OfflineMain",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
 						"name": "UAT",
 						"type": "ExecutePipeline",
 						"dependsOn": [
@@ -15138,6 +15139,77 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "IsQAOfflineEnabled",
+						"type": "Lookup",
+						"dependsOn": [
+							{
+								"activity": "Copy From UAT",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "SELECT count(1) as 'RecordCount' FROM [dbo].[PipelineConfig] where PipelineRun=1",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "QA_SQL_DataSet",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "If Condition1",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "IsQAOfflineEnabled",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(activity('IsQAOfflineEnabled').output.firstRow['RecordCount'],0)",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "QA",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "00_QA_OfflineMain",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -15150,8 +15222,9 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Offline_UAT_to_QA')]",
-				"[concat(variables('factoryId'), '/pipelines/00_QA_OfflineMain')]",
-				"[concat(variables('factoryId'), '/pipelines/00_UAT_OfflineMain')]"
+				"[concat(variables('factoryId'), '/pipelines/00_UAT_OfflineMain')]",
+				"[concat(variables('factoryId'), '/datasets/QA_SQL_DataSet')]",
+				"[concat(variables('factoryId'), '/pipelines/00_QA_OfflineMain')]"
 			]
 		},
 		{
@@ -15500,6 +15573,96 @@
 				"[concat(variables('factoryId'), '/datasets/DelimitedText8')]",
 				"[concat(variables('factoryId'), '/datasets/QA_SourceCopyFile')]",
 				"[concat(variables('factoryId'), '/datasets/QA_SinkFileCopy')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QAOfflineService_Enable')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OfflineService_Enable",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCUQA_OfflineModeDB",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "Update  [dbo].[PipelineConfig] Set [PipelineRun]=1"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "OfflineServices/Settings"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_OfflineModeDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QAOfflineServices_Disable')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "OfflineServices_Disable",
+						"type": "Script",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"linkedServiceName": {
+							"referenceName": "SCCUQA_OfflineModeDB",
+							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "Update  [dbo].[PipelineConfig] Set [PipelineRun]=0"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"folder": {
+					"name": "OfflineServices/Settings"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_OfflineModeDB')]"
 			]
 		},
 		{
@@ -66854,6 +67017,40 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_MetaDB')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/QA_SQL_DataSet')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "SCCUQA_OfflineModeDB",
+					"type": "LinkedServiceReference"
+				},
+				"folder": {
+					"name": "OfflineServices_DataSets/QA_Offline"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "ID",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "PipelineRun",
+						"type": "bit"
+					}
+				],
+				"typeProperties": {
+					"schema": "dbo",
+					"table": "PipelineConfig"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/SCCUQA_OfflineModeDB')]"
 			]
 		},
 		{

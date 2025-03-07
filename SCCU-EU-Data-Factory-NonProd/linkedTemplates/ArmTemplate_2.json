@@ -580,14 +580,14 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/QA_AdminLoginHistory')]",
+			"name": "[concat(parameters('factoryName'), '/QAOfflineService_Enable')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
+						"name": "OfflineService_Enable",
+						"type": "Script",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -597,33 +597,40 @@
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
-						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataQA",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "Update  [dbo].[PipelineConfig] Set [PipelineRun]=1"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "OfflineServices/Settings"
+				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataQA')]"
-			]
+			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/UAT_AdminLoginHistory')]",
+			"name": "[concat(parameters('factoryName'), '/QAOfflineServices_Disable')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "Stored procedure1",
-						"type": "SqlServerStoredProcedure",
+						"name": "OfflineServices_Disable",
+						"type": "Script",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "0.12:00:00",
@@ -633,23 +640,30 @@
 							"secureInput": false
 						},
 						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[dbo].[spi_AdminLoginHistoryActiveMember]"
-						},
 						"linkedServiceName": {
-							"referenceName": "SCCU_BusinessDataUAT",
+							"referenceName": "SCCUQA_OfflineModeDB",
 							"type": "LinkedServiceReference"
+						},
+						"typeProperties": {
+							"scripts": [
+								{
+									"type": "Query",
+									"text": "Update  [dbo].[PipelineConfig] Set [PipelineRun]=0"
+								}
+							],
+							"scriptBlockExecutionTimeout": "02:00:00"
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {}
 				},
+				"folder": {
+					"name": "OfflineServices/Settings"
+				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/SCCU_BusinessDataUAT')]"
-			]
+			"dependsOn": []
 		}
 	]
 }
