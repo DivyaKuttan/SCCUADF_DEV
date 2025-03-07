@@ -835,7 +835,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Get Metadata1",
+								"activity": "Transaction MetaData",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -961,7 +961,7 @@
 						]
 					},
 					{
-						"name": "Stored procedure1",
+						"name": "spi_ExtTransactionAlertToQueue",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -988,7 +988,7 @@
 						}
 					},
 					{
-						"name": "Get Metadata1",
+						"name": "Transaction MetaData",
 						"type": "GetMetadata",
 						"dependsOn": [
 							{
@@ -1028,11 +1028,11 @@
 						}
 					},
 					{
-						"name": "Copy data1",
+						"name": "Complete Copy",
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Stored procedure1",
+								"activity": "spi_ExtTransactionAlertToQueue",
 								"dependencyConditions": [
 									"Succeeded"
 								]

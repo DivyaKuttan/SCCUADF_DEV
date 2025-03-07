@@ -14536,7 +14536,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Get Metadata1",
+								"activity": "Transaction MetaData",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -14662,7 +14662,7 @@
 						]
 					},
 					{
-						"name": "Stored procedure1",
+						"name": "spi_ExtTransactionAlertToQueue",
 						"type": "SqlServerStoredProcedure",
 						"dependsOn": [
 							{
@@ -14689,7 +14689,7 @@
 						}
 					},
 					{
-						"name": "Get Metadata1",
+						"name": "Transaction MetaData",
 						"type": "GetMetadata",
 						"dependsOn": [
 							{
@@ -14729,11 +14729,11 @@
 						}
 					},
 					{
-						"name": "Copy data1",
+						"name": "Complete Copy",
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Stored procedure1",
+								"activity": "spi_ExtTransactionAlertToQueue",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -48437,7 +48437,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "sccu_nextly_test2",
+					"referenceName": "SCCU_DataFactory_Storage",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -48451,7 +48451,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sccu_nextly_test2')]"
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_DataFactory_Storage')]"
 			]
 		},
 		{
@@ -58478,7 +58478,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "sccu_nextly_test2",
+					"referenceName": "SCCU_DataFactory_Storage",
 					"type": "LinkedServiceReference"
 				},
 				"parameters": {
@@ -58502,7 +58502,7 @@
 				"schema": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sccu_nextly_test2')]"
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_DataFactory_Storage')]"
 			]
 		},
 		{

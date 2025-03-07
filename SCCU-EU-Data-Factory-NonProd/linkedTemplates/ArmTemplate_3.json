@@ -395,7 +395,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "sccu_nextly_test2",
+					"referenceName": "SCCU_DataFactory_Storage",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
