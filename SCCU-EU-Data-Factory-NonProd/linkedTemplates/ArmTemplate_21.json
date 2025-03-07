@@ -889,26 +889,50 @@
 									},
 									{
 										"source": {
-											"name": "EmailContent",
+											"name": "FirstName",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "EmailContent",
+											"name": "FirstName",
 											"type": "String",
 											"physicalType": "varchar"
 										}
 									},
 									{
 										"source": {
-											"name": "SMSContent",
+											"name": "Description",
 											"type": "String",
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "SMSContent",
+											"name": "Descriptions",
 											"type": "String",
 											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "Amount",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Amount",
+											"type": "String",
+											"physicalType": "varchar"
+										}
+									},
+									{
+										"source": {
+											"name": "TYPE",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "Type",
+											"type": "String",
+											"physicalType": "char"
 										}
 									}
 								],
@@ -924,10 +948,7 @@
 								"referenceName": "Dev_TransactionSourceDataset",
 								"type": "DatasetReference",
 								"parameters": {
-									"TransactionFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									}
+									"TransactionFileName": "@pipeline().parameters.FileName"
 								}
 							}
 						],
