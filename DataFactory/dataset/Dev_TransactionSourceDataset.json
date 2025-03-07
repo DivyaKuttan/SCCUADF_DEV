@@ -2,7 +2,7 @@
 	"name": "Dev_TransactionSourceDataset",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "sccu_nextly_test2",
+			"referenceName": "SCCU_DataFactory_Storage",
 			"type": "LinkedServiceReference"
 		},
 		"parameters": {
