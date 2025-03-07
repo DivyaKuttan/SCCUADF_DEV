@@ -855,11 +855,8 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/TransactionAlerts",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
+									"wildcardFolderPath": "DEV/ThresholdAlerts",
+									"wildcardFileName": "@pipeline().parameters.FileName",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -906,7 +903,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Descriptions",
+											"name": "Description",
 											"type": "String",
 											"physicalType": "varchar"
 										}

@@ -14556,11 +14556,8 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
-									"wildcardFolderPath": "DEV/TransactionAlerts",
-									"wildcardFileName": {
-										"value": "@pipeline().parameters.FileName",
-										"type": "Expression"
-									},
+									"wildcardFolderPath": "DEV/ThresholdAlerts",
+									"wildcardFileName": "@pipeline().parameters.FileName",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -14607,7 +14604,7 @@
 											"physicalType": "String"
 										},
 										"sink": {
-											"name": "Descriptions",
+											"name": "Description",
 											"type": "String",
 											"physicalType": "varchar"
 										}
@@ -48414,7 +48411,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "sccu_nextly_test2",
+					"referenceName": "SCCU_DataFactory_Storage",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -48428,7 +48425,7 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/sccu_nextly_test2')]"
+				"[concat(variables('factoryId'), '/linkedServices/SCCU_DataFactory_Storage')]"
 			]
 		},
 		{
