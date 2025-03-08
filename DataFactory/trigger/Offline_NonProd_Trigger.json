@@ -16,8 +16,8 @@
 			"recurrence": {
 				"frequency": "Day",
 				"interval": 1,
-				"startTime": "2025-02-04T13:15:00",
-				"timeZone": "India Standard Time"
+				"startTime": "2025-03-09T14:45:00",
+				"timeZone": "Eastern Standard Time"
 			}
 		}
 	}
