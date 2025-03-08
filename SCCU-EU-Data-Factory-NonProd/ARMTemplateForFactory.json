@@ -14557,7 +14557,10 @@
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
 									"wildcardFolderPath": "DEV/TransactionAlerts",
-									"wildcardFileName": "@pipeline().parameters.FileName",
+									"wildcardFileName": {
+										"value": "@pipeline().parameters.FileName",
+										"type": "Expression"
+									},
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -78123,8 +78126,8 @@
 					"recurrence": {
 						"frequency": "Day",
 						"interval": 1,
-						"startTime": "2025-02-04T13:15:00",
-						"timeZone": "India Standard Time"
+						"startTime": "2025-03-08T02:45:00",
+						"timeZone": "Eastern Standard Time"
 					}
 				}
 			},
